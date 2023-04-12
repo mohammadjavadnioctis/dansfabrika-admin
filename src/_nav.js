@@ -97,6 +97,12 @@ const _nav = [
     icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Öğrenci Kursları',
+    to: '/catalog/courseStudents/list',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+  },
+  {
     component: CNavTitle,
     name: 'Extras',
   },
