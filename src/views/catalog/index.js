@@ -14,6 +14,8 @@ import SliderAdd from './sliders/add/AddSlider'
 import Sliders from './sliders/list/Sliders'
 import AddTrainer from './trainers/add/AddTrainer'
 import Trainers from './trainers/list/Trainers'
+import CourseAdd from './courses/add/AddCourse'
+import Courses from './courses/list/Courses'
 
 export {
   Admins,
@@ -31,5 +33,5 @@ export {
   DanceLevels,
   DanceTypeAdd,
   Trainers,
-  AddTrainer
+  AddTrainer,
 }

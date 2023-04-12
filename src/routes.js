@@ -36,6 +36,10 @@ const AddDanceLevel = React.lazy(() => import('./views/catalog/danceLevels/add/A
 const Trainers = React.lazy(() => import('./views/catalog/trainers/list/Trainers'))
 const AddTrainer = React.lazy(() => import('./views/catalog/trainers/add/AddTrainer'))
 
+// Courses
+const Courses = React.lazy(() => import('./views/catalog/courses/list/Courses'))
+const AddCours = React.lazy(() => import('./views/catalog/courses/add/AddCourse'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -56,6 +60,8 @@ const routes = [
   { path: '/catalog/danceLevels/add', name: 'Dans Leveli Ekle', element: AddDanceLevel },
   { path: '/catalog/trainers/list', name: 'Eğitmenler', element: Trainers },
   { path: '/catalog/trainers/add', name: 'Eğitmen Ekle', element: AddTrainer },
+  { path: '/catalog/courses/list', name: 'Kurslar', element: Courses },
+  { path: '/catalog/courses/add', name: 'Kurs Ekle', element: AddCours },
 ]
 
 export default routes
