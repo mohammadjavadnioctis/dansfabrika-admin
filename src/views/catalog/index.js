@@ -22,6 +22,8 @@ import Lessons from './lessons/list/Lessons'
 import LessonAdd from './lessons/add/AddLesson'
 import Attendances from './attendances/list/Attendances'
 import AttendanceAdd from './attendances/add/AddAttendance'
+import Students from './students/list/Students'
+import StudentAdd from './students/add/AddStudent'
 
 export {
   Admins,
@@ -48,4 +50,6 @@ export {
   LessonAdd,
   Attendances,
   AttendanceAdd,
+  Students,
+  StudentAdd
 }

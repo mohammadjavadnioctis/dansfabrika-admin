@@ -60,6 +60,10 @@ const AddLesson = React.lazy(() => import('./views/catalog/lessons/add/AddLesson
 const Attendances = React.lazy(() => import('./views/catalog/attendances/list/Attendances'))
 const AddAttendances = React.lazy(() => import('./views/catalog/attendances/add/AddAttendance'))
 
+// Students
+const Students = React.lazy(() => import('./views/catalog/students/list/Students'))
+const AddStudents = React.lazy(() => import('./views/catalog/students/add/AddStudent'))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -90,6 +94,8 @@ const routes = [
   { path: '/catalog/lessons/add', name: 'Ders Ekle', element: AddLesson },
   { path: '/catalog/attendances/list', name: 'Yoklama', element: Attendances },
   { path: '/catalog/attendances/add', name: 'Yoklama Ekle', element: AddAttendances },
+  { path: '/catalog/students/list', name: 'Öğrenciler', element: Students },
+  { path: '/catalog/students/add', name: 'Öğrenci Ekle', element: AddStudents },
 ]
 
 export default routes
