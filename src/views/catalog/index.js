@@ -18,6 +18,8 @@ import CourseAdd from './courses/add/AddCourse'
 import Courses from './courses/list/Courses'
 import Sales from './sales/list/Sales'
 import SaleAdd from './sales/add/AddSale'
+import Lessons from './lessons/list/Lessons'
+import LessonAdd from './lessons/add/AddLesson'
 
 export {
   Admins,
@@ -40,4 +42,6 @@ export {
   CourseAdd,
   Sales,
   SaleAdd,
+  Lessons,
+  LessonAdd,
 }
