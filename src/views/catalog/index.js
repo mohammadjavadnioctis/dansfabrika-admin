@@ -16,6 +16,8 @@ import AddTrainer from './trainers/add/AddTrainer'
 import Trainers from './trainers/list/Trainers'
 import CourseAdd from './courses/add/AddCourse'
 import Courses from './courses/list/Courses'
+import Sales from './sales/list/Sales'
+import SaleAdd from './sales/add/AddSale'
 
 export {
   Admins,
@@ -31,7 +33,11 @@ export {
   DanceTypes,
   DanceTypeAdd,
   DanceLevels,
-  DanceTypeAdd,
+  DanceLevelAdd,
   Trainers,
   AddTrainer,
+  Courses,
+  CourseAdd,
+  Sales,
+  SaleAdd,
 }
