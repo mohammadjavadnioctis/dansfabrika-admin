@@ -14,6 +14,7 @@ import '@inovua/reactdatagrid-community/index.css'
 import { columns, dataSource, defaultFilterValue } from 'src/dami_data/admin/AdminData'
 import CIcon from '@coreui/icons-react'
 import { cilUserPlus } from '@coreui/icons'
+import './App.css'
 
 const gridStyle = { minHeight: 550, marginTop: 10 }
 
