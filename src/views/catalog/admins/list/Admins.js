@@ -51,7 +51,7 @@ const Admins = () => {
               <CFormLabel className="mt-1 text-light">Adminler</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + '#/catalog/admins/add'}
+                href={process.env.REACT_APP_BASE_URL + 'catalog/admins/add'}
               >
                 <CIcon icon={cilUserPlus} className="mx-2" />
                 Admin Ekle

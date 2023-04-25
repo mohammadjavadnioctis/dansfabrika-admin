@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/admin/AdminData'
+import { columns, dataSource, defaultFilterValue } from 'src/dami_data/slider/SliderData'
 import CIcon from '@coreui/icons-react'
 import { cibSlickpic, cilUserPlus } from '@coreui/icons'
 
@@ -50,7 +50,7 @@ const Sliders = () => {
               <CFormLabel className="mt-1 text-light">Sliderlar</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + '#/catalog/sliders/add'}
+                href={process.env.REACT_APP_BASE_URL + 'catalog/sliders/add'}
               >
                 <CIcon icon={cibSlickpic} className="mx-2" />
                 Slider Ekle

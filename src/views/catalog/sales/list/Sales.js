@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/admin/AdminData'
+import { columns, dataSource, defaultFilterValue } from 'src/dami_data/sale/SaleData'
 import CIcon from '@coreui/icons-react'
 import { cilUserPlus } from '@coreui/icons'
 
@@ -50,7 +50,7 @@ const Sales = () => {
               <CFormLabel className="mt-1 text-light">Satışlar</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + '#/catalog/sales/add'}
+                href={process.env.REACT_APP_BASE_URL + 'catalog/sales/add'}
               >
                 <CIcon icon={cilUserPlus} className="mx-2" />
                 Satış Ekle

@@ -17,6 +17,8 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
+import ImageLogo from 'src/assets/images/dansfabrika_logo.jpg'
+
 const Login = () => {
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -52,7 +54,7 @@ const Login = () => {
                         <CButton
                           color="dark"
                           className="px-4"
-                          href="http://localhost:3000/#/dashboard"
+                          href={process.env.REACT_APP_BASE_URL}
                         >
                           Giriş Yap
                         </CButton>
@@ -69,8 +71,8 @@ const Login = () => {
               <CCard className="text-white bg-black py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center container d-flex align-items-center justify-content-center">
                   <CImage
-                    className=""
-                    src="http://admin.dansfabrika.com/dist/images/logo.png"
+                    className="bg-white"
+                    src={ImageLogo}
                     height={50}
                   ></CImage>
                 </CCardBody>

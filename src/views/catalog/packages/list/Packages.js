@@ -15,7 +15,7 @@ import {
   columns,
   dataSource,
   defaultFilterValue,
-} from 'src/dami_data/notifications/NotificationData'
+} from 'src/dami_data/packages/PackageData'
 import CIcon from '@coreui/icons-react'
 import { cilInbox } from '@coreui/icons'
 
@@ -53,7 +53,7 @@ const Packages = () => {
               <CFormLabel className="mt-1 text-light">Paketler</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + '#/catalog/packages/add'}
+                href={process.env.REACT_APP_BASE_URL + 'catalog/packages/add'}
               >
                 <CIcon icon={cilInbox} className="mx-2" />
                 Paket Ekle

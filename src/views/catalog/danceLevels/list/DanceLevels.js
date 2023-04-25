@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/admin/AdminData'
+import { columns, dataSource, defaultFilterValue } from 'src/dami_data/dance_level/DanceLevelData'
 import CIcon from '@coreui/icons-react'
 import { cilLevelUp, cilUserPlus } from '@coreui/icons'
 
@@ -50,7 +50,7 @@ const DanceLevels = () => {
               <CFormLabel className="mt-1 text-light">Dans Levelleri</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + '#/catalog/danceLevels/add'}
+                href={process.env.REACT_APP_BASE_URL + 'catalog/danceLevels/add'}
               >
                 <CIcon icon={cilLevelUp} className="mx-2" />
                 Dans Leveli Ekle

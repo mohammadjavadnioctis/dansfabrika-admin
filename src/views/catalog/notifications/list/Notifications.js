@@ -53,7 +53,7 @@ const Notifications = () => {
               <CFormLabel className="mt-1 text-light">Bildirimler</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + '#/catalog/notifications/add'}
+                href={process.env.REACT_APP_BASE_URL + 'catalog/notifications/add'}
               >
                 <CIcon icon={cilBell} className="mx-2" />
                 Bildirim Ekle

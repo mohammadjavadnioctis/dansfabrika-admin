@@ -12,6 +12,8 @@ import { sygnet } from 'src/assets/brand/sygnet'
 import SimpleBar from 'simplebar-react'
 import 'simplebar/dist/simplebar.min.css'
 
+import ImageLogo from 'src/assets/images/dansfabrika_logo.jpg'
+
 // sidebar nav config
 import navigation from '../_nav'
 
@@ -30,7 +32,7 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CImage src="http://admin.dansfabrika.com/dist/images/logo.png" height={35} />
+        <CImage src={ImageLogo} height={35} />
         <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>
       <CSidebarNav>

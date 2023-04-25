@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/admin/AdminData'
+import { columns, dataSource, defaultFilterValue } from 'src/dami_data/calendar/CalendarData'
 import CIcon from '@coreui/icons-react'
 import { cilCalendar, cilUserPlus } from '@coreui/icons'
 
@@ -50,7 +50,7 @@ const Calendars = () => {
               <CFormLabel className="mt-1 text-light">Takvimler</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + '#/catalog/calendars/add'}
+                href={process.env.REACT_APP_BASE_URL + 'catalog/calendars/add'}
               >
                 <CIcon icon={cilCalendar} className="mx-2" />
                 Takvim Ekle
