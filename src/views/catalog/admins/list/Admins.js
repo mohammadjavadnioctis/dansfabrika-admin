@@ -11,7 +11,7 @@ import {
 import React, { useCallback, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/admin/AdminData'
+import { dataSource, defaultFilterValue } from 'src/dami_data/admin/AdminData'
 import CIcon from '@coreui/icons-react'
 import { cilUserPlus } from '@coreui/icons'
 import './App.css'
@@ -29,6 +29,26 @@ const loadData = ({ skip, limit, sortInfo }) => {
     })
   })
 }
+
+const gridLinkStyle={color:'black', marginRight:5,}
+const GridLink=({onClick, title}) =><a style={gridLinkStyle} onClick={onClick}>{title}</a>
+
+const columns = [
+  { name: 'id', type: 'number', maxWidth: 40, header: 'ID', defaultVisible: false },
+  { name: 'name', defaultFlex: 2, header: 'Ad' },
+  { name: 'email', defaultFlex: 3, header: 'Email' },
+  { name: 'password', defaultFlex: 3, header: 'Şifre' },
+  { name: 'role', defaultFlex: 3, header: 'Role' },
+  { name: 'status', defaultFlex: 3, header: 'Statü' },
+  { name: 'created_date', defaultFlex: 3, header: 'Oluşturma Tarihi' },
+  { name: 'action', defaultFlex: 3, header: 'Aksiyon', render:({data}) => (
+      <div>
+        <GridLink onClick={()=>console.log(data.id+"id li kullanıcıyı düzenle")} title={"Düzenle"}></GridLink>
+        <GridLink onClick={()=>console.log(data.id+"id li kullanıcıyı sil")} title={"Sil"}></GridLink>
+      </div>
+    ) 
+  },
+]
 
 const Admins = () => {
   //const dataSource = useCallback(loadData, []);
