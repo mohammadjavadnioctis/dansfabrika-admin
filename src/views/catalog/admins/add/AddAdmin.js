@@ -47,7 +47,7 @@ const AdminAdd = () => {
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
-          <strong>Admin Ekle</strong>
+          <span className='text-white'>Admin Ekle</span>
         </CCardHeader>
         <CCardBody>
           <CForm

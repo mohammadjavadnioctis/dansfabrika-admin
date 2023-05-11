@@ -68,7 +68,7 @@ const AdminUpdate = () => {
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
-          <strong>Admin Güncelle</strong>
+          <span className='text-white'>Admin Güncelle</span>
         </CCardHeader>
         <CCardBody>
           <CForm
