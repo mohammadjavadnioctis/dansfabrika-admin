@@ -47,7 +47,7 @@ const Lessons = () => {
         <CCol>
           <CCard>
             <CCardHeader className="bg-dark">
-              <CFormLabel className="mt-1 text-light">Dersler</CFormLabel>
+              <CFormLabel className="mt-1 text-light">Ders Günleri</CFormLabel>
               <CButton
                 className="float-end bg-light text-dark"
                 href={process.env.REACT_APP_BASE_URL + 'catalog/lessons/add'}

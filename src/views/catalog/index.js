@@ -24,6 +24,7 @@ import Attendances from './attendances/list/Attendances'
 import AttendanceAdd from './attendances/add/AddAttendance'
 import Students from './students/list/Students'
 import StudentAdd from './students/add/AddStudent'
+import AdminUpdate from './admins/update/UpdateAdmin'
 
 export {
   Admins,
@@ -51,5 +52,6 @@ export {
   Attendances,
   AttendanceAdd,
   Students,
-  StudentAdd
+  StudentAdd,
+  AdminUpdate
 }

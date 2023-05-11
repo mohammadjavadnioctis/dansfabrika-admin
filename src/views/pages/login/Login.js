@@ -17,8 +17,6 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
-import ImageLogo from 'src/assets/images/dansfabrika_logo.jpg'
-
 const Login = () => {
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
@@ -72,7 +70,7 @@ const Login = () => {
                 <CCardBody className="text-center container d-flex align-items-center justify-content-center">
                   <CImage
                     className="bg-white"
-                    src={ImageLogo}
+                    src={require('../../../assets/images/dansfabrika_logo.jpg')}
                     height={50}
                   ></CImage>
                 </CCardBody>

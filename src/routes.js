@@ -5,6 +5,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // Admin
 const Admins = React.lazy(() => import('./views/catalog/admins/list/Admins'))
 const AddAdmin = React.lazy(() => import('./views/catalog/admins/add/AddAdmin'))
+const UpdateAdmin = React.lazy(() => import('./views/catalog/admins/update/UpdateAdmin'))
 
 //Notification
 const Notifications = React.lazy(() => import('./views/catalog/notifications/list/Notifications'))
@@ -70,6 +71,7 @@ const routes = [
   { path: '/catalog', name: 'Seçim', element: Admins, exact: true },
   { path: '/catalog/admins/list', name: 'Adminler', element: Admins },
   { path: '/catalog/admins/add', name: 'Admin Ekle', element: AddAdmin },
+  { path: '/catalog/admins/update/:id', name: 'Admin Güncelle', element: UpdateAdmin },
   { path: '/catalog/notifications/list', name: 'Bildirimler', element: Notifications },
   { path: '/catalog/notifications/add', name: 'Bildirim Ekle', element: AddNotification },
   { path: '/catalog/packages/list', name: 'Paketler', element: Packages },
