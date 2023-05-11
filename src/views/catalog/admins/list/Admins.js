@@ -8,15 +8,15 @@ import {
   CFormLabel,
   CRow,
 } from '@coreui/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
 import { DeleteAdmin, GetAllAdmins } from 'src/api/catalog/Admins'
 import { GridLinkDelete, GridLinkUpdate } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
-import { downloadExcel } from "react-export-table-to-excel";
-
+import { downloadExcel } from "react-export-table-to-excel"
+import { FaFileExcel  } from "react-icons/fa";
 
 const gridStyle = { minHeight: 550, marginTop: 10 }
 
@@ -86,7 +86,12 @@ const Admins = () => {
             </CCardHeader>
 
             <CCardBody>
-              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>Excel Export</CButton>
+              
+              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>
+                <FaFileExcel></FaFileExcel>
+                <span>Export Excel</span>
+              </CButton>
+              
               {admins.length > 0 && (
                 <ReactDataGrid
                   idProperty="id"
