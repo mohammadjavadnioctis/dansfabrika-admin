@@ -8,15 +8,22 @@ import {
   CFormLabel,
   CRow,
 } from '@coreui/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
 import { DeleteAdmin, GetAllAdmins } from 'src/api/catalog/Admins'
 import { GridLinkDelete, GridLinkUpdate } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
+import { downloadExcel } from "react-export-table-to-excel";
+
 
 const gridStyle = { minHeight: 550, marginTop: 10 }
+
+const defaultFilterValue = [
+  { name: 'name', operator: 'startsWith', type: 'string' },
+  { name: 'email', operator: 'startsWith', type: 'string' },
+]
 
 const title = [
   { name: 'id', type: 'number', maxWidth: 40, header: 'ID', defaultVisible: false },
@@ -35,6 +42,20 @@ const title = [
 
 const Admins = () => {
   
+  // Export Excel
+  const exportHeader = ["id", "name", "email", "role", "status"];
+
+  function HandleDownloadExcel() {
+    downloadExcel({
+      fileName: "Adminler",
+      sheet: "react-export-table-to-excel",
+      tablePayload: {
+        header: exportHeader,
+        body: admins,
+      },
+    });
+  }
+
   const [admins, setAdmins] = useState([]);
   
   useEffect(() => {
@@ -54,6 +75,7 @@ const Admins = () => {
           <CCard>
             <CCardHeader className="bg-dark">
               <CFormLabel className="mt-1 text-light">Adminler</CFormLabel>
+
               <CButton
                 className="float-end bg-light text-dark"
                 href={process.env.REACT_APP_BASE_URL + 'catalog/admins/add'}
@@ -64,6 +86,7 @@ const Admins = () => {
             </CCardHeader>
 
             <CCardBody>
+              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>Excel Export</CButton>
               {admins.length > 0 && (
                 <ReactDataGrid
                   idProperty="id"
@@ -72,6 +95,7 @@ const Admins = () => {
                   pagination
                   dataSource={admins}
                   defaultLimit={10}
+                  defaultFilterValue={defaultFilterValue}
                 />
               )}
             </CCardBody>

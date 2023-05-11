@@ -14,6 +14,7 @@ import {
 } from '@coreui/react'
 import { AddAdmin } from 'src/api/catalog/Admins'
 
+
 const AdminAdd = () => {
 
   const [name, setName] = useState(null)
