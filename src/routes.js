@@ -24,6 +24,7 @@ const AddCalendar = React.lazy(() => import('./views/catalog/calendars/add/AddCa
 // Sliders
 const Sliders = React.lazy(() => import('./views/catalog/sliders/list/Sliders'))
 const AddSlider = React.lazy(() => import('./views/catalog/sliders/add/AddSlider'))
+const UpdateSlider = React.lazy(() => import('./views/catalog/sliders/update/UpdateSlider'))
 
 // Dance Types
 const DanceTypes = React.lazy(() => import('./views/catalog/danceTypes/list/DanceTypes'))
@@ -80,6 +81,7 @@ const routes = [
   { path: '/catalog/calendars/add', name: 'Takvim Ekle', element: AddCalendar },
   { path: '/catalog/sliders/list', name: 'Sliderlar', element: Sliders },
   { path: '/catalog/sliders/add', name: 'Slider Ekle', element: AddSlider },
+  { path: '/catalog/sliders/update/:id', name: 'Slider Güncelle', element: UpdateSlider },
   { path: '/catalog/danceTypes/list', name: 'Dans Tipleri', element: DanceTypes },
   { path: '/catalog/danceTypes/add', name: 'Dans Tipi Ekle', element: AddDanceType },
   { path: '/catalog/danceLevels/list', name: 'Dans Levelleri', element: DanceLevels },

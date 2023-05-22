@@ -12,7 +12,7 @@ import {
   CFormFeedback,
   CButton,
 } from '@coreui/react'
-import { AddAdmin } from 'src/api/catalog/Admins'
+import { AddAdmin } from 'src/api/catalog/AdminAPI'
 
 
 const AdminAdd = () => {
@@ -60,7 +60,7 @@ const AdminAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormInput onChange={name == null ? e => setName(e.target.value) : ""} name='name' type="text" label="İsim Ve Soyisim" required />
+                <CFormInput onChange={e => setName(e.target.value)} name='name' type="text" label="İsim Ve Soyisim" required />
                 <CFormFeedback invalid>Lütfen isim ve soyisim giriniz.</CFormFeedback>
               </CCol>
               <CCol sm="6">

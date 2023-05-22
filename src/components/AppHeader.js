@@ -10,13 +10,14 @@ import {
   CHeaderToggler,
   CNavLink,
   CNavItem,
+  CImage,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
-
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
+import { BASE_URL } from 'src/config/Config'
 
 const AppHeader = () => {
   const dispatch = useDispatch()
@@ -32,7 +33,8 @@ const AppHeader = () => {
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
         <CHeaderBrand className="mx-auto d-md-none" to="/">
-          <CIcon icon={logo} height={48} alt="Logo" />
+          { /* <CIcon icon={logo} height={48} alt="Logo" /> */}
+          <CImage src={require('../assets/images/dansfabrika_logo.jpg')} height={40} alt="Logo"></CImage>
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>
@@ -41,7 +43,7 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href={process.env.REACT_APP_BASE_URL + '#/catalog/admins/list'}>
+            <CNavLink href={BASE_URL + 'catalog/admins/list'}>
               Öğrenciler
             </CNavLink>
           </CNavItem>

@@ -8,38 +8,68 @@ import {
   CFormLabel,
   CRow,
 } from '@coreui/react'
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/slider/SliderData'
-import CIcon from '@coreui/icons-react'
-import { cibSlickpic, cilUserPlus } from '@coreui/icons'
+import { cilPlus } from '@coreui/icons'
+import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
+import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
+import { downloadExcel } from "react-export-table-to-excel"
+import { FaFileExcel  } from "react-icons/fa";
+import { DeleteSlider, GetAllSliders } from 'src/api/catalog/SliderAPI'
+import { BASE_URL } from 'src/config/Config'
 
-const gridStyle = { minHeight: 550, marginTop: 10 }
 
-const loadData = ({ skip, limit, sortInfo }) => {
-  const url =
-    dataSource + '?skip=' + skip + '&limit=' + limit + '&sortInfo=' + JSON.stringify(sortInfo)
+const defaultFilterValue = [
+  { name: 'id', operator: 'startsWith', type: 'string' },
+  { name: 'name', operator: 'startsWith', type: 'string' },
+  { name: 'description', operator: 'startsWith', type: 'string' },
+]
 
-  return fetch(url).then((response) => {
-    const totalCount = response.headers.get('X-Total-Count')
-    return response.json().then((data) => {
-      return Promise.resolve({ data, count: parseInt(totalCount) })
-    })
-  })
-}
+const title = [
+  { name: 'id', type: 'number', maxWidth: 40, header: 'ID', defaultVisible: false },
+  { name: 'queue', defaultFlex: 2, header: 'Sıra' },
+  { name: 'name', defaultFlex: 3, header: 'Ad' },
+  { name: 'description', defaultFlex: 3, header: 'Açıklama' },
+  { name: 'image', defaultFlex: 3, header: 'Resim', render: ({ data }) => (
+    <ImageFormatter src={data.image}></ImageFormatter>
+  )},
+  { name: 'status', defaultFlex: 3, header: 'Statü' },
+  { name: 'actions', defaultFlex:3, header: 'Aksiyon', render: ({ data }) => (
+    <div>
+      <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/sliders/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
+      <GridLinkDelete onClick={()=>DeleteSlider(data.id)} title={"Sil"}></GridLinkDelete>
+    </div>
+  )},
+]
+
 
 const Sliders = () => {
-  //const dataSource = useCallback(loadData, []);
+  // Export Excel
+  const exportHeader = ["id", "queue", "name", "description", "image", "status"];
 
-  const renderRowContextMenu = (menuProps, { rowProps }) => {
-    menuProps.autoDismiss = true
-    menuProps.items = [
-      {
-        label: 'Row ' + rowProps.rowIndex,
+  function HandleDownloadExcel() {
+    downloadExcel({
+      fileName: "Sliderlar",
+      sheet: "react-export-table-to-excel",
+      tablePayload: {
+        header: exportHeader,
+        body: sliders,
       },
-    ]
+    });
   }
+
+  const [sliders, setSliders] = useState([]);
+  
+  useEffect(() => {
+    GetAllSliders()
+    .then((response) => {
+      setSliders(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }, []);
 
   return (
     <CContainer>
@@ -48,26 +78,34 @@ const Sliders = () => {
           <CCard>
             <CCardHeader className="bg-dark">
               <CFormLabel className="mt-1 text-light">Sliderlar</CFormLabel>
+
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + 'catalog/sliders/add'}
+                href={BASE_URL + 'catalog/sliders/add'}
               >
-                <CIcon icon={cibSlickpic} className="mx-2" />
-                Slider Ekle
+                <IconDatatableHead icon={cilPlus}></IconDatatableHead>
+                <SpanDatatableHead text={'Slider Ekle'}></SpanDatatableHead>
               </CButton>
             </CCardHeader>
 
             <CCardBody>
-              <ReactDataGrid
-                idProperty="id"
-                defaultFilterValue={defaultFilterValue}
-                renderRowContextMenu={renderRowContextMenu}
-                style={gridStyle}
-                columns={columns}
-                pagination
-                dataSource={dataSource}
-                defaultLimit={10}
-              />
+              
+              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>
+                <FaFileExcel></FaFileExcel>
+                <span>Export Excel</span>
+              </CButton>
+              
+              {sliders.length > 0 && (
+                <ReactDataGrid
+                  idProperty="id"
+                  style={gridStyle}
+                  columns={title}
+                  pagination
+                  dataSource={sliders}
+                  defaultLimit={10}
+                  defaultFilterValue={defaultFilterValue}
+                />
+              )}
             </CCardBody>
           </CCard>
         </CCol>

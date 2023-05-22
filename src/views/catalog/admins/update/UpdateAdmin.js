@@ -12,10 +12,8 @@ import {
   CFormFeedback,
   CButton,
 } from '@coreui/react'
-import axios from 'axios';
-import Swal from 'sweetalert2'
 import { useParams } from 'react-router-dom';
-import { GetByIdAdmins, UpdateAdmin } from 'src/api/catalog/Admins'
+import { GetByIdAdmin, UpdateAdmin } from 'src/api/catalog/AdminAPI'
 
 const AdminUpdate = () => {
 
@@ -52,7 +50,7 @@ const AdminUpdate = () => {
   }
 
   useEffect(() => {
-    GetByIdAdmins(id)
+    GetByIdAdmin(id)
     .then(response => {
       setName(response.data.name)
       setEmail(response.data.email)
@@ -110,7 +108,7 @@ const AdminUpdate = () => {
                   <option value={1}>Aktif</option>
                   <option value={-1}>Pasif</option>
                 </CFormSelect>
-                <CFormFeedback invalid>Lütfen rol seçiniz.</CFormFeedback>
+                <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>
             </CRow>
 

@@ -1,8 +1,14 @@
 import React from 'react'
+import { BASE_URL } from 'src/config/Config'
 import Swal from 'sweetalert2'
 
-export function GetSwal(title, message, icon) {
-    Swal.fire(title, message, icon)
+export function GetSwal(title, text, icon) {
+    Swal.fire({
+        title, 
+        text, 
+        icon,
+        confirmButtonText:'Tamam'
+    })
 }
 
 export function GetBasicSwal(title, message, icon) {
@@ -28,7 +34,7 @@ export function GetBasicSwalUrl(title, message, icon, url) {
     })
     .then((result) => {
         if(result.isConfirmed){
-            window.location.href=process.env.REACT_APP_BASE_URL + url
+            window.location.href=BASE_URL + url
         }
     })
 }

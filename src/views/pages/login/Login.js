@@ -1,5 +1,4 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 import {
   CButton,
   CCard,
@@ -13,11 +12,50 @@ import {
   CInputGroupText,
   CRow,
   CImage,
+  CFormFeedback,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { AdminLogin } from 'src/api/auth/LoginAPI'
+
+
+// erenbas.info@gmail.com
+// teteet
 
 const Login = () => {
+
+  const [username, setUsername] = useState("erenbas.info@gmail.com")
+
+  const [password, setPassword] = useState("teteet")
+  
+  const [validated, setValidated] = useState(false)
+
+  const body ={
+    username:username,
+    password:password
+  }
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.stopPropagation()
+      setValidated(true) 
+    }
+    else{
+      AdminLogin(body)
+      setValidated(false)
+    }
+    event.preventDefault()
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      window.location.reload();
+    }, 60000); // 10 saniye
+  
+    return () => clearInterval(interval);
+  }, [])
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -26,33 +64,47 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm
+                    className="row needs-validation my-form"
+                    id='my-form'
+                    noValidate
+                    validated={validated}
+                    onSubmit={handleSubmit}
+                  >
                     <h1>Giriş</h1>
                     <p className="text-medium-emphasis">
                       Kullanıcı adı ve şifrenizle giriş yapabilirsiniz..
                     </p>
+                    
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput placeholder="Username" value={"erenbas.info@gmail.com"} onChange={e => setUsername(e.target.value)} name='username' autoComplete="username" required />
+                      <CFormFeedback invalid>Lütfen kullanıcı bilgilerinizi kontrol ediniz.</CFormFeedback>
                     </CInputGroup>
+
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <CFormInput
                         type="password"
+                        value={"teteet"}
+                        onChange={e => setPassword(e.target.value)}
+                        name='password'
                         placeholder="Password"
                         autoComplete="current-password"
+                        required
                       />
+                      <CFormFeedback invalid>Lütfen şifrenizi kontrol ediniz.</CFormFeedback>
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
                         <CButton
                           color="dark"
                           className="px-4"
-                          href={process.env.REACT_APP_BASE_URL}
+                          type="submit" 
                         >
                           Giriş Yap
                         </CButton>

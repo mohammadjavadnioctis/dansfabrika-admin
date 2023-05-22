@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -7,31 +7,38 @@ import {
   CContainer,
   CForm,
   CFormInput,
+  CFormSelect,
   CRow,
   CFormFeedback,
   CButton,
   CFormTextarea,
 } from '@coreui/react'
-import { AddSlider } from 'src/api/catalog/SliderAPI'
+import { AddSliderImages, GetByIdSlider, UpdateSlider } from 'src/api/catalog/SliderAPI'
+import { useParams } from 'react-router-dom'; 
 
-const SliderAdd = () => {
+const SliderUpdate = () => {
 
   const [queue, setQueue] = useState(null)
   const [name, setName] = useState(null)
   const [description, setDescription] = useState(null)
+  const [status, setStatus] = useState(null)
 
   const [image, setImage] = useState(null)
+
+  const {id} = useParams()
 
   const [validated, setValidated] = useState(false)
 
   const body = {
+    id: parseInt(id),
     queue: parseInt(queue),
     name: name,
     description: description,
+    status:parseInt(status)
   }
 
   const formData = new FormData()
-   
+  formData.append("id",id)
   formData.append("image", image)
 
   const handleSubmit =(event) => {
@@ -44,17 +51,33 @@ const SliderAdd = () => {
     }
     else {
       setValidated(false)
-      AddSlider(body,formData)
+
+      UpdateSlider(body)
+
+      AddSliderImages(formData)
     }
     event.preventDefault()
-
   }
+
+  useEffect(() => {
+    GetByIdSlider(id)
+    .then(response => {
+      setQueue(response.data.queue)
+      setName(response.data.name)
+      setDescription(response.data.description)
+      setImage(response.data.image)
+      setStatus(response.data.status)
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, []);
 
   return (
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
-          <span className='text-white'>Slider Ekle</span>
+          <span className='text-white'>Slider Güncelle</span>
         </CCardHeader>
         <CCardBody>
           <CForm
@@ -66,27 +89,34 @@ const SliderAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormInput onChange={e => setQueue(e.target.value)} name='queue' type="number" label="Sıra" required />
+                <CFormInput onChange={e => setQueue(e.target.value)} value={(queue!=null) ? queue : ""} name='queue' type="number" label="Sıra" required />
                 <CFormFeedback invalid>Sıra giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormInput onChange={e => setName(e.target.value)} name='name' type="text" label="İsim" required />
+                <CFormInput onChange={e => setName(e.target.value)} value={(name!=null) ? name : ""} name='name' type="text" label="İsim" required />
                 <CFormFeedback invalid>Lütfen isim giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="12">
-                <CFormInput id='fileInput' onChange={e => setImage(e.target.files[0])} name='image' type="file" label="Resim" required />
+              <CCol sm="6">
+                <CFormInput onChange={e => setImage(e.target.files[0])} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
+              </CCol>
 
+              <CCol sm="6">
+                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""} required>
+                  <option value={0}>Seçiniz</option>
+                  <option value={1}>Aktif</option>
+                  <option value={-1}>Pasif</option>
+                </CFormSelect>
               </CCol>
             </CRow>
 
             <CRow>
               <CCol sm="12 mt-4">
-                <CFormTextarea onChange={e => setDescription(e.target.value)} name='description' type="textarea" label="Açıklama" required /> 
+                <CFormTextarea onChange={e => setDescription(e.target.value)} value={(description!=null) ? description : ""} name='description' type="textarea" label="Açıklama" required />
                 <CFormFeedback invalid>Lütfen açıklama giriniz.</CFormFeedback>
               </CCol>
             </CRow>
@@ -105,4 +135,4 @@ const SliderAdd = () => {
   )
 }
 
-export default SliderAdd
+export default SliderUpdate

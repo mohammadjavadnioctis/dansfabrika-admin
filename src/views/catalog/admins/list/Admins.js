@@ -12,13 +12,12 @@ import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
-import { DeleteAdmin, GetAllAdmins } from 'src/api/catalog/Admins'
-import { GridLinkDelete, GridLinkUpdate } from 'src/definitions/GridLink'
+import { DeleteAdmin, GetAllAdmins } from 'src/api/catalog/AdminAPI'
+import { GridLinkDelete, GridLinkUpdate, gridStyle } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
 import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel  } from "react-icons/fa";
-
-const gridStyle = { minHeight: 550, marginTop: 10 }
+import { BASE_URL } from 'src/config/Config'
 
 const defaultFilterValue = [
   { name: 'name', operator: 'startsWith', type: 'string' },
@@ -34,7 +33,7 @@ const title = [
   { name: 'status', defaultFlex: 3, header: 'Statü' },
   { name: 'actions', defaultFlex:3, header: 'Aksiyon', render: ({ data }) => (
     <div>
-      <GridLinkUpdate onClick={()=>data.id} href={process.env.REACT_APP_BASE_URL+'catalog/admins/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
+      <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/admins/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
       <GridLinkDelete onClick={()=>DeleteAdmin(data.id)} title={"Sil"}></GridLinkDelete>
     </div>
   )},
@@ -78,7 +77,7 @@ const Admins = () => {
 
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + 'catalog/admins/add'}
+                href={BASE_URL + 'catalog/admins/add'}
               >
                 <IconDatatableHead icon={cilPlus}></IconDatatableHead>
                 <SpanDatatableHead text={'Admin Ekle'}></SpanDatatableHead>

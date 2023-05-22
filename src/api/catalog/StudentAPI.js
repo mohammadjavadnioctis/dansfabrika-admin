@@ -1,19 +1,22 @@
 import ApiManager from "../ApiManager";
 import Swal from 'sweetalert2'
 import { GetBasicSwal, GetBasicSwalUrl, GetSwal } from "src/definitions/Alert";
+import axios from "axios";
 
-export async function GetAllAdmins() {
+export async function GetAllStudents(params) {
     try {
-        const data = await ApiManager('admin/', {
+        const data = await ApiManager('http://api.dansfabrika.com/v1/student', {
             method: 'GET',
+            params: params
         })
         return data
+
     } catch (error) {
         console.log(error)
     }
 }
 
-export async function DeleteAdmin(id) {
+export async function DeleteStudent(id) {
     try {
         Swal.fire({
             title: 'Silmek istediğinize emin misiniz?',
@@ -22,7 +25,7 @@ export async function DeleteAdmin(id) {
             cancelButtonText: 'İptal Et'
         }).then((result) => {
             if (result.isConfirmed) {
-                const data = ApiManager('admin/' + id, {
+                const data = ApiManager('student/' + id, {
                     method: 'DELETE',
                 })
                     .then((response) => {
@@ -40,15 +43,18 @@ export async function DeleteAdmin(id) {
     }
 }
 
-export async function AddAdmin(body) {
+export async function AddSlider(body,formData) {
     try {
-        const data = ApiManager('admin', {
+        const data = ApiManager('slider', {
             method: 'POST',
             data: body,
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Admin başarıyla eklendi', 'success', 'catalog/admins/list')
+                     
+                    formData.append("id", response.data.id)
+                    AddSliderImages(formData)
+
                 }
             })
             .catch((error) => {
@@ -59,9 +65,33 @@ export async function AddAdmin(body) {
     }
 }
 
-export async function GetByIdAdmins(id) {
+
+export async function AddSliderImages(formData) {
     try {
-        const data = await ApiManager('admin/'+id, {
+        const data = ApiManager('slider', {
+            method: 'PATCH',
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then((response) => {
+                if (response.status = 200) {
+                    GetBasicSwalUrl('Başarılı!', 'Resim başarıyla eklendi.', 'success', 'catalog/sliders/list')
+                }
+            })
+            .catch((error) => {
+                GetSwal('Başarısız!', error.response.data.message, 'error')
+            })
+
+    } catch (error) {
+        console.log(error)
+        GetSwal('Hata', error.response.data['message'], 'error')
+    }
+}
+
+
+export async function GetByIdSlider(id) {
+    try {
+        const data = await ApiManager('slider/' + id, {
             method: 'GET',
         })
         return data
@@ -70,15 +100,15 @@ export async function GetByIdAdmins(id) {
     }
 }
 
-export async function UpdateAdmin(body) {
+export async function UpdateSlider(body) {
     try {
-        const data = ApiManager('admin', {
+        const data = ApiManager('slider', {
             method: 'PUT',
             data: body,
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Admin başarıyla güncellendi', 'success', 'catalog/admins/list')
+                    GetBasicSwalUrl('Başarılı!', 'Slider başarıyla güncellendi', 'success', 'catalog/sliders/list')
                 }
             })
             .catch((error) => {
