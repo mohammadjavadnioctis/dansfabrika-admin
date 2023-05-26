@@ -1,22 +1,21 @@
 import ApiManager from "../ApiManager";
 import Swal from 'sweetalert2'
 import { GetBasicSwal, GetBasicSwalUrl, GetSwal } from "src/definitions/Alert";
-import axios from "axios";
 
-export async function GetAllStudents(params) {
+
+
+export async function GetAllTrainers() {
     try {
-        const data = await ApiManager('http://api.dansfabrika.com/v1/student', {
+        const data = await ApiManager('trainer/', {
             method: 'GET',
-            params: params
         })
         return data
-
     } catch (error) {
         console.log(error)
     }
 }
 
-export async function DeleteStudent(id) {
+export async function DeleteTrainer(id) {
     try {
         Swal.fire({
             title: 'Silmek istediğinize emin misiniz?',
@@ -25,7 +24,7 @@ export async function DeleteStudent(id) {
             cancelButtonText: 'İptal Et'
         }).then((result) => {
             if (result.isConfirmed) {
-                const data = ApiManager('student/' + id, {
+                const data = ApiManager('trainer/' + id, {
                     method: 'DELETE',
                 })
                     .then((response) => {
@@ -43,17 +42,17 @@ export async function DeleteStudent(id) {
     }
 }
 
-export async function AddStudent(body,formData) {
+export async function AddTrainer(body,formData) {
     try {
-        const data = ApiManager('student', {
+        const data = ApiManager('trainer', {
             method: 'POST',
             data: body,
         })
             .then((response) => {
                 if (response.status = 200) {
                     formData.append("id", response.data.id)
-                    AddStudentImages(formData)
-                }   
+                    AddTrainerImages(formData)
+                }
             })
             .catch((error) => {
                 GetSwal('Başarısız!', error.response.data.message[0], 'error')
@@ -63,17 +62,16 @@ export async function AddStudent(body,formData) {
     }
 }
 
-
-export async function AddStudentImages(formData) {
+export async function AddTrainerImages(formData) {
     try {
-        const data = ApiManager('student', {
+        const data = ApiManager('trainer', {
             method: 'PATCH',
             data: formData,
             headers: { "Content-Type": "multipart/form-data" },
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Resim başarıyla eklendi.', 'success', 'catalog/students/list')
+                    GetBasicSwalUrl('Başarılı!', 'Resim başarıyla eklendi.', 'success', 'catalog/trainers/list')
                 }
             })
             .catch((error) => {
@@ -86,10 +84,9 @@ export async function AddStudentImages(formData) {
     }
 }
 
-
-export async function GetByIdStudent(id) {
+export async function GetByIdTrainer(id) {
     try {
-        const data = await ApiManager('student/' + id, {
+        const data = await ApiManager('trainer/'+id, {
             method: 'GET',
         })
         return data
@@ -98,15 +95,15 @@ export async function GetByIdStudent(id) {
     }
 }
 
-export async function UpdateStudent(body) {
+export async function UpdateTrainer(body) {
     try {
-        const data = ApiManager('student', {
+        const data = ApiManager('trainer', {
             method: 'PUT',
             data: body,
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Öğrenci başarıyla güncellendi', 'success', 'catalog/students/list')
+                    GetBasicSwalUrl('Başarılı!', 'Eğitmen başarıyla güncellendi', 'success', 'catalog/trainers/list')
                 }
             })
             .catch((error) => {

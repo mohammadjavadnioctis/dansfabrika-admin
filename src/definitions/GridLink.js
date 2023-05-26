@@ -9,4 +9,4 @@ export const GridLinkDelete = ({ onClick, title }) => <a style={gridDeleteLinkSt
 
 export const gridStyle = { minHeight: 550, minWidth: 400, marginTop: 10 }
 
-export const ImageFormatter = ({ src }) => <img src={'https://api.dansfabrika.com/images/'+src} width={48} alt="Image" /> 
+export const ImageFormatter = ({ src }) => <img src={'https://api.dansfabrika.com/images/'+src} width={40} height={40} alt="Image" /> 

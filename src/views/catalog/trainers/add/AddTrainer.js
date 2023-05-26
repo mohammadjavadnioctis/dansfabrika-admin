@@ -13,88 +13,113 @@ import {
   CButton,
   CFormTextarea,
 } from '@coreui/react'
+import { AddTrainer } from 'src/api/catalog/TrainerAPI'
 
-const AddTrainer = () => {
+
+const TrainerAdd = () => {
+  
+  const [name, setName] = useState(null)
+  const [birthday, setBirthday] = useState(null)
+  const [email, setEmail] = useState(null)
+  const [phone, setPhone] = useState(null)
+  const [password, setPassword] = useState(null)
+  const [description, setDescription] = useState(null)
+
+  const [image, setImage] = useState(null)
+
   const [validated, setValidated] = useState(false)
+
+  const body = {
+    name: name,
+    email: email,
+    phone: phone,
+    password: password,
+    birthday: birthday,
+    description: description,
+  }
+
+  const formData = new FormData()
+   
+  formData.append("image", image)
+ 
   const handleSubmit = (event) => {
     const form = event.currentTarget
     if (form.checkValidity() === false) {
-      event.preventDefault()
       event.stopPropagation()
+      setValidated(true)
     }
-    setValidated(true)
+    else{
+      setValidated(false)
+      AddTrainer(body,formData)  // Ekleme fonksiyonu
+    }
+    event.preventDefault()
   }
+
   return (
     <CContainer>
       <CCard>
-        <CCardHeader className="bg-dark">
-          <strong>Eğitmen Ekle</strong>
+      <CCardHeader className="bg-dark">
+          <span className='text-white'>Eğitmen Ekle</span>
         </CCardHeader>
         <CCardBody>
-          <CForm
-            className="row needs-validation"
+        <CForm
+            className="row needs-validation my-form"
+            id='my-form'
             noValidate
             validated={validated}
             onSubmit={handleSubmit}
           >
             <CRow>
               <CCol sm="6">
-                <CFormInput type="text" label="İsim Ve Soyisim" required />
+                <CFormInput onChange={e => setName(e.target.value)} name='name' type="text" label="İsim Ve Soyisim" required />
                 <CFormFeedback invalid>Lütfen isim ve soyisim giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="date" label="Doğum Tarihi" required />
+                <CFormInput onChange={e => setBirthday(e.target.value)} name='birthday' type="date" label="Doğum Tarihi" required />
                 <CFormFeedback invalid>Lütfen doğum tarihini giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="email" label="Email" required />
+                <CFormInput onChange={e => setEmail(e.target.value)} name='email' type="email" label="Email" required />
                 <CFormFeedback invalid>Lütfen emailinizi giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="phone" label="Telefon Numarası" required />
+                <CFormInput onChange={e => setPhone(e.target.value)} name='phone' type="phone" label="Telefon Numarası" required />
                 <CFormFeedback invalid>Lütfen telefon numarasını giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="password" label="Şifre" required />
+                <CFormInput onChange={e => setPassword(e.target.value)} name='password' type="password" label="Şifre" required />
                 <CFormFeedback invalid>Lütfen şifre giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="file" label="Resim" required />
-                <CFormFeedback invalid>Lütfen resim yükleyiniz.</CFormFeedback>
+                <CFormInput id='fileInput' onChange={e => setImage(e.target.files[0])} name='image' type="file" label="Resim" required />
+                <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="6">
-                <CFormSelect label="Statü:">
-                  <option>Seçiniz</option>
-                  <option>Aktif</option>
-                  <option>Pasif</option>
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
-              </CCol>
-              <CCol sm="6">
-                <CFormTextarea label="Açıklama"></CFormTextarea>
+              <CCol sm="12">
+                <CFormTextarea onChange={e => setDescription(e.target.value)} name='description' label="Açıklama"></CFormTextarea>
                 <CFormFeedback invalid>Lütfen açıklama giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3">
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:'100%'}}>
                   Kaydet
                 </CButton>
               </CCol>
             </CRow>
+
           </CForm>
         </CCardBody>
       </CCard>
@@ -102,4 +127,4 @@ const AddTrainer = () => {
   )
 }
 
-export default AddTrainer
+export default TrainerAdd

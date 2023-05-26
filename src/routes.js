@@ -20,6 +20,7 @@ const AddPackage = React.lazy(() => import('./views/catalog/packages/add/AddPack
 // Calendars
 const Calendars = React.lazy(() => import('./views/catalog/calendars/list/Calendars'))
 const AddCalendar = React.lazy(() => import('./views/catalog/calendars/add/AddCalendar'))
+const UpdateCalendar = React.lazy(() => import('./views/catalog/calendars/update/UpdateCalendar'))
 
 // Sliders
 const Sliders = React.lazy(() => import('./views/catalog/sliders/list/Sliders'))
@@ -37,6 +38,7 @@ const AddDanceLevel = React.lazy(() => import('./views/catalog/danceLevels/add/A
 // Trainers
 const Trainers = React.lazy(() => import('./views/catalog/trainers/list/Trainers'))
 const AddTrainer = React.lazy(() => import('./views/catalog/trainers/add/AddTrainer'))
+const UpdateTrainer = React.lazy(() => import('./views/catalog/trainers/update/UpdateTrainer'))
 
 // Courses
 const Courses = React.lazy(() => import('./views/catalog/courses/list/Courses'))
@@ -65,6 +67,7 @@ const AddAttendances = React.lazy(() => import('./views/catalog/attendances/add/
 // Students
 const Students = React.lazy(() => import('./views/catalog/students/list/Students'))
 const AddStudents = React.lazy(() => import('./views/catalog/students/add/AddStudent'))
+const UpdateStudent = React.lazy(() => import('./views/catalog/students/update/UpdateStudent'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -79,6 +82,7 @@ const routes = [
   { path: '/catalog/packages/add', name: 'Paket Ekle', element: AddPackage },
   { path: '/catalog/calendars/list', name: 'Takvim', element: Calendars },
   { path: '/catalog/calendars/add', name: 'Takvim Ekle', element: AddCalendar },
+  { path: '/catalog/calendars/update/:id', name: 'Takvim Güncelle', element: UpdateCalendar },
   { path: '/catalog/sliders/list', name: 'Sliderlar', element: Sliders },
   { path: '/catalog/sliders/add', name: 'Slider Ekle', element: AddSlider },
   { path: '/catalog/sliders/update/:id', name: 'Slider Güncelle', element: UpdateSlider },
@@ -88,6 +92,7 @@ const routes = [
   { path: '/catalog/danceLevels/add', name: 'Dans Leveli Ekle', element: AddDanceLevel },
   { path: '/catalog/trainers/list', name: 'Eğitmenler', element: Trainers },
   { path: '/catalog/trainers/add', name: 'Eğitmen Ekle', element: AddTrainer },
+  { path: '/catalog/trainers/update/:id', name: 'Eğitmen Güncelle', element: UpdateTrainer },
   { path: '/catalog/courses/list', name: 'Kurslar', element: Courses },
   { path: '/catalog/courses/add', name: 'Kurs Ekle', element: AddCours },
   { path: '/catalog/sales/list', name: 'Satışlar', element: Sales },
@@ -100,6 +105,7 @@ const routes = [
   { path: '/catalog/attendances/add', name: 'Yoklama Ekle', element: AddAttendances },
   { path: '/catalog/students/list', name: 'Öğrenciler', element: Students },
   { path: '/catalog/students/add', name: 'Öğrenci Ekle', element: AddStudents },
+  { path: '/catalog/students/update/:id', name: 'Öğrenci Güncelle', element: UpdateStudent },
 ]
 
 export default routes

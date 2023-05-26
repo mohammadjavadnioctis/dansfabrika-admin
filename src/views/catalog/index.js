@@ -2,6 +2,7 @@ import AdminUpdate from './admins/update/UpdateAdmin'
 import AdminAdd from './admins/add/AddAdmin'
 import Admins from './admins/list/Admins'
 
+import CalendarUpdate from './calendars/update/UpdateCalendar'
 import CalendarAdd from './calendars/add/AddCalendar'
 import Calendars from './calendars/list/Calendars'
 
@@ -21,7 +22,8 @@ import SliderUpdate from './sliders/update/UpdateSlider'
 import SliderAdd from './sliders/add/AddSlider'
 import Sliders from './sliders/list/Sliders'
 
-import AddTrainer from './trainers/add/AddTrainer'
+import TrainerUpdate from './trainers/update/UpdateTrainer' 
+import TrainerAdd from './trainers/add/AddTrainer'
 import Trainers from './trainers/list/Trainers'
 
 import CourseAdd from './courses/add/AddCourse'
@@ -38,6 +40,7 @@ import AttendanceAdd from './attendances/add/AddAttendance'
 
 import Students from './students/list/Students'
 import StudentAdd from './students/add/AddStudent'
+import StudentUpdate from './students/update/UpdateStudent'
 
 
 export {
@@ -50,6 +53,7 @@ export {
   PackagesAdd,
   Calendars,
   CalendarAdd,
+  CalendarUpdate,
   Sliders,
   SliderAdd,
   SliderUpdate,
@@ -58,7 +62,8 @@ export {
   DanceLevels,
   DanceLevelAdd,
   Trainers,
-  AddTrainer,
+  TrainerAdd,
+  TrainerUpdate,
   Courses,
   CourseAdd,
   Sales,
@@ -68,5 +73,6 @@ export {
   Attendances,
   AttendanceAdd,
   Students,
-  StudentAdd
+  StudentAdd,
+  StudentUpdate
 }

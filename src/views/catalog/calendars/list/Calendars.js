@@ -8,66 +8,101 @@ import {
   CFormLabel,
   CRow,
 } from '@coreui/react'
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/calendar/CalendarData'
-import CIcon from '@coreui/icons-react'
-import { cilCalendar, cilUserPlus } from '@coreui/icons'
+import { cilPlus } from '@coreui/icons'
+import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
+import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
+import { downloadExcel } from "react-export-table-to-excel"
+import { FaFileExcel  } from "react-icons/fa";
+import { DeleteCalendar, GetAllCalendars } from 'src/api/catalog/CalendarAPI'
+import { BASE_URL } from 'src/config/Config'
 
-const gridStyle = { minHeight: 550, marginTop: 10 }
+const defaultFilterValue = [
+  { name: 'id', operator: 'startsWith', type: 'string' },
+  { name: 'name', operator: 'startsWith', type: 'string' },
+]
 
-const loadData = ({ skip, limit, sortInfo }) => {
-  const url =
-    dataSource + '?skip=' + skip + '&limit=' + limit + '&sortInfo=' + JSON.stringify(sortInfo)
+const title = [
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
+  { name: 'queue', defaultFlex: 2, header: 'Sıra' },
+  { name: 'name', defaultFlex: 3, header: 'Ad' },
+  { name: 'image', defaultFlex: 3, header: 'Resim', render: ({ data }) => (
+    <ImageFormatter src={data.image}></ImageFormatter>
+  )},
+  { name: 'status', defaultFlex: 3, header: 'Statü' },
+  { name: 'actions', defaultFlex:3, header: 'Aksiyon', render: ({ data }) => (
+    <div>
+      <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/calendars/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
+      <GridLinkDelete onClick={()=>DeleteCalendar(data.id)} title={"Sil"}></GridLinkDelete>
+    </div>
+  )},
+]
 
-  return fetch(url).then((response) => {
-    const totalCount = response.headers.get('X-Total-Count')
-    return response.json().then((data) => {
-      return Promise.resolve({ data, count: parseInt(totalCount) })
-    })
-  })
-}
 
 const Calendars = () => {
-  //const dataSource = useCallback(loadData, []);
+  // Export Excel
+  const exportHeader = ["id", "queue", "name", "image", "status"];
 
-  const renderRowContextMenu = (menuProps, { rowProps }) => {
-    menuProps.autoDismiss = true
-    menuProps.items = [
-      {
-        label: 'Row ' + rowProps.rowIndex,
+  function HandleDownloadExcel() {
+    downloadExcel({
+      fileName: "Takvimler",
+      sheet: "react-export-table-to-excel",
+      tablePayload: {
+        header: exportHeader,
+        body: calendars,
       },
-    ]
+    });
   }
+
+  const [calendars, setCalendars] = useState([]);
+  
+  useEffect(() => {
+    GetAllCalendars()
+    .then((response) => {
+      setCalendars(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }, []);
 
   return (
     <CContainer>
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader className="bg-dark">
+          <CCardHeader className="bg-dark">
               <CFormLabel className="mt-1 text-light">Takvimler</CFormLabel>
+
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + 'catalog/calendars/add'}
+                href={BASE_URL + 'catalog/calendars/add'}
               >
-                <CIcon icon={cilCalendar} className="mx-2" />
-                Takvim Ekle
+                <IconDatatableHead icon={cilPlus}></IconDatatableHead>
+                <SpanDatatableHead text={'Takvim Ekle'}></SpanDatatableHead>
               </CButton>
             </CCardHeader>
 
             <CCardBody>
-              <ReactDataGrid
-                idProperty="id"
-                defaultFilterValue={defaultFilterValue}
-                renderRowContextMenu={renderRowContextMenu}
-                style={gridStyle}
-                columns={columns}
-                pagination
-                dataSource={dataSource}
-                defaultLimit={10}
-              />
+              
+              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>
+                <FaFileExcel></FaFileExcel>
+                <span>Export Excel</span>
+              </CButton>
+              
+              {calendars.length > 0 && (
+                <ReactDataGrid
+                  idProperty="id"
+                  style={gridStyle}
+                  columns={title}
+                  pagination
+                  dataSource={calendars}
+                  defaultLimit={10}
+                  defaultFilterValue={defaultFilterValue}
+                />
+              )}
             </CCardBody>
           </CCard>
         </CCol>

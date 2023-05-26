@@ -25,8 +25,8 @@ const defaultFilterValue = [
 
 const title = [
   { name: 'id', type: 'number', header: 'ID', defaultVisible: true },
-  { name: 'name',  header: 'Ad' },
-  { name: 'identity',header: 'Otomatik Artan' },
+  { name: 'name', header: 'Ad' },
+  { name: 'identity', header: 'Otomatik Artan' },
   { name: 'email',  header: 'Email' },
   { name: 'phone', header: 'Telefon' },
   { name: 'image', header: 'Resim', render: ({ data }) => (
@@ -50,7 +50,7 @@ const title = [
 ]
 
 const Students = () => {
-  const exportHeader = ["id", "queue", "name", "description", "image", "status"];
+  const exportHeader = ["id", "name", "identity", "email", "phone", "image", "country", "gender", "birthday", "credit", "score", "referance", "referancedId", "code", "status"];
   const [students, setStudents] = useState([]);
 
   function HandleDownloadExcel() {
@@ -115,6 +115,7 @@ const Students = () => {
                 columns={title}
                 pagination
                 defaultLimit={10}
+                pageSizes={[10, 25, 50, 100, 1000000]}
                 dataSource={dataSource}
                 defaultFilterValue={defaultFilterValue}
               />
