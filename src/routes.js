@@ -47,6 +47,7 @@ const AddCours = React.lazy(() => import('./views/catalog/courses/add/AddCourse'
 // Sales
 const Sales = React.lazy(() => import('./views/catalog/sales/list/Sales'))
 const AddSale = React.lazy(() => import('./views/catalog/sales/add/AddSale'))
+const UpdateSale = React.lazy(() => import('./views/catalog/sales/update/UpdateSale'))
 
 // CourseStudents
 const CourseStudents = React.lazy(() =>
@@ -59,6 +60,7 @@ const AddCourseStudent = React.lazy(() =>
 // Lessons
 const Lessons = React.lazy(() => import('./views/catalog/lessons/list/Lessons'))
 const AddLesson = React.lazy(() => import('./views/catalog/lessons/add/AddLesson'))
+const UpdateLesson = React.lazy(() => import('./views/catalog/lessons/update/UpdateLesson'))
 
 // Attendances
 const Attendances = React.lazy(() => import('./views/catalog/attendances/list/Attendances'))
@@ -97,10 +99,12 @@ const routes = [
   { path: '/catalog/courses/add', name: 'Kurs Ekle', element: AddCours },
   { path: '/catalog/sales/list', name: 'Satışlar', element: Sales },
   { path: '/catalog/sales/add', name: 'Satış Ekle', element: AddSale },
+  { path: '/catalog/sales/update/:id', name: 'Satış Güncelle', element: UpdateSale },
   { path: '/catalog/courseStudents/list', name: 'Öğrenci Kursları', element: CourseStudents },
   { path: '/catalog/courseStudents/add', name: 'Öğrenci Kursu Ekle', element: AddCourseStudent },
   { path: '/catalog/lessons/list', name: 'Dersler', element: Lessons },
   { path: '/catalog/lessons/add', name: 'Ders Ekle', element: AddLesson },
+  { path: '/catalog/lessons/update/:id', name: 'Ders Güncelle', element: UpdateLesson },
   { path: '/catalog/attendances/list', name: 'Yoklama', element: Attendances },
   { path: '/catalog/attendances/add', name: 'Yoklama Ekle', element: AddAttendances },
   { path: '/catalog/students/list', name: 'Öğrenciler', element: Students },

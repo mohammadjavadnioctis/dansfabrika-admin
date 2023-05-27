@@ -8,66 +8,112 @@ import {
   CFormLabel,
   CRow,
 } from '@coreui/react'
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/sale/SaleData'
-import CIcon from '@coreui/icons-react'
-import { cilUserPlus } from '@coreui/icons'
+import { cilPlus } from '@coreui/icons'
+import { GridLinkDelete, GridLinkUpdate, gridStyle } from 'src/definitions/GridLink'
+import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
+import { downloadExcel } from "react-export-table-to-excel"
+import { FaFileExcel  } from "react-icons/fa";
+import { BASE_URL } from 'src/config/Config'
+import { DeleteSale, GetAllSales } from 'src/api/catalog/SaleAPI'
 
-const gridStyle = { minHeight: 550, marginTop: 10 }
+const defaultFilterValue = [
+  { name: 'id', operator: 'startsWith', type: 'string' },
+  { name: 'studentId', operator: 'startsWith', type: 'string' },
+]
 
-const loadData = ({ skip, limit, sortInfo }) => {
-  const url =
-    dataSource + '?skip=' + skip + '&limit=' + limit + '&sortInfo=' + JSON.stringify(sortInfo)
-
-  return fetch(url).then((response) => {
-    const totalCount = response.headers.get('X-Total-Count')
-    return response.json().then((data) => {
-      return Promise.resolve({ data, count: parseInt(totalCount) })
-    })
-  })
-}
+const title = [
+  { name: 'id', type: 'number', maxWidth: 70, header: 'ID', defaultVisible: true },
+  { name: 'studentId', header: 'Öğrenci Id' },
+  { name: 'credit', header: 'Kredi' },
+  { name: 'price', header: 'Fiyat' },
+  { name: 'type', header: 'Tip' },
+  { name: 'sellBy', header: 'Satış Tarihi' },
+  { name: 'name', header: 'Öğrenci Adı Soyadı' },
+  { name: 'email', header: 'Öğrenci Email' },
+  { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+    <div>
+      <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/sales/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
+      <GridLinkDelete onClick={()=>DeleteSale(data.id)} title={"Sil"}></GridLinkDelete>
+    </div>
+  )},
+]
 
 const Sales = () => {
-  //const dataSource = useCallback(loadData, []);
 
-  const renderRowContextMenu = (menuProps, { rowProps }) => {
-    menuProps.autoDismiss = true
-    menuProps.items = [
-      {
-        label: 'Row ' + rowProps.rowIndex,
+  // Export Excel
+  const exportHeader = ["id", "name", "email", "role", "status"];
+
+  function HandleDownloadExcel() {
+    downloadExcel({
+      fileName: "Adminler",
+      sheet: "react-export-table-to-excel",
+      tablePayload: {
+        header: exportHeader,
+        body: sales,
       },
-    ]
+    });
   }
+
+  const [sales, setSales] = useState([])
+  
+  useEffect(() => {
+    GetAllSales()
+    .then((response) => {
+      const sale = response.data.map((item) => ({
+        id:item.id,
+        studentId: item.studentId,
+        credit: item.credit,
+        price: item.price,
+        type: item.type,
+        sellBy: item.sellBy,
+        name: item.student.name,
+        email: item.student.email
+      }))
+      setSales(sale)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }, []);
 
   return (
     <CContainer>
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader className="bg-dark">
+          <CCardHeader className="bg-dark">
               <CFormLabel className="mt-1 text-light">Satışlar</CFormLabel>
+
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + 'catalog/sales/add'}
+                href={BASE_URL + 'catalog/sales/add'}
               >
-                <CIcon icon={cilUserPlus} className="mx-2" />
-                Satış Ekle
+                <IconDatatableHead icon={cilPlus}></IconDatatableHead>
+                <SpanDatatableHead text={'Satış Ekle'}></SpanDatatableHead>
               </CButton>
             </CCardHeader>
 
             <CCardBody>
-              <ReactDataGrid
-                idProperty="id"
-                defaultFilterValue={defaultFilterValue}
-                renderRowContextMenu={renderRowContextMenu}
-                style={gridStyle}
-                columns={columns}
-                pagination
-                dataSource={dataSource}
-                defaultLimit={10}
-              />
+              
+              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>
+                <FaFileExcel></FaFileExcel>
+                <span>Export Excel</span>
+              </CButton>
+              
+              {sales.length > 0 && (
+                <ReactDataGrid
+                  idProperty="id"
+                  style={gridStyle}
+                  columns={title}
+                  pagination
+                  dataSource={sales}
+                  defaultLimit={10}
+                  defaultFilterValue={defaultFilterValue}
+                />
+              )}
             </CCardBody>
           </CCard>
         </CCol>

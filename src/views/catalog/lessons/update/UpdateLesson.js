@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -12,10 +12,10 @@ import {
   CFormFeedback,
   CButton,
 } from '@coreui/react'
-import { AddLesson } from 'src/api/catalog/LessonAPI'
+import { GetByIdLesson, UpdateLesson } from 'src/api/catalog/LessonAPI'
+import { useParams } from 'react-router-dom'
 
-
-const LessonAdd = () => {
+const LessonUpdate = () => {
   
   const [courseId, setCourseId] = useState(null)
   const [day, setDay] = useState(null)
@@ -23,9 +23,12 @@ const LessonAdd = () => {
   const [endTime, setEndTime] = useState(null)
   const [status, setStatus] = useState(null)
 
+  const {id} = useParams()
+
   const [validated, setValidated] = useState(false)
 
   const body = {
+    id: parseInt(id),
     courseId: parseInt(courseId),
     day: parseInt(day),
     startTime: startTime,
@@ -41,16 +44,30 @@ const LessonAdd = () => {
     }
     else{
       setValidated(false)
-      AddLesson(body)  // Ekleme fonksiyonu
+      UpdateLesson(body)  // Ekleme fonksiyonu
     }
     event.preventDefault()
   }
+
+  useEffect(() => {
+    GetByIdLesson(id)
+    .then(response => {
+      setCourseId(response.data.courseId)
+      setDay(response.data.day)
+      setStartTime(response.data.startTime)
+      setEndTime(response.data.endTime)
+      setStatus(response.data.status)
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, []);
 
   return (
     <CContainer>
       <CCard>
       <CCardHeader className="bg-dark">
-          <span className='text-white'>Ders Ekle</span>
+          <span className='text-white'>Ders Güncelle</span>
         </CCardHeader>
         <CCardBody>
           <CForm
@@ -62,7 +79,7 @@ const LessonAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect onChange={e => setCourseId(e.target.value)} name='courseId' label="Kurs:" required>
+                <CFormSelect onChange={e => setCourseId(e.target.value)} value={(courseId!=null) ? courseId : ""} name='courseId' label="Kurs:" required>
                   <option value={""}>Seçiniz</option>
                   <option value={1}>Admin</option>
                   <option value={2}>Kullanıcı</option>
@@ -71,24 +88,24 @@ const LessonAdd = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="number" onChange={e => setDay(e.target.value)} name='day' label="Gün" required />
+                <CFormInput type="number" onChange={e => setDay(e.target.value)} value={(day!=null) ? day : ""} name='day' label="Gün" required />
                 <CFormFeedback invalid>Lütfen gün giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="4">
-                <CFormInput type="time" onChange={e => setStartTime(e.target.value)} name='start_time' label="Başlangıç Saati" required />
+                <CFormInput type="time" onChange={e => setStartTime(e.target.value)} value={(startTime!=null) ? startTime : ""} name='start_time' label="Başlangıç Saati" required />
                 <CFormFeedback invalid>Lütfen başlangıç tarihi giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="4">
-                <CFormInput type="time" onChange={e => setEndTime(e.target.value)} name='end_time' label="Bitiş Saati" required />
+                <CFormInput type="time" onChange={e => setEndTime(e.target.value)} value={(endTime!=null) ? endTime : ""} name='end_time' label="Bitiş Saati" required />
                 <CFormFeedback invalid>Lütfen bitiş tarihi giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="4">
-                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} name='status'>
+                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""} name='status'>
                   <option value={0}>Seçiniz</option>
                   <option value={1}>Admin</option>
                   <option value={2}>Kullanıcı</option>
@@ -111,4 +128,4 @@ const LessonAdd = () => {
   )
 }
 
-export default LessonAdd
+export default LessonUpdate

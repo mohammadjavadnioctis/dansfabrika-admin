@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -12,9 +12,10 @@ import {
   CFormFeedback,
   CButton,
 } from '@coreui/react'
-import { AddSale } from 'src/api/catalog/SaleAPI'
+import { UpdateSale, GetByIdSale } from 'src/api/catalog/SaleAPI'
+import { useParams } from 'react-router-dom'
 
-const SaleAdd = () => {
+const SaleUpdate = () => {
   
   const [studentId, setStudentId] = useState(null)
   const [credit, setCredit] = useState(null)
@@ -22,9 +23,12 @@ const SaleAdd = () => {
   const [type, setType] = useState(null)
   const [sellBy, setSellBy] = useState(null)
 
+  const {id} = useParams()
+
   const [validated, setValidated] = useState(false)
 
   const body = {
+    id: parseInt(id),
     studentId: parseInt(studentId),
     credit: parseInt(credit),
     price: parseFloat(price),
@@ -40,16 +44,30 @@ const SaleAdd = () => {
     }
     else{
       setValidated(false)
-      AddSale(body)  // Ekleme fonksiyonu
+      UpdateSale(body)  
     }
     event.preventDefault()
   }
+
+  useEffect(() => {
+    GetByIdSale(id)
+    .then(response => {
+      setStudentId(response.data.studentId)
+      setCredit(response.data.credit)
+      setPrice(response.data.price)
+      setType(response.data.type)
+      setSellBy(response.data.sellBy)
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }, []);
 
   return (
     <CContainer>
       <CCard>
       <CCardHeader className="bg-dark">
-          <span className='text-white'>Satış Ekle</span>
+          <span className='text-white'>Satış Güncelle</span>
         </CCardHeader>
         <CCardBody>
         <CForm
@@ -61,7 +79,7 @@ const SaleAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect label="Öğrenci Seçiniz" onChange={e => setStudentId(e.target.value)} name='student_id' required>
+                <CFormSelect label="Öğrenci Seçiniz" onChange={e => setStudentId(e.target.value)} value={(studentId!=null) ? studentId : ""} name='student_id' required>
                   <option value={0}>Seçiniz</option>
                   <option value={2}>Admin</option>
                   <option value={4}>Kullanıcı</option>
@@ -70,19 +88,19 @@ const SaleAdd = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="number" label="Kredi" onChange={e => setCredit(e.target.value)} name='credit' required />
+                <CFormInput type="number" label="Kredi" onChange={e => setCredit(e.target.value)} value={(credit!=null) ? credit : ""} name='credit' required />
                 <CFormFeedback invalid>Lütfen kredi giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="number" onChange={e => setPrice(e.target.value)} name='price' label="Fiyat" required />
+                <CFormInput type="number" onChange={e => setPrice(e.target.value)} value={(price!=null) ? price : ""} name='price' label="Fiyat" required />
                 <CFormFeedback invalid>Lütfen fiyat giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect label="Tip:" onChange={e => setType(e.target.value)} name='type' required>
+                <CFormSelect label="Tip:" onChange={e => setType(e.target.value)} value={(type!=null) ? type : ""} name='type' required>
                   <option value={0}>Seçiniz</option>
                   <option value={1}>Admin</option>
                   <option value={2}>Kullanıcı</option>
@@ -93,7 +111,7 @@ const SaleAdd = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="date" onChange={e => setSellBy(e.target.value)} name='sell_by' label="Satış Tarihi" required />
+                <CFormInput type="date" onChange={e => setSellBy(e.target.value)} value={(sellBy!=null) ? sellBy : ""} name='sell_by' label="Satış Tarihi" required />
                 <CFormFeedback invalid>Lütfen tarih giriniz.</CFormFeedback>
               </CCol>
             </CRow>
@@ -112,4 +130,4 @@ const SaleAdd = () => {
   )
 }
 
-export default SaleAdd
+export default SaleUpdate
