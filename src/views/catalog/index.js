@@ -29,6 +29,10 @@ import Trainers from './trainers/list/Trainers'
 import CourseAdd from './courses/add/AddCourse'
 import Courses from './courses/list/Courses'
 
+import CourseStudentUpdate from './courseStudents/update/UpdateCourseStudent'
+import CourseStudentAdd from './courseStudents/add/AddCourseStudent'
+import CourseStudents from './courseStudents/list/CourseStudents'
+
 import Sales from './sales/list/Sales'
 import SaleAdd from './sales/add/AddSale'
 import SaleUpdate from './sales/update/UpdateSale'
@@ -68,6 +72,9 @@ export {
   TrainerUpdate,
   Courses,
   CourseAdd,
+  CourseStudents,
+  CourseStudentAdd,
+  CourseStudentUpdate,
   Sales,
   SaleAdd,
   SaleUpdate,

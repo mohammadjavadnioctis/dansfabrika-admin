@@ -56,6 +56,9 @@ const CourseStudents = React.lazy(() =>
 const AddCourseStudent = React.lazy(() =>
   import('./views/catalog/courseStudents/add/AddCourseStudent'),
 )
+const UpdateCourseStudent = React.lazy(() =>
+  import('./views/catalog/courseStudents/update/UpdateCourseStudent'),
+)
 
 // Lessons
 const Lessons = React.lazy(() => import('./views/catalog/lessons/list/Lessons'))
@@ -102,6 +105,7 @@ const routes = [
   { path: '/catalog/sales/update/:id', name: 'Satış Güncelle', element: UpdateSale },
   { path: '/catalog/courseStudents/list', name: 'Öğrenci Kursları', element: CourseStudents },
   { path: '/catalog/courseStudents/add', name: 'Öğrenci Kursu Ekle', element: AddCourseStudent },
+  { path: '/catalog/courseStudents/update/:id', name: 'Öğrenci Kursu Güncelle', element: UpdateCourseStudent },
   { path: '/catalog/lessons/list', name: 'Dersler', element: Lessons },
   { path: '/catalog/lessons/add', name: 'Ders Ekle', element: AddLesson },
   { path: '/catalog/lessons/update/:id', name: 'Ders Güncelle', element: UpdateLesson },

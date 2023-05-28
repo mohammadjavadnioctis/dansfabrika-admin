@@ -8,69 +8,103 @@ import {
   CFormLabel,
   CRow,
 } from '@coreui/react'
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import {
-  columns,
-  dataSource,
-  defaultFilterValue,
-} from 'src/dami_data/packages/PackageData'
-import CIcon from '@coreui/icons-react'
-import { cilInbox } from '@coreui/icons'
+import { cilPlus } from '@coreui/icons'
+import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
+import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
+import { downloadExcel } from "react-export-table-to-excel"
+import { FaFileExcel  } from "react-icons/fa";
+import { DeleteSlider, GetAllSliders } from 'src/api/catalog/SliderAPI'
+import { BASE_URL } from 'src/config/Config'
+import { DeletePackage, GetAllPackages } from 'src/api/catalog/PackageAPI'
 
-const gridStyle = { minHeight: 550, marginTop: 10 }
+const defaultFilterValue = [
+  { name: 'id', operator: 'startsWith', type: 'string' },
+  { name: 'name', operator: 'startsWith', type: 'string' },
+  { name: 'description', operator: 'startsWith', type: 'string' },
+]
 
-const loadData = ({ skip, limit, sortInfo }) => {
-  const url =
-    dataSource + '?skip=' + skip + '&limit=' + limit + '&sortInfo=' + JSON.stringify(sortInfo)
-
-  return fetch(url).then((response) => {
-    const totalCount = response.headers.get('X-Total-Count')
-    return response.json().then((data) => {
-      return Promise.resolve({ data, count: parseInt(totalCount) })
-    })
-  })
-}
+const title = [
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
+  { name: 'name', defaultFlex: 2, header: 'Ad' },
+  { name: 'description', defaultFlex: 3, header: 'Açıklama' },
+  { name: 'image', defaultFlex: 3, header: 'Resim', render: ({ data }) => (
+    <ImageFormatter src={data.image}></ImageFormatter>
+  )},
+  { name: 'status', defaultFlex: 2, header: 'Statü' },
+  { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+    <div>
+      <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/packages/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
+      <GridLinkDelete onClick={()=>DeletePackage(data.id)} title={"Sil"}></GridLinkDelete>
+    </div>
+  )},
+]
 
 const Packages = () => {
-  //const dataSource = useCallback(loadData, []);
+  
+  // Export Excel
+  const exportHeader = ["id", "name", "description", "price", "status"];
 
-  const renderRowContextMenu = (menuProps, { rowProps }) => {
-    menuProps.autoDismiss = true
-    menuProps.items = [
-      {
-        label: 'Row ' + rowProps.rowIndex,
+  function HandleDownloadExcel() {
+    downloadExcel({
+      fileName: "Paketler",
+      sheet: "react-export-table-to-excel",
+      tablePayload: {
+        header: exportHeader,
+        body: packages,
       },
-    ]
+    });
   }
+
+  const [packages, setPackages] = useState([]);
+  
+  useEffect(() => {
+    GetAllPackages()
+    .then((response) => {
+      setPackages(response.data)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }, []);
+
   return (
     <CContainer>
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader className="bg-dark">
+          <CCardHeader className="bg-dark">
               <CFormLabel className="mt-1 text-light">Paketler</CFormLabel>
+
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + 'catalog/packages/add'}
+                href={BASE_URL + 'catalog/packages/add'}
               >
-                <CIcon icon={cilInbox} className="mx-2" />
-                Paket Ekle
+                <IconDatatableHead icon={cilPlus}></IconDatatableHead>
+                <SpanDatatableHead text={'Paket Ekle'}></SpanDatatableHead>
               </CButton>
             </CCardHeader>
 
             <CCardBody>
-              <ReactDataGrid
-                idProperty="id"
-                defaultFilterValue={defaultFilterValue}
-                renderRowContextMenu={renderRowContextMenu}
-                style={gridStyle}
-                columns={columns}
-                pagination
-                dataSource={dataSource}
-                defaultLimit={10}
-              />
+              
+              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>
+                <FaFileExcel></FaFileExcel>
+                <span>Export Excel</span>
+              </CButton>
+              
+              {packages.length > 0 && (
+                <ReactDataGrid
+                  idProperty="id"
+                  style={gridStyle}
+                  columns={title}
+                  pagination
+                  dataSource={packages}
+                  defaultLimit={10}
+                  defaultFilterValue={defaultFilterValue}
+                />
+              )}
             </CCardBody>
           </CCard>
         </CCol>
