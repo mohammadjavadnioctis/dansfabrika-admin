@@ -50,7 +50,7 @@ export async function AddPackage(body) {
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Admin başarıyla eklendi', 'success', 'catalog/packages/list')
+                    GetBasicSwalUrl('Başarılı!', 'Paket başarıyla eklendi', 'success', 'catalog/packages/list')
                 }
             })
             .catch((error) => {
@@ -80,7 +80,7 @@ export async function UpdatePackage(body) {
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Admin başarıyla güncellendi', 'success', 'catalog/packages/list')
+                    GetBasicSwalUrl('Başarılı!', 'Paket başarıyla güncellendi', 'success', 'catalog/packages/list')
                 }
             })
             .catch((error) => {

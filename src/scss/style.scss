@@ -19,4 +19,7 @@ $enable-rtl: true;
 .sidebar-nav::-webkit-scrollbar {
     display: none;
 }
+.ck-editor__editable_inline{
+    min-height: 300px;
+}
 

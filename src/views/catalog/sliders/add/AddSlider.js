@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import {
   CCard,
   CCardBody,
@@ -11,6 +13,7 @@ import {
   CFormFeedback,
   CButton,
   CFormTextarea,
+  CFormLabel,
 } from '@coreui/react'
 import { AddSlider } from 'src/api/catalog/SliderAPI'
 
@@ -86,7 +89,19 @@ const SliderAdd = () => {
 
             <CRow>
               <CCol sm="12 mt-4">
-                <CFormTextarea onChange={e => setDescription(e.target.value)} name='description' type="textarea" label="Açıklama" required /> 
+                <CFormLabel>Açıklama</CFormLabel>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data="Lütfen mesajınızı giriniz."
+                  onReady={(editor) => {
+                    console.log('Editor is ready to use!', editor)
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData()
+                    setDescription(data)
+                  }}
+                  required
+                />
                 <CFormFeedback invalid>Lütfen açıklama giriniz.</CFormFeedback>
               </CCol>
             </CRow>

@@ -90,3 +90,22 @@ export async function UpdateAdmin(body) {
         GetSwal('Hata', error.response.data['message'], 'error')
     }
 }
+
+export async function UpdateAdminPassword(body) {
+    try {
+        const data = ApiManager('admin/password', {
+            method: 'PUT',
+            data: body,
+        })
+            .then((response) => {
+                if (response.status = 200) {
+                    GetBasicSwalUrl('Başarılı!', 'Şifre başarıyla güncellendi', 'success', 'catalog/admins/list')
+                }
+            })
+            .catch((error) => {
+                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+            })
+    } catch (error) {
+        GetSwal('Hata', error.response.data['message'], 'error')
+    }
+}

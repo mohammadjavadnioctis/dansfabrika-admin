@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import {
   CCard,
   CCardBody,
@@ -12,6 +14,7 @@ import {
   CFormFeedback,
   CButton,
   CFormTextarea,
+  CFormLabel
 } from '@coreui/react'
 import { AddTrainer, AddTrainerImages, GetByIdTrainer, UpdateTrainer } from 'src/api/catalog/TrainerAPI'
 import { useParams } from 'react-router-dom'
@@ -56,26 +59,28 @@ const TrainerUpdate = () => {
 
       UpdateTrainer(body)
 
-      AddTrainerImages(formData)
+      if (image) {
+        AddTrainerImages(formData)
+      }
+
     }
     event.preventDefault()
   }
 
   useEffect(() => {
     GetByIdTrainer(id)
-        .then(response => {
-            setName(response.data.name)
-            setEmail(response.data.email)
-            setPhone(response.data.phone)
-            setBirthday(response.data.birthday)
-            setDescription(response.data.description)
-            setStatus(response.data.status)
-            setImage(response.data.image)
-        })
-        .catch(error => {
-            console.log(error);
-        })
-}, []);
+      .then(response => {
+        setName(response.data.name)
+        setEmail(response.data.email)
+        setPhone(response.data.phone)
+        setBirthday(response.data.birthday)
+        setDescription(response.data.description)
+        setStatus(response.data.status)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }, []);
 
   return (
     <CContainer>
@@ -116,7 +121,7 @@ const TrainerUpdate = () => {
             </CRow>
 
             <CRow className="mt-4"><CCol sm="6">
-              <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)}  value={(status != null) ? status : ""} name='reference_id'>
+              <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='reference_id'>
                 <option value={0}>Seçiniz</option>
                 <option value={1}>Aktif</option>
                 <option value={-1}>Pasif</option>
@@ -132,7 +137,18 @@ const TrainerUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CFormTextarea onChange={e => setDescription(e.target.value)} value={(description != null) ? description : ""} name='description' label="Açıklama"></CFormTextarea>
+                <CFormLabel>Açıklama</CFormLabel>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={(description != null) ? description : ""}
+                  onReady={(editor) => {
+                    console.log('Editor is ready to use!', editor)
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData()
+                    setDescription(data)
+                  }}
+                />
                 <CFormFeedback invalid>Lütfen açıklama giriniz.</CFormFeedback>
               </CCol>
             </CRow>

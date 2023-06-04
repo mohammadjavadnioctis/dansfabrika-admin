@@ -24,7 +24,7 @@ import { AdminLogin } from 'src/api/auth/LoginAPI'
 
 const Login = () => {
 
-  const [username, setUsername] = useState("osman@gmail.com")
+  const [username, setUsername] = useState("eren@gmail.com")
 
   const [password, setPassword] = useState("testtest")
   
@@ -80,7 +80,7 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" value={"osman@gmail.com"} onChange={e => setUsername(e.target.value)} name='username' autoComplete="username" required />
+                      <CFormInput placeholder="Username" value={"eren@gmail.com"} onChange={e => setUsername(e.target.value)} name='username' autoComplete="username" required />
                       <CFormFeedback invalid>Lütfen kullanıcı bilgilerinizi kontrol ediniz.</CFormFeedback>
                     </CInputGroup>
 

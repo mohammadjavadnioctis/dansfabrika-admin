@@ -16,6 +16,7 @@ const AddNotification = React.lazy(() =>
 // Packages
 const Packages = React.lazy(() => import('./views/catalog/packages/list/Packages'))
 const AddPackage = React.lazy(() => import('./views/catalog/packages/add/AddPackage'))
+const UpdatePackage = React.lazy(() => import('./views/catalog/packages/update/UpdatePackage'))
 
 // Calendars
 const Calendars = React.lazy(() => import('./views/catalog/calendars/list/Calendars'))
@@ -85,6 +86,7 @@ const routes = [
   { path: '/catalog/notifications/add', name: 'Bildirim Ekle', element: AddNotification },
   { path: '/catalog/packages/list', name: 'Paketler', element: Packages },
   { path: '/catalog/packages/add', name: 'Paket Ekle', element: AddPackage },
+  { path: '/catalog/packages/update/:id', name: 'Paket Güncelle', element: UpdatePackage },
   { path: '/catalog/calendars/list', name: 'Takvim', element: Calendars },
   { path: '/catalog/calendars/add', name: 'Takvim Ekle', element: AddCalendar },
   { path: '/catalog/calendars/update/:id', name: 'Takvim Güncelle', element: UpdateCalendar },

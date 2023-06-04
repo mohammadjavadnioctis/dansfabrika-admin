@@ -3,7 +3,7 @@ import { cookies } from 'src/definitions/Cookies/NewCookies'
 
 
 const ApiManager = axios.create({
-    baseURL: 'http://api.dansfabrika.com/v1/',
+    baseURL: 'https://api.dansfabrika.com/v1/',
     responseType:'json',
     withCredentials:true,
     headers: {

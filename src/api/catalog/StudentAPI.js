@@ -116,3 +116,22 @@ export async function UpdateStudent(body) {
         GetSwal('Hata', error.response.data['message'], 'error')
     }
 }
+
+export async function UpdateStudentPassword(body) {
+    try {
+        const data = ApiManager('student/password', {
+            method: 'PUT',
+            data: body,
+        })
+            .then((response) => {
+                if (response.status = 200) {
+                    GetBasicSwalUrl('Başarılı!', 'Şifre başarıyla güncellendi', 'success', 'catalog/students/list')
+                }
+            })
+            .catch((error) => {
+                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+            })
+    } catch (error) {
+        GetSwal('Hata', error.response.data['message'], 'error')
+    }
+}

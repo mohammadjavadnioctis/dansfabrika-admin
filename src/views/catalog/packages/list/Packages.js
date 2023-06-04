@@ -30,9 +30,7 @@ const title = [
   { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
   { name: 'name', defaultFlex: 2, header: 'Ad' },
   { name: 'description', defaultFlex: 3, header: 'Açıklama' },
-  { name: 'image', defaultFlex: 3, header: 'Resim', render: ({ data }) => (
-    <ImageFormatter src={data.image}></ImageFormatter>
-  )},
+  { name: 'price', defaultFlex: 3, header: 'Tutar' },
   { name: 'status', defaultFlex: 2, header: 'Statü' },
   { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
     <div>

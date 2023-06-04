@@ -15,7 +15,8 @@ import DanceTypes from './danceTypes/list/DanceTypes'
 import NotificationAdd from './notifications/add/AddNotification'
 import Notifications from './notifications/list/Notifications'
 
-import PackagesAdd from './packages/add/AddPackage'
+import PackageUpdate from './packages/update/UpdatePackage'
+import PackageAdd from './packages/add/AddPackage'
 import Packages from './packages/list/Packages'
 
 import SliderUpdate from './sliders/update/UpdateSlider'
@@ -56,7 +57,8 @@ export {
   Notifications,
   NotificationAdd,
   Packages,
-  PackagesAdd,
+  PackageAdd,
+  PackageUpdate,
   Calendars,
   CalendarAdd,
   CalendarUpdate,

@@ -19,7 +19,6 @@ const AdminUpdate = () => {
 
   const [name, setName] = useState(null)
   const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
   const [role, setRole] = useState(null)
   const [status, setStatus] = useState(null)
   
@@ -31,7 +30,6 @@ const AdminUpdate = () => {
     id: parseInt(id),
     name: name,
     email: email,
-    password: password,
     role: parseInt(role),
     status: parseInt(status)
   }
@@ -88,12 +86,8 @@ const AdminUpdate = () => {
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="4">
-                <CFormInput onChange={e => setPassword(e.target.value)} value={(password!=null) ? password : ""} name='password' type="password" label="Şifre" required />
-                <CFormFeedback invalid>Lütfen şifre giriniz.</CFormFeedback>
-              </CCol>
 
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormSelect onChange={e => setRole(e.target.value)} value={(role!=null) ? role : ""} name='role' label="Rol:">
                   <option value={0}>Seçiniz</option>
                   <option value={1}>Admin</option>
@@ -102,7 +96,7 @@ const AdminUpdate = () => {
                 <CFormFeedback invalid>Lütfen rol seçiniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""}>
                   <option value={0}>Seçiniz</option>
                   <option value={1}>Aktif</option>

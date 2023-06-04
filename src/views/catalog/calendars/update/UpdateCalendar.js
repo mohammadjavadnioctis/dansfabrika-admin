@@ -30,7 +30,7 @@ const CalendarAdd = () => {
 
   const body = {
     id: parseInt(id),
-    queue: queue,
+    queue: parseInt(queue),
     name: name,
     status: parseInt(status),
   }
@@ -38,6 +38,7 @@ const CalendarAdd = () => {
   const formData = new FormData()
   formData.append("id", parseInt(id))
   formData.append("image", image)
+
 
   const handleSubmit =(event) => {
 
@@ -52,7 +53,11 @@ const CalendarAdd = () => {
 
       UpdateCalendar(body)
 
-      AddCalendarImages(formData)
+      if(image){
+        AddCalendarImages(formData)
+      }
+
+      
     }
     event.preventDefault()
 
@@ -63,7 +68,6 @@ const CalendarAdd = () => {
     .then(response => {
       setQueue(response.data.queue)
       setName(response.data.name)
-      setImage(response.data.image)
       setStatus(response.data.status)
     })
     .catch(error => {

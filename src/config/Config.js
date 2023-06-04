@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://yeniadmin.dansfabrika.com/';
+export const BASE_URL = 'http://localhost:4200/';

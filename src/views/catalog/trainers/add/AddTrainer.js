@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import {
   CCard,
   CCardBody,
@@ -12,6 +14,7 @@ import {
   CFormFeedback,
   CButton,
   CFormTextarea,
+  CFormLabel
 } from '@coreui/react'
 import { AddTrainer } from 'src/api/catalog/TrainerAPI'
 
@@ -107,7 +110,19 @@ const TrainerAdd = () => {
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CFormTextarea onChange={e => setDescription(e.target.value)} name='description' label="Açıklama"></CFormTextarea>
+              <CFormLabel>Açıklama</CFormLabel>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data="Lütfen mesajınızı giriniz."
+                  onReady={(editor) => {
+                    console.log('Editor is ready to use!', editor)
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData()
+                    setDescription(data)
+                  }}
+                  required
+                />
                 <CFormFeedback invalid>Lütfen açıklama giriniz.</CFormFeedback>
               </CCol>
             </CRow>
