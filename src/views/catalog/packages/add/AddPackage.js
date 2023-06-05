@@ -52,7 +52,7 @@ const PackageAdd = () => {
   return (
     <CContainer>
       <CCard>
-        < CCardHeader className="bg-dark">
+        <CCardHeader className="bg-dark">
           <span className='text-white'>Paket Ekle</span>
         </CCardHeader>
         <CCardBody>

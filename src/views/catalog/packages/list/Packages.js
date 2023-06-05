@@ -15,8 +15,7 @@ import { cilPlus } from '@coreui/icons'
 import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
 import { downloadExcel } from "react-export-table-to-excel"
-import { FaFileExcel  } from "react-icons/fa";
-import { DeleteSlider, GetAllSliders } from 'src/api/catalog/SliderAPI'
+import { FaFileExcel } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { DeletePackage, GetAllPackages } from 'src/api/catalog/PackageAPI'
 
@@ -32,16 +31,18 @@ const title = [
   { name: 'description', defaultFlex: 3, header: 'Açıklama' },
   { name: 'price', defaultFlex: 3, header: 'Tutar' },
   { name: 'status', defaultFlex: 2, header: 'Statü' },
-  { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
-    <div>
-      <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/packages/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
-      <GridLinkDelete onClick={()=>DeletePackage(data.id)} title={"Sil"}></GridLinkDelete>
-    </div>
-  )},
+  {
+    name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+      <div>
+        <GridLinkUpdate onClick={() => data.id} href={BASE_URL + 'catalog/packages/update/' + data.id} title={"Güncelle"}></GridLinkUpdate>
+        <GridLinkDelete onClick={() => DeletePackage(data.id)} title={"Sil"}></GridLinkDelete>
+      </div>
+    )
+  },
 ]
 
 const Packages = () => {
-  
+
   // Export Excel
   const exportHeader = ["id", "name", "description", "price", "status"];
 
@@ -57,15 +58,15 @@ const Packages = () => {
   }
 
   const [packages, setPackages] = useState([]);
-  
+
   useEffect(() => {
     GetAllPackages()
-    .then((response) => {
-      setPackages(response.data)
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((response) => {
+        setPackages(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }, []);
 
   return (
@@ -73,7 +74,7 @@ const Packages = () => {
       <CRow>
         <CCol>
           <CCard>
-          <CCardHeader className="bg-dark">
+            <CCardHeader className="bg-dark">
               <CFormLabel className="mt-1 text-light">Paketler</CFormLabel>
 
               <CButton
@@ -86,12 +87,12 @@ const Packages = () => {
             </CCardHeader>
 
             <CCardBody>
-              
+
               <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>
                 <FaFileExcel></FaFileExcel>
                 <span>Export Excel</span>
               </CButton>
-              
+
               {packages.length > 0 && (
                 <ReactDataGrid
                   idProperty="id"
