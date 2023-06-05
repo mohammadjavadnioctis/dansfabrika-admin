@@ -6,9 +6,11 @@ import CalendarUpdate from './calendars/update/UpdateCalendar'
 import CalendarAdd from './calendars/add/AddCalendar'
 import Calendars from './calendars/list/Calendars'
 
+import DanceLevelUpdate from './danceLevels/update/UpdateDanceLevel'
 import DanceLevelAdd from './danceLevels/add/AddDanceLevel'
 import DanceLevels from './danceLevels/list/DanceLevels'
 
+import DanceTypeUpdate from './danceTypes/update/UpdateDanceType'
 import DanceTypeAdd from './danceTypes/add/AddDanceType'
 import DanceTypes from './danceTypes/list/DanceTypes'
 
@@ -49,6 +51,10 @@ import Students from './students/list/Students'
 import StudentAdd from './students/add/AddStudent'
 import StudentUpdate from './students/update/UpdateStudent'
 
+import Bills from './bills/list/Bills'
+import BillAdd from './bills/add/AddBill'
+import BillUpdate from './bills/update/UpdateBill'
+
 
 export {
   Admins,
@@ -67,8 +73,10 @@ export {
   SliderUpdate,
   DanceTypes,
   DanceTypeAdd,
+  DanceTypeUpdate,
   DanceLevels,
   DanceLevelAdd,
+  DanceLevelUpdate,
   Trainers,
   TrainerAdd,
   TrainerUpdate,
@@ -87,5 +95,8 @@ export {
   AttendanceAdd,
   Students,
   StudentAdd,
-  StudentUpdate
+  StudentUpdate,
+  Bills,
+  BillAdd,
+  BillUpdate
 }
