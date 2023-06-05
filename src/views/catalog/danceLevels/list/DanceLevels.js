@@ -8,38 +8,65 @@ import {
   CFormLabel,
   CRow,
 } from '@coreui/react'
-import React, { useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
-import { columns, dataSource, defaultFilterValue } from 'src/dami_data/dance_level/DanceLevelData'
-import CIcon from '@coreui/icons-react'
-import { cilLevelUp, cilUserPlus } from '@coreui/icons'
+import { cilPlus } from '@coreui/icons'
+import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
+import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
+import { downloadExcel } from "react-export-table-to-excel"
+import { FaFileExcel } from "react-icons/fa";
+import { BASE_URL } from 'src/config/Config'
+import { DeleteDanceLevel, GetAllDanceLevels } from 'src/api/catalog/Dance-LevelAPI'
 
-const gridStyle = { minHeight: 550, marginTop: 10 }
 
-const loadData = ({ skip, limit, sortInfo }) => {
-  const url =
-    dataSource + '?skip=' + skip + '&limit=' + limit + '&sortInfo=' + JSON.stringify(sortInfo)
+const defaultFilterValue = [
+  { name: 'id', operator: 'startsWith', type: 'string' },
+  { name: 'name', operator: 'startsWith', type: 'string' },
+]
 
-  return fetch(url).then((response) => {
-    const totalCount = response.headers.get('X-Total-Count')
-    return response.json().then((data) => {
-      return Promise.resolve({ data, count: parseInt(totalCount) })
-    })
-  })
-}
+const title = [
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
+  { name: 'name', defaultFlex: 2, header: 'Ad' },
+  { name: 'status', defaultFlex: 2, header: 'Statü' },
+  {
+    name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+      <div>
+        <GridLinkUpdate onClick={() => data.id} href={BASE_URL + 'catalog/danceLevels/update/' + data.id} title={"Güncelle"}></GridLinkUpdate>
+        <GridLinkDelete onClick={() => DeleteDanceLevel(data.id)} title={"Sil"}></GridLinkDelete>
+      </div>
+    )
+  },
+]
 
-const DanceLevels = () => {
-  //const dataSource = useCallback(loadData, []);
+const DanceTypes = () => {
 
-  const renderRowContextMenu = (menuProps, { rowProps }) => {
-    menuProps.autoDismiss = true
-    menuProps.items = [
-      {
-        label: 'Row ' + rowProps.rowIndex,
+  // Export Excel
+  const exportHeader = ["id", "name", "status"];
+
+  function HandleDownloadExcel() {
+    downloadExcel({
+      fileName: "Dans Levelleri",
+      sheet: "react-export-table-to-excel",
+      tablePayload: {
+        header: exportHeader,
+        body: danceLevels,
       },
-    ]
+    });
   }
+
+  const [danceLevels, setDanceLevels] = useState([]);
+
+  useEffect(() => {
+    GetAllDanceLevels()
+      .then((response) => {
+        setDanceLevels(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, []);
+
 
   return (
     <CContainer>
@@ -48,26 +75,34 @@ const DanceLevels = () => {
           <CCard>
             <CCardHeader className="bg-dark">
               <CFormLabel className="mt-1 text-light">Dans Levelleri</CFormLabel>
+
               <CButton
                 className="float-end bg-light text-dark"
-                href={process.env.REACT_APP_BASE_URL + 'catalog/danceLevels/add'}
+                href={BASE_URL + 'catalog/danceLevels/add'}
               >
-                <CIcon icon={cilLevelUp} className="mx-2" />
-                Dans Leveli Ekle
+                <IconDatatableHead icon={cilPlus}></IconDatatableHead>
+                <SpanDatatableHead text={'Dans Leveli Ekle'}></SpanDatatableHead>
               </CButton>
             </CCardHeader>
 
             <CCardBody>
-              <ReactDataGrid
-                idProperty="id"
-                defaultFilterValue={defaultFilterValue}
-                renderRowContextMenu={renderRowContextMenu}
-                style={gridStyle}
-                columns={columns}
-                pagination
-                dataSource={dataSource}
-                defaultLimit={10}
-              />
+
+              <CButton className="float-middle bg-light text-dark" onClick={HandleDownloadExcel}>
+                <FaFileExcel></FaFileExcel>
+                <span>Export Excel</span>
+              </CButton>
+
+              {danceLevels.length > 0 && (
+                <ReactDataGrid
+                  idProperty="id"
+                  style={gridStyle}
+                  columns={title}
+                  pagination
+                  dataSource={danceLevels}
+                  defaultLimit={10}
+                  defaultFilterValue={defaultFilterValue}
+                />
+              )}
             </CCardBody>
           </CCard>
         </CCol>
@@ -76,4 +111,4 @@ const DanceLevels = () => {
   )
 }
 
-export default DanceLevels
+export default DanceTypes
