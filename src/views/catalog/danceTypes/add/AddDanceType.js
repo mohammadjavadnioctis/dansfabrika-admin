@@ -11,50 +11,60 @@ import {
   CRow,
   CFormFeedback,
   CButton,
+  CFormTextarea,
+  CFormLabel,
 } from '@coreui/react'
+import { AddDanceType } from 'src/api/catalog/Dance-TypeAPI'
+
 
 const DanceTypeAdd = () => {
+
+  const [name, setName] = useState(null)
+
   const [validated, setValidated] = useState(false)
+
+  const body = {
+    name: name
+  }
+
   const handleSubmit = (event) => {
     const form = event.currentTarget
     if (form.checkValidity() === false) {
-      event.preventDefault()
       event.stopPropagation()
+      setValidated(true)
     }
-    setValidated(true)
+    else {
+      setValidated(false)
+      AddDanceType(body)  // Ekleme fonksiyonu
+    }
+    event.preventDefault()
   }
+
+
   return (
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
-          <strong>Dans Tipi Ekle</strong>
+          <span className='text-white'>Dans Tipi Ekle</span>
         </CCardHeader>
         <CCardBody>
           <CForm
-            className="row needs-validation"
+            className="row needs-validation my-form"
+            id='my-form'
             noValidate
             validated={validated}
             onSubmit={handleSubmit}
           >
             <CRow>
-              <CCol sm="6">
-                <CFormInput type="text" label="Dans Tipi" required />
+              <CCol sm="12">
+                <CFormInput onChange={e => setName(e.target.value)} name='name' type="text" label="Dans Tipi" required />
                 <CFormFeedback invalid>Lütfen dans tipi giriniz.</CFormFeedback>
-              </CCol>
-
-              <CCol sm="6">
-                <CFormSelect label="Statü:">
-                  <option>Seçiniz</option>
-                  <option>Aktif</option>
-                  <option>Pasif</option>
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3">
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>
                   Kaydet
                 </CButton>
               </CCol>
