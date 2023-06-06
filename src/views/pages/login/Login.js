@@ -19,14 +19,14 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import { AdminLogin } from 'src/api/auth/LoginAPI'
 
 
-// erenbas.info@gmail.com
-// teteet
+// eren@gmail.com
+// testtest
 
 const Login = () => {
 
-  const [username, setUsername] = useState("eren@gmail.com")
+  const [username, setUsername] = useState(null)
 
-  const [password, setPassword] = useState("testtest")
+  const [password, setPassword] = useState(null)
   
   const [validated, setValidated] = useState(false)
 
@@ -80,7 +80,7 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" value={"eren@gmail.com"} onChange={e => setUsername(e.target.value)} name='username' autoComplete="username" required />
+                      <CFormInput placeholder="Kullanıcı Adı" onChange={e => setUsername(e.target.value)} name='username' autoComplete="username" required />
                       <CFormFeedback invalid>Lütfen kullanıcı bilgilerinizi kontrol ediniz.</CFormFeedback>
                     </CInputGroup>
 
@@ -90,10 +90,9 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
-                        value={"testtest"}
                         onChange={e => setPassword(e.target.value)}
                         name='password'
-                        placeholder="Password"
+                        placeholder="Şifre"
                         autoComplete="current-password"
                         required
                       />
@@ -118,11 +117,11 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-black py-5" style={{ width: '44%' }}>
+              <CCard className="text-white bg-white py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center container d-flex align-items-center justify-content-center">
                   <CImage
                     className="bg-white"
-                    src={require('../../../assets/images/dansfabrika_logo.jpg')}
+                    src={require('../../../assets/images/dansfabrika_logo.png')}
                     height={50}
                   ></CImage>
                 </CCardBody>

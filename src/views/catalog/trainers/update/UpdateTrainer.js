@@ -19,6 +19,7 @@ import {
 import { AddTrainer, AddTrainerImages, GetByIdTrainer, UpdateTrainer } from 'src/api/catalog/TrainerAPI'
 import { useParams } from 'react-router-dom'
 import { ImageFormatterGeneral } from 'src/definitions/GridLink'
+import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 
 
 const TrainerUpdate = () => {
@@ -90,7 +91,7 @@ const TrainerUpdate = () => {
         setName(response.data.name)
         setEmail(response.data.email)
         setPhone(response.data.phone)
-        setBirthday(response.data.birthday)
+        setBirthday(SetDateFormat(response.data.birthday))
         setDescription(response.data.description)
         setStatus(response.data.status)
         setChooseImage(response.data.image)

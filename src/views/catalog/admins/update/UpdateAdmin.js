@@ -14,6 +14,8 @@ import {
 } from '@coreui/react'
 import { useParams } from 'react-router-dom';
 import { GetByIdAdmin, UpdateAdmin } from 'src/api/catalog/AdminAPI'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums';
+import { GetUserRoleOptions } from 'src/definitions/Enums/UserRoleEnums';
 
 const AdminUpdate = () => {
 
@@ -89,18 +91,18 @@ const AdminUpdate = () => {
 
               <CCol sm="6">
                 <CFormSelect onChange={e => setRole(e.target.value)} value={(role!=null) ? role : ""} name='role' label="Rol:">
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  <option value={0} disabled>Seçiniz</option>
+
+                  <GetUserRoleOptions></GetUserRoleOptions>
+                  
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen rol seçiniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""}>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={""} disabled>Seçiniz</option>
+                  <GetStatusOptions></GetStatusOptions>
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>

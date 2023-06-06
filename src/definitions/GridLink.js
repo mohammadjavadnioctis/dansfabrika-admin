@@ -1,4 +1,5 @@
 import React from 'react'
+import { IMAGE_URL } from 'src/config/Config'
 
 const gridUpdateLinkStyle = { color: 'white', marginRight: 5, backgroundColor:'#2ecc71'}
 const gridDeleteLinkStyle = { color: 'white', marginRight: 5, backgroundColor:'#ea484d', width:'75px'}
@@ -10,7 +11,9 @@ export const GridLinkPasswordUpdate = ({ onClick, title }) => <a style={gridPasw
 
 export const gridStyle = { minHeight: 550, minWidth: 400, marginTop: 10 }
 
-export const ImageFormatter = ({ src }) => <img src={'https://api.dansfabrika.com/images/'+src} width={40} height={40} alt="Image" />
+// export const ImageFormatter = ({ src, width, height }) => <img src={IMAGE_URL + src} width={width} height={height} alt="Image" />
 
-export const ImageFormatterGeneral = ({ src }) => <img src={'https://api.dansfabrika.com/images/'+src} width={150} height={150} alt="Image" />
+export const ImageFormatter = ({ src }) => <img src={IMAGE_URL + src} width={40} height={40} alt="Image" />
+
+export const ImageFormatterGeneral = ({ src }) => <img src={IMAGE_URL + src} width={150} height={150} alt="Image" />
 

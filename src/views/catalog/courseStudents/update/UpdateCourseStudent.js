@@ -14,6 +14,7 @@ import {
 } from '@coreui/react'
 import { GetByIdCourseStudent, UpdateCourseStudent } from 'src/api/catalog/Course-StudentAPI'
 import { useParams } from 'react-router-dom'
+import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 
 const CourseStudentUpdate = () => {
 
@@ -58,8 +59,8 @@ const CourseStudentUpdate = () => {
     .then(response => {
       setCourseId(response.data.courseId)
       setStudentId(response.data.studentId)
-      setStartDate(response.data.startDate)
-      setEndDate(response.data.endDate)
+      setStartDate(SetDateFormat(response.data.startDate))
+      setEndDate(SetDateFormat(response.data.endDate))
       setPaidPrice(response.data.paidPrice)
       setStatus(response.data.status)
       setCreatedDate(response.data.createdDate)

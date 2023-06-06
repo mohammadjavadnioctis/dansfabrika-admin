@@ -12,10 +12,10 @@ import {
     CFormFeedback,
     CButton,
     CFormTextarea,
-    CFormLabel,
 } from '@coreui/react'
-import { AddBill, GetByIdBill, UpdateBill } from 'src/api/catalog/BillsAPI'
+import { GetByIdBill, UpdateBill } from 'src/api/catalog/BillsAPI'
 import { useParams } from 'react-router-dom'
+import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 
 const BillUpdate = () => {
 
@@ -56,7 +56,7 @@ const BillUpdate = () => {
             .then(response => {
                 setProccessType(response.data.processType)
                 setProccess(response.data.process)
-                setProccessDate(response.data.processDate)
+                setProccessDate(SetDateFormat(response.data.processDate))
                 setPrice(response.data.price)
                 setDescription(response.data.description)
             })

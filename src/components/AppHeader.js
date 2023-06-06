@@ -34,7 +34,7 @@ const AppHeader = () => {
         </CHeaderToggler>
         <CHeaderBrand className="mx-auto d-md-none" to="/">
           { /* <CIcon icon={logo} height={48} alt="Logo" /> */}
-          <CImage src={require('../assets/images/dansfabrika_logo.jpg')} height={40} alt="Logo"></CImage>
+          <CImage src={require('../assets/images/dansfabrika_logo.png')} height={40} alt="Logo"></CImage>
         </CHeaderBrand>
         <CHeaderNav className="d-none d-md-flex me-auto">
           <CNavItem>

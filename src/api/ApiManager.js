@@ -1,9 +1,10 @@
 import axios from 'axios'
+import { API_URL } from 'src/config/Config'
 import { cookies } from 'src/definitions/Cookies/NewCookies'
 
 
 const ApiManager = axios.create({
-    baseURL: 'https://api.dansfabrika.com/v1/',
+    baseURL: API_URL + 'v1/',
     responseType:'json',
     withCredentials:true,
     headers: {

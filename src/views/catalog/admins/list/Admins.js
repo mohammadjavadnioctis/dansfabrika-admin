@@ -29,6 +29,8 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
+import { GetRoleName } from 'src/definitions/Enums/UserRoleEnums'
 
 
 const defaultFilterValue = [
@@ -61,9 +63,16 @@ const Admins = () => {
     { name: 'id', type: 'number', maxWidth: 40, header: 'ID', defaultVisible: false },
     { name: 'name', defaultFlex: 2, header: 'Ad' },
     { name: 'email', defaultFlex: 3, header: 'Email' },
-    { name: 'password', defaultFlex: 3, header: 'Şifre' },
-    { name: 'role', defaultFlex: 3, header: 'Role' },
-    { name: 'status', defaultFlex: 3, header: 'Statü' },
+    {
+      name: 'role', defaultFlex: 3, header: 'Rol', render: ({ data }) => (
+        GetRoleName(data.role)
+      )
+    },
+    {
+      name: 'status', defaultFlex: 3, header: 'Statü', render: ({ data }) => (
+        GetStatusName(data.status)
+      )
+    },
     {
       name: 'actions', minWidth: 350, header: 'Aksiyon', render: ({ data }) => (
         <div>

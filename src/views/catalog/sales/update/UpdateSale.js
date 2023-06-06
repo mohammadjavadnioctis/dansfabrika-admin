@@ -14,6 +14,7 @@ import {
 } from '@coreui/react'
 import { UpdateSale, GetByIdSale } from 'src/api/catalog/SaleAPI'
 import { useParams } from 'react-router-dom'
+import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 
 const SaleUpdate = () => {
   
@@ -56,7 +57,7 @@ const SaleUpdate = () => {
       setCredit(response.data.credit)
       setPrice(response.data.price)
       setType(response.data.type)
-      setSellBy(response.data.sellBy)
+      setSellBy(SetDateFormat(response.data.sellBy))
     })
     .catch(error => {
       console.log(error);
