@@ -46,6 +46,7 @@ import LessonUpdate from './lessons/update/UpdateLesson'
 
 import Attendances from './attendances/list/Attendances'
 import AttendanceAdd from './attendances/add/AddAttendance'
+import AttendanceUpdate from './attendances/update/UpdateAttendance'
 
 import Students from './students/list/Students'
 import StudentAdd from './students/add/AddStudent'
@@ -93,6 +94,7 @@ export {
   LessonUpdate,
   Attendances,
   AttendanceAdd,
+  AttendanceUpdate,
   Students,
   StudentAdd,
   StudentUpdate,
