@@ -54,7 +54,7 @@ const AttendanceUpdate = () => {
     useEffect(() => {
         GetByIdAttendance(id)
             .then(response => {
-                setAttedanceDate(SetDateFormat(response.data.attendanceDate))
+                setAttedanceDate(SetDateTimeFormat(response.data.attendanceDate))
                 setCourseId(response.data.courseId)
                 setLessonId(response.data.lessonId)
                 setStudentId(response.data.studentId)
