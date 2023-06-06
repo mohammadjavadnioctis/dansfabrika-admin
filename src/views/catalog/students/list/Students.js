@@ -34,7 +34,6 @@ const defaultFilterValue = [
   { name: 'email', operator: 'startsWith', type: 'string' },
 ]
 
-
 const Students = () => {
 
   const [basicModal, setBasicModal] = useState(false);

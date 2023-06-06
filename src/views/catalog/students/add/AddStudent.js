@@ -68,7 +68,7 @@ const StudentAdd = () => {
   return (
     <CContainer>
       <CCard>
-      <CCardHeader className="bg-dark">
+        <CCardHeader className="bg-dark">
           <span className='text-white'>Öğrenci Ekle</span>
         </CCardHeader>
         <CCardBody>
