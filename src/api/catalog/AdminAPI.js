@@ -1,7 +1,8 @@
 import ApiManager from "../ApiManager";
 import Swal from 'sweetalert2'
 import { GetBasicSwal, GetBasicSwalUrl, GetSwal } from "src/definitions/Alert";
-import { ControlErrorMessage } from "src/enums/error_enums";
+import { ControlErrorMessage } from "src/definitions/Enums/Error-Enums";
+
 
 export async function GetAllAdmins() {
     try {
