@@ -80,7 +80,7 @@ export async function UpdateDanceLevel(body) {
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Dans Tipi başarıyla güncellendi', 'success', 'catalog/danceLevels/list')
+                    GetBasicSwalUrl('Başarılı!', 'Dans Leveli başarıyla güncellendi', 'success', 'catalog/danceLevels/list')
                 }
             })
             .catch((error) => {
