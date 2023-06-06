@@ -14,6 +14,7 @@ import {
 } from '@coreui/react'
 import { AddCalendarImages, GetByIdCalendar, UpdateCalendar } from 'src/api/catalog/CalendarAPI'
 import { useParams } from 'react-router-dom'
+import { ImageFormatterGeneral } from 'src/definitions/GridLink'
 
 
 const CalendarAdd = () => {
@@ -22,9 +23,10 @@ const CalendarAdd = () => {
   const [name, setName] = useState(null)
   const [status, setStatus] = useState(null)
 
-  const {id} = useParams()
+  const { id } = useParams()
 
   const [image, setImage] = useState(null)
+  const [chooseImage, setChooseImage] = useState(null) // only show person
 
   const [validated, setValidated] = useState(false)
 
@@ -40,7 +42,23 @@ const CalendarAdd = () => {
   formData.append("image", image)
 
 
-  const handleSubmit =(event) => {
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    setImage(file)
+
+    reader.onload = (e) => {
+      setChooseImage(e.target.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+
+  const handleSubmit = (event) => {
 
     const form = event.currentTarget
 
@@ -53,11 +71,9 @@ const CalendarAdd = () => {
 
       UpdateCalendar(body)
 
-      if(image){
+      if (image) {
         AddCalendarImages(formData)
       }
-
-      
     }
     event.preventDefault()
 
@@ -65,24 +81,25 @@ const CalendarAdd = () => {
 
   useEffect(() => {
     GetByIdCalendar(id)
-    .then(response => {
-      setQueue(response.data.queue)
-      setName(response.data.name)
-      setStatus(response.data.status)
-    })
-    .catch(error => {
-      console.log(error);
-    })
+      .then(response => {
+        setQueue(response.data.queue)
+        setName(response.data.name)
+        setStatus(response.data.status)
+        setChooseImage(response.data.image)
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }, []);
 
   return (
     <CContainer>
       <CCard>
-      <CCardHeader className="bg-dark">
+        <CCardHeader className="bg-dark">
           <span className='text-white'>Takvim Güncelle</span>
         </CCardHeader>
         <CCardBody>
-        <CForm
+          <CForm
             className="row needs-validation my-form"
             id='my-form'
             noValidate
@@ -91,24 +108,24 @@ const CalendarAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormInput type="number" onChange={e => setQueue(e.target.value)} value={(queue!=null) ? queue : ""} name='queue' label="Sıra" required />
+                <CFormInput type="number" onChange={e => setQueue(e.target.value)} value={(queue != null) ? queue : ""} name='queue' label="Sıra" required />
                 <CFormFeedback invalid>Sıra giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="text" onChange={e => setName(e.target.value)} value={(name!=null) ? name : ""} name='queue' label="İsim" required />
+                <CFormInput type="text" onChange={e => setName(e.target.value)} value={(name != null) ? name : ""} name='queue' label="İsim" required />
                 <CFormFeedback invalid>Lütfen isim giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput id='fileInput' onChange={e => setImage(e.target.files[0])} name='image' type="file" label="Resim" />
+                <CFormInput id='fileInput' onChange={handleImageChange} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""} required>
+                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} required>
                   <option value={0}>Seçiniz</option>
                   <option value={1}>Aktif</option>
                   <option value={-1}>Pasif</option>
@@ -117,8 +134,19 @@ const CalendarAdd = () => {
             </CRow>
 
             <CRow className="mt-4">
+              <CCol sm="6">
+                {chooseImage && !image && (
+                  <ImageFormatterGeneral src={chooseImage}></ImageFormatterGeneral>
+                )}
+                {chooseImage && image && (
+                  <img src={chooseImage} alt="Seçilen Resim" width="150" height="150" />
+                )}
+              </CCol>
+            </CRow>
+
+            <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:'100%'}}>
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>
                   Kaydet
                 </CButton>
               </CCol>

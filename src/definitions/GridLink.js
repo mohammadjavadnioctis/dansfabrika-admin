@@ -12,3 +12,5 @@ export const gridStyle = { minHeight: 550, minWidth: 400, marginTop: 10 }
 
 export const ImageFormatter = ({ src }) => <img src={'https://api.dansfabrika.com/images/'+src} width={40} height={40} alt="Image" />
 
+export const ImageFormatterGeneral = ({ src }) => <img src={'https://api.dansfabrika.com/images/'+src} width={150} height={150} alt="Image" />
+

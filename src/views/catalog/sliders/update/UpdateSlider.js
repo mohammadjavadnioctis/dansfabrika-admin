@@ -18,6 +18,7 @@ import {
 } from '@coreui/react'
 import { AddSliderImages, GetByIdSlider, UpdateSlider } from 'src/api/catalog/SliderAPI'
 import { useParams } from 'react-router-dom';
+import { ImageFormatterGeneral } from 'src/definitions/GridLink'
 
 const SliderUpdate = () => {
 
@@ -27,6 +28,7 @@ const SliderUpdate = () => {
   const [status, setStatus] = useState(null)
 
   const [image, setImage] = useState(null)
+  const [chooseImage, setChooseImage] = useState(null) // only show person
 
   const { id } = useParams()
 
@@ -43,6 +45,21 @@ const SliderUpdate = () => {
   const formData = new FormData()
   formData.append("id", id)
   formData.append("image", image)
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    setImage(file)
+
+    reader.onload = (e) => {
+      setChooseImage(e.target.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = (event) => {
 
@@ -72,6 +89,7 @@ const SliderUpdate = () => {
         setName(response.data.name)
         setDescription(response.data.description)
         setStatus(response.data.status)
+        setChooseImage(response.data.image)
       })
       .catch(error => {
         console.log(error);
@@ -106,7 +124,7 @@ const SliderUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput onChange={e => setImage(e.target.files[0])} name='image' type="file" label="Resim" />
+                <CFormInput onChange={handleImageChange} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
 
@@ -119,20 +137,31 @@ const SliderUpdate = () => {
               </CCol>
             </CRow>
 
+            <CRow className="mt-4">
+              <CCol sm="6">
+                {chooseImage && !image && (
+                  <ImageFormatterGeneral src={chooseImage}></ImageFormatterGeneral>
+                )}
+                {chooseImage && image && (
+                  <img src={chooseImage} alt="Seçilen Resim" width="150" height="150" />
+                )}
+              </CCol>
+            </CRow>
+
             <CRow>
               <CCol sm="12 mt-4">
                 <CFormLabel>Açıklama</CFormLabel>
-                  <CKEditor
-                    editor={ClassicEditor}
-                    data={(description != null) ? description : ""}
-                    onReady={(editor) => {
-                      console.log('Editor is ready to use!', editor)
-                    }}
-                    onChange={(event, editor) => {
-                      const data = editor.getData()
-                      setDescription(data)
-                    }}
-                  />
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={(description != null) ? description : ""}
+                  onReady={(editor) => {
+                    console.log('Editor is ready to use!', editor)
+                  }}
+                  onChange={(event, editor) => {
+                    const data = editor.getData()
+                    setDescription(data)
+                  }}
+                />
                 <CFormFeedback invalid>Lütfen açıklama giriniz.</CFormFeedback>
               </CCol>
             </CRow>

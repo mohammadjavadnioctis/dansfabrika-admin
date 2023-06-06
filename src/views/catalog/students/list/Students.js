@@ -70,10 +70,10 @@ const Students = () => {
     { name: 'credit',  header: 'Kredi' },
     { name: 'score', header: 'Skor' },
     { name: 'referance', header: 'Referans' },
-    { name: 'referancedId',header: 'Referans Id' },
+    { name: 'referanceId',header: 'Referans Id' },
     { name: 'code',  header: 'Kod' },
     { name: 'status', header: 'Statü' },
-    { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+    { name: 'actions', minWidth: 375, header: 'Aksiyon', render: ({ data }) => (
       <div>
         <CButton onClick={() => toggleShow(data.id)} style={{marginRight: 5}}>Şifre Güncelle</CButton>
         <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/students/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>

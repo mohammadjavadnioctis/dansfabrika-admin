@@ -24,6 +24,7 @@ const SliderAdd = () => {
   const [description, setDescription] = useState(null)
 
   const [image, setImage] = useState(null)
+  const [chooseImage, setChooseImage] = useState(null)
 
   const [validated, setValidated] = useState(false)
 
@@ -33,11 +34,26 @@ const SliderAdd = () => {
     description: description,
   }
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    setImage(file)
+
+    reader.onload = (e) => {
+      setChooseImage(e.target.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
   const formData = new FormData()
-   
+
   formData.append("image", image)
 
-  const handleSubmit =(event) => {
+  const handleSubmit = (event) => {
 
     const form = event.currentTarget
 
@@ -47,7 +63,7 @@ const SliderAdd = () => {
     }
     else {
       setValidated(false)
-      AddSlider(body,formData)
+      AddSlider(body, formData)
     }
     event.preventDefault()
 
@@ -80,10 +96,15 @@ const SliderAdd = () => {
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="12">
-                <CFormInput id='fileInput' onChange={e => setImage(e.target.files[0])} name='image' type="file" label="Resim" required />
+              <CCol sm="6">
+                <CFormInput id='fileInput' onChange={handleImageChange} name='image' type="file" label="Resim" required />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
+              </CCol>
 
+              <CCol sm="6">
+                {chooseImage && (
+                  <img src={chooseImage} alt="Seçilen Resim" width="150" height="150" />
+                )}
               </CCol>
             </CRow>
 
@@ -108,7 +129,7 @@ const SliderAdd = () => {
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:'100%'}}>
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>
                   Kaydet
                 </CButton>
               </CCol>
