@@ -19,6 +19,7 @@ import {
 import { AddSliderImages, GetByIdSlider, UpdateSlider } from 'src/api/catalog/SliderAPI'
 import { useParams } from 'react-router-dom';
 import { ImageFormatterGeneral } from 'src/definitions/GridLink'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 const SliderUpdate = () => {
 
@@ -130,9 +131,8 @@ const SliderUpdate = () => {
 
               <CCol sm="6">
                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={""} disabled>Seçiniz</option>
+                  {GetStatusOptions()}
                 </CFormSelect>
               </CCol>
             </CRow>

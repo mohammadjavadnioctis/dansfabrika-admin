@@ -16,6 +16,7 @@ import { UpdateStudent, GetByIdStudent, AddStudentImages } from 'src/api/catalog
 import { useParams } from 'react-router-dom'
 import { ImageFormatterGeneral } from 'src/definitions/GridLink'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 
 const StudentUpdate = () => {
@@ -200,9 +201,8 @@ const StudentUpdate = () => {
                             </CCol>
                             <CCol sm="6">
                                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='reference_id'>
-                                    <option value={0}>Seçiniz</option>
-                                    <option value={1}>Aktif</option>
-                                    <option value={2}>Pasif</option>
+                                    <option value={""} disabled>Seçiniz</option>
+                                    {GetStatusOptions()}
                                 </CFormSelect>
                                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
                             </CCol>

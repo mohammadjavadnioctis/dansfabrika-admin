@@ -16,6 +16,7 @@ import {
 } from '@coreui/react'
 import { useParams } from 'react-router-dom'
 import { GetByIdDanceLevel, UpdateDanceLevel } from 'src/api/catalog/Dance-LevelAPI'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 const DanceLevelUpdate = () => {
 
@@ -79,9 +80,8 @@ const DanceLevelUpdate = () => {
 
                             <CCol sm="6">
                                 <CFormSelect onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='status' label="Statü:">
-                                    <option value={0}>Seçiniz</option>
-                                    <option value={1}>Aktif</option>
-                                    <option value={2}>Pasif</option>
+                                    <option value={""} disabled>Seçiniz</option>
+                                    {GetStatusOptions()}
                                 </CFormSelect>
                                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
                             </CCol>

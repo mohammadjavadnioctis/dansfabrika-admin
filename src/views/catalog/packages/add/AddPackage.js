@@ -63,7 +63,7 @@ const PackageAdd = () => {
             validated={validated}
             onSubmit={handleSubmit}
           >
-            <CRow>
+            <CRow className='mt-4'>
               <CCol sm="4">
                 <CFormInput onChange={e => setName(e.target.value)} name='name' type="text" label="İsim" required />
                 <CFormFeedback invalid>Lütfen isim giriniz.</CFormFeedback>

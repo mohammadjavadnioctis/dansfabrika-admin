@@ -13,6 +13,7 @@ import {
   CButton,
 } from '@coreui/react'
 import { AddAdmin } from 'src/api/catalog/AdminAPI'
+import { GetUserRoleOptions } from 'src/definitions/Enums/UserRoleEnums'
 
 
 const AdminAdd = () => {
@@ -77,9 +78,8 @@ const AdminAdd = () => {
 
               <CCol sm="6">
                 <CFormSelect onChange={e => setRole(e.target.value)} name='role' label="Rol:">
-                  <option value={""}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  <option value={""} disabled>Seçiniz</option>
+                  {GetUserRoleOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen rol seçiniz.</CFormFeedback>
               </CCol>

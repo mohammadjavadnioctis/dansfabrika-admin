@@ -21,7 +21,6 @@ const CourseStudentAdd = () => {
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
   const [paidPrice, setPaidPrice] = useState(null)
-  const [status, setStatus] = useState(null)
   const [createdDate, setCreatedDate] = useState(null)
 
   const [validated, setValidated] = useState(false)
@@ -32,7 +31,6 @@ const CourseStudentAdd = () => {
     startDate: startDate,
     endDate: endDate,
     paidPrice: parseFloat(paidPrice),
-    status: parseInt(status),
     createdDate: createdDate,
   }
 
@@ -100,20 +98,11 @@ const CourseStudentAdd = () => {
                 <CFormInput type="text" label="Ödenen Tutar" onChange={e => setPaidPrice(e.target.value)} name='paid_price' required />
                 <CFormFeedback invalid>Lütfen ödenen tutarı giriniz.</CFormFeedback>
               </CCol>
-
-              <CCol sm="6">
-                <CFormSelect label="Statü Seçiniz:" onChange={e => setStatus(e.target.value)} name='status' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
-              </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3">
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:"100%"}}>
                   Kaydet
                 </CButton>
               </CCol>

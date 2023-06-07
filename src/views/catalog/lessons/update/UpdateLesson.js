@@ -14,6 +14,7 @@ import {
 } from '@coreui/react'
 import { GetByIdLesson, UpdateLesson } from 'src/api/catalog/LessonAPI'
 import { useParams } from 'react-router-dom'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 const LessonUpdate = () => {
   
@@ -106,9 +107,8 @@ const LessonUpdate = () => {
 
               <CCol sm="4">
                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""} name='status'>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  <option value={""} disabled>Seçiniz</option>
+                  {GetStatusOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>

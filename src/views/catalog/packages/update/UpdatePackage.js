@@ -18,6 +18,7 @@ import {
 } from '@coreui/react'
 import { GetByIdPackage, UpdatePackage } from 'src/api/catalog/PackageAPI'
 import { useParams } from 'react-router-dom'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 const PackageUpdate = () => {
 
@@ -92,7 +93,7 @@ const PackageUpdate = () => {
                             </CCol>
                         </CRow>
 
-                        <CRow>
+                        <CRow className='mt-4'>
                             <CCol sm="6">
                                 <CFormInput onChange={e => setCredit(e.target.value)} value={(credit!=null) ? credit : ""} name='credit' type="number" label="Kredi" required />
                                 <CFormFeedback invalid>Lütfen kredi giriniz.</CFormFeedback>
@@ -101,8 +102,7 @@ const PackageUpdate = () => {
                             <CCol sm="6">
                                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""}>
                                     <option value={0}>Seçiniz</option>
-                                    <option value={1}>Aktif</option>
-                                    <option value={-1}>Pasif</option>
+                                    {GetStatusOptions()}
                                 </CFormSelect>
                                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
                             </CCol>

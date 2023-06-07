@@ -18,6 +18,7 @@ import {
   CFormLabel,
 } from '@coreui/react'
 import { AddNotifications } from 'src/api/catalog/NotificationAPI'
+import { GetNotificationStatusOptions, GetNotificationTypeOptions } from 'src/definitions/Enums/NotificationEnums'
 
 const NotificationAdd = () => {
 
@@ -77,10 +78,8 @@ const NotificationAdd = () => {
             <CRow>
               <CCol sm="6">
                 <CFormSelect onChange={e => setType(e.target.value)} name='type' label="Tip:" required>
-                  <option value={""}>Seçiniz</option>
-                  <option value={0}>SMS</option>
-                  <option value={1}>Mail</option>
-                  <option value={2}>Bildirim</option>
+                  <option value={""} disabled>Seçiniz</option>
+                  {GetNotificationTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen bildirim tipi giriniz.</CFormFeedback>
               </CCol>

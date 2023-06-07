@@ -16,6 +16,7 @@ import {
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { AddCourse } from 'src/api/catalog/CourseAPI'
+import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
 
 const CourseAdd = () => {
 
@@ -29,7 +30,6 @@ const CourseAdd = () => {
   const [courseType, setCourseType] = useState(null)
   const [onSale, setOnSale] = useState(null)
   const [price, setPrice] = useState(null)
-  const [status, setStatus] = useState(null)
 
   const [image, setImage] = useState(null)
 
@@ -46,7 +46,6 @@ const CourseAdd = () => {
     courseType: parseInt(courseType),
     onSale: parseInt(onSale),
     price: parseFloat(price),
-    status: parseInt(status),
     image: image,
   }
 
@@ -130,9 +129,8 @@ const CourseAdd = () => {
             <CRow className="mt-4">
               <CCol sm="6">
                 <CFormSelect onChange={e => setCourseType(e.target.value)} label="Kurs Tipi" required>
-                  <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value="" disabled>Seçiniz</option>
+                  {GetCourseTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs tipi seçiniz.</CFormFeedback>
               </CCol>
@@ -148,24 +146,16 @@ const CourseAdd = () => {
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormInput id='fileInput' onChange={e => setImage(e.target.value)} name='image' type="file" label="Resim" /> 
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormInput type="number" onChange={e => setPrice(e.target.value)} label="Fiyat" required />
                 <CFormFeedback invalid>Lütfen fiyat giriniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="4">
-                <CFormSelect onChange={e => setStatus(e.target.value)} label="Statü" required>
-                  <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
-              </CCol>
             </CRow>
 
             <CRow className="mt-4">

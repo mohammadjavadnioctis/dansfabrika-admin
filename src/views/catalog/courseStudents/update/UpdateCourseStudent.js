@@ -15,6 +15,7 @@ import {
 import { GetByIdCourseStudent, UpdateCourseStudent } from 'src/api/catalog/Course-StudentAPI'
 import { useParams } from 'react-router-dom'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 const CourseStudentUpdate = () => {
 
@@ -124,9 +125,8 @@ const CourseStudentUpdate = () => {
 
               <CCol sm="6">
                 <CFormSelect label="Statü Seçiniz:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""} name='status' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  <option value={""}>Seçiniz</option>
+                  {GetStatusOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>

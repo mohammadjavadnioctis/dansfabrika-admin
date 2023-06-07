@@ -20,6 +20,7 @@ import { AddTrainer, AddTrainerImages, GetByIdTrainer, UpdateTrainer } from 'src
 import { useParams } from 'react-router-dom'
 import { ImageFormatterGeneral } from 'src/definitions/GridLink'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 
 const TrainerUpdate = () => {
@@ -142,9 +143,8 @@ const TrainerUpdate = () => {
             <CRow className="mt-4">
               <CCol sm="6">
                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='reference_id'>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={""}>Seçiniz</option>
+                  {GetStatusOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>

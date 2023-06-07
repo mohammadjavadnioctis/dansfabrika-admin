@@ -21,7 +21,6 @@ const LessonAdd = () => {
   const [day, setDay] = useState(null)
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
-  const [status, setStatus] = useState(null)
 
   const [validated, setValidated] = useState(false)
 
@@ -30,7 +29,6 @@ const LessonAdd = () => {
     day: parseInt(day),
     startTime: startTime,
     endTime: endTime,
-    status: parseInt(status)
   }
  
   const handleSubmit = (event) => {
@@ -77,24 +75,16 @@ const LessonAdd = () => {
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormInput type="time" onChange={e => setStartTime(e.target.value)} name='start_time' label="Başlangıç Saati" required />
                 <CFormFeedback invalid>Lütfen başlangıç tarihi giriniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormInput type="time" onChange={e => setEndTime(e.target.value)} name='end_time' label="Bitiş Saati" required />
                 <CFormFeedback invalid>Lütfen bitiş tarihi giriniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="4">
-                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} name='status'>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
-              </CCol>
             </CRow>
 
             <CRow className="mt-4">
