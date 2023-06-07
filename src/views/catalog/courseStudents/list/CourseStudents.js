@@ -12,12 +12,13 @@ import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
-import { GridLinkDelete, GridLinkUpdate, gridStyle } from 'src/definitions/GridLink'
+import { DateFormat, GridLinkDelete, GridLinkUpdate, gridStyle } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
 import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel  } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { DeleteCourseStudent, GetAllCourseStudents } from 'src/api/catalog/Course-StudentAPI'
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
@@ -25,15 +26,20 @@ const defaultFilterValue = [
 ]
 
 const title = [
-  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
-  { name: 'courseId', header: 'Kurs Id' },
-  { name: 'studentId', header: 'Öğrenci Id' },
-  { name: 'startDate', header: 'Başlangıç Tarihi' },
-  { name: 'endDate', header: 'Bitiş Tarihi' },
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
+  { name: 'courseId', header: 'Kurs Adı' },
+  { name: 'studentId', header: 'Öğrenci İsmi' },
+  { name: 'startDate', header: 'Başlangıç Tarihi', render: ({ data }) => (
+    <DateFormat date={data.startDate}></DateFormat>
+  )},
+  { name: 'endDate', header: 'Bitiş Tarihi', render: ({ data }) => (
+    <DateFormat date={data.endDate}></DateFormat>
+  )},
   { name: 'paidPrice', header: 'Ödenen Tutar' },
-  { name: 'status', header: 'Statü' },
-  { name: 'createdDate', header: 'Oluşturulma Tarihi' },
-  { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+  { name: 'status', header: 'Durum', render: ({ data }) => (
+    GetStatusName(data.status)
+  )},
+  { name: 'actions', minWidth: 300, header: 'Aksiyon', render: ({ data }) => (
     <div>
       <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/courseStudents/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
       <GridLinkDelete onClick={()=>DeleteCourseStudent(data.id)} title={"Sil"}></GridLinkDelete>

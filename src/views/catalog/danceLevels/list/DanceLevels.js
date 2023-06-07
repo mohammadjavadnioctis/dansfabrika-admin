@@ -18,6 +18,7 @@ import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { DeleteDanceLevel, GetAllDanceLevels } from 'src/api/catalog/Dance-LevelAPI'
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 
 const defaultFilterValue = [
@@ -26,9 +27,13 @@ const defaultFilterValue = [
 ]
 
 const title = [
-  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
-  { name: 'name', defaultFlex: 2, header: 'Ad' },
-  { name: 'status', defaultFlex: 2, header: 'Statü' },
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
+  { name: 'name', defaultFlex: 2, header: 'Dans Seviye Adı' },
+  {
+    name: 'status', defaultFlex: 3, header: 'Durum', render: ({ data }) => (
+      GetStatusName(data.status) 
+    )
+  },
   {
     name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
       <div>
@@ -74,7 +79,7 @@ const DanceTypes = () => {
         <CCol>
           <CCard>
             <CCardHeader className="bg-dark">
-              <CFormLabel className="mt-1 text-light">Dans Levelleri</CFormLabel>
+              <CFormLabel className="mt-1 text-light">Dans Seviyeleri</CFormLabel>
 
               <CButton
                 className="float-end bg-light text-dark"

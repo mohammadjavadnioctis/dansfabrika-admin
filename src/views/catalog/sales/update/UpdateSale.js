@@ -15,6 +15,7 @@ import {
 import { UpdateSale, GetByIdSale } from 'src/api/catalog/SaleAPI'
 import { useParams } from 'react-router-dom'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
+import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
 
 const SaleUpdate = () => {
   
@@ -102,9 +103,8 @@ const SaleUpdate = () => {
 
               <CCol sm="6">
                 <CFormSelect label="Tip:" onChange={e => setType(e.target.value)} value={(type!=null) ? type : ""} name='type' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  <option value={0} disabled>Seçiniz</option>
+                  {GetCourseTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen tip seçiniz.</CFormFeedback>
               </CCol>

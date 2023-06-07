@@ -45,7 +45,7 @@ const DanceTypeAdd = () => {
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
-          <span className='text-white'>Dans Tipi Ekle</span>
+          <span className='text-white'>Dans Türü Ekle</span>
         </CCardHeader>
         <CCardBody>
           <CForm

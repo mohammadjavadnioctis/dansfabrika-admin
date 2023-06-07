@@ -18,6 +18,7 @@ import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { DeletePackage, GetAllPackages } from 'src/api/catalog/PackageAPI'
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
@@ -26,11 +27,15 @@ const defaultFilterValue = [
 ]
 
 const title = [
-  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
-  { name: 'name', defaultFlex: 2, header: 'Ad' },
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
+  { name: 'name', defaultFlex: 2, header: 'Paket Adı' },
   { name: 'description', defaultFlex: 3, header: 'Açıklama' },
-  { name: 'price', defaultFlex: 3, header: 'Tutar' },
-  { name: 'status', defaultFlex: 2, header: 'Statü' },
+  { name: 'credit', defaultFlex: 3, header: 'Paket Kredi' },
+  {
+    name: 'status', defaultFlex: 3, header: 'Durum', render: ({ data }) => (
+      GetStatusName(data.status)
+    )
+  },
   {
     name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
       <div>

@@ -18,6 +18,7 @@ import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel  } from "react-icons/fa";
 import { DeleteSlider, GetAllSliders } from 'src/api/catalog/SliderAPI'
 import { BASE_URL } from 'src/config/Config'
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 
 const defaultFilterValue = [
@@ -28,13 +29,17 @@ const defaultFilterValue = [
 
 const title = [
   { name: 'id', type: 'number', maxWidth: 40, header: 'ID', defaultVisible: false },
-  { name: 'queue', defaultFlex: 2, header: 'Sıra' },
-  { name: 'name', defaultFlex: 3, header: 'Ad' },
-  { name: 'description', defaultFlex: 3, header: 'Açıklama' },
+  { name: 'queue', defaultFlex: 2, header: 'Slider Sıra' },
+  { name: 'name', defaultFlex: 3, header: 'Slider Başlık' },
+  { name: 'description', defaultFlex: 3, header: 'Slider Açıklama' },
   { name: 'image', defaultFlex: 3, header: 'Resim', render: ({ data }) => (
     <ImageFormatter src={data.image}></ImageFormatter>
   )},
-  { name: 'status', defaultFlex: 3, header: 'Statü' },
+  {
+    name: 'status', defaultFlex: 3, header: 'Durum', render: ({ data }) => (
+      GetStatusName(data.status) 
+    )
+  },
   { name: 'actions', defaultFlex:3, header: 'Aksiyon', render: ({ data }) => (
     <div>
       <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/sliders/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>

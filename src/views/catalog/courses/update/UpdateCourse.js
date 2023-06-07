@@ -19,6 +19,7 @@ import { AddCourse, GetByIdCourse, UpdateCourse } from 'src/api/catalog/CourseAP
 import { useParams } from 'react-router-dom'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
+import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
 
 const CourseUpdate = () => {
 
@@ -53,7 +54,6 @@ const CourseUpdate = () => {
     onSale: parseInt(onSale),
     price: parseFloat(price),
     status: parseInt(status),
-    image: image,
   }
 
   const handleSubmit = (event) => {
@@ -86,7 +86,6 @@ const CourseUpdate = () => {
             setOnSale(response.data.onSale)
             setPrice(response.data.price)
             setStatus(response.data.status)
-            setImage(response.data.image)
         })
         .catch(error => {
             console.log(error);
@@ -157,9 +156,8 @@ const CourseUpdate = () => {
             <CRow className="mt-4">
               <CCol sm="6">
                 <CFormSelect onChange={e => setCourseType(e.target.value)} value={(courseType != null) ? courseType : ""} label="Kurs Tipi" required>
-                  <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value="" disabled>Seçiniz</option>
+                  {GetCourseTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs tipi seçiniz.</CFormFeedback>
               </CCol>
@@ -167,8 +165,8 @@ const CourseUpdate = () => {
               <CCol sm="6">
                 <CFormSelect onChange={e => setOnSale(e.target.value)} value={(onSale != null) ? onSale : ""} label="Satış Durumu" required>
                   <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={1}>Satışa Açık</option>
+                  <option value={-1}>Satışa Kapalı</option>
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen satış durumunu seçiniz.</CFormFeedback>
               </CCol>

@@ -138,8 +138,8 @@ const CourseAdd = () => {
               <CCol sm="6">
                 <CFormSelect onChange={e => setOnSale(e.target.value)} label="Satış Durumu" required>
                   <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={1}>Satışa Açık</option>
+                  <option value={-1}>Satışa Kapalı</option>
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen satış durumunu seçiniz.</CFormFeedback>
               </CCol>

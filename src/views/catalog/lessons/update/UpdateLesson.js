@@ -15,6 +15,7 @@ import {
 import { GetByIdLesson, UpdateLesson } from 'src/api/catalog/LessonAPI'
 import { useParams } from 'react-router-dom'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
+import { GetDayOptions } from 'src/definitions/Enums/DayEnum'
 
 const LessonUpdate = () => {
   
@@ -89,7 +90,10 @@ const LessonUpdate = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="number" onChange={e => setDay(e.target.value)} value={(day!=null) ? day : ""} name='day' label="Gün" required />
+                <CFormSelect onChange={e => setDay(e.target.value)} value={(day!=null) ? day : ""} name='day' label="Gün" required>
+                  <option value={""} disabled>Seçiniz</option>
+                  {GetDayOptions()}
+                </CFormSelect>
                 <CFormFeedback invalid>Lütfen gün giriniz.</CFormFeedback>
               </CCol>
             </CRow>

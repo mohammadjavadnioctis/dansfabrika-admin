@@ -12,12 +12,14 @@ import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
-import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
+import { DateFormat, GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
 import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { DeleteCourse, GetAllCourses } from 'src/api/catalog/CourseAPI'
+import { GetCourseTypeName } from 'src/definitions/Enums/CourseTypeEnums'
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
@@ -26,21 +28,35 @@ const defaultFilterValue = [
 ]
 
 const title = [
-  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
-  { name: 'danceTypeId', header: 'Dans Tipi' },
-  { name: 'danceLevelId', header: 'Dans Leveli' },
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
+  { name: 'danceTypeId', header: 'Dans Türü', render: ({ data }) => (
+    data.danceType.name
+  )},
+  { name: 'danceLevelId', header: 'Dans Seviyesi', render: ({ data }) => (
+    data.danceLevel.name
+  )},
   { name: 'capacity', header: 'Kapasite' },
-  { name: 'trainerId', header: 'Eğitmen' },
+  { name: 'trainerId', header: 'Eğitmen Adı', render: ({ data }) => (
+      data.trainer.name
+  )},
   { name: 'description', header: 'Açıklama' },
-  { name: 'startDate', header: 'Başlangıç Tarihi' },
-  { name: 'endDate', header: 'Bitiş Tarihi' },
-  { name: 'courseType', header: 'Kurs Tipi' },
+  { name: 'startDate', header: 'Başlangıç Tarihi', render: ({ data }) => (
+    <DateFormat date={data.startDate}></DateFormat>
+  )},
+  { name: 'endDate', header: 'Bitiş Tarihi', render: ({ data }) => (
+    <DateFormat date={data.endDate}></DateFormat>
+  )},
+  { name: 'courseType', header: 'Kurs Tipi', render: ({ data }) => (
+    GetCourseTypeName(data.courseType)
+  )},
   { name: 'onSale', header: 'Satış Durumu' },
   { name: 'image', header: 'Resim', render: ({ data }) => (
     <ImageFormatter src={data.image}></ImageFormatter>
   )},
   { name: 'price', header: 'Fiyat' },
-  { name: 'status', header: 'Statü' },
+  { name: 'status', header: 'Durum', render: ({ data }) => (
+    GetStatusName(data.status)
+  )},
   {
     name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
       <div>

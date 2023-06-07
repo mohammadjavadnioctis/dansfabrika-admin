@@ -13,6 +13,7 @@ import {
   CButton,
 } from '@coreui/react'
 import { AddSale } from 'src/api/catalog/SaleAPI'
+import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
 
 const SaleAdd = () => {
   
@@ -83,9 +84,8 @@ const SaleAdd = () => {
 
               <CCol sm="6">
                 <CFormSelect label="Tip:" onChange={e => setType(e.target.value)} name='type' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  <option value={0} disabled>Seçiniz</option>
+                  {GetCourseTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen tip seçiniz.</CFormFeedback>
               </CCol>

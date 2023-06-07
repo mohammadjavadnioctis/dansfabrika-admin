@@ -27,11 +27,10 @@ const defaultFilterValue = [
 ]
 
 const title = [
-  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
-  { name: 'attendanceDate', defaultFlex: 2, header: 'Yoklama Tarihi' },
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
   { name: 'courseId', defaultFlex: 3, header: 'Kurs Id' },
   { name: 'lessonId', defaultFlex: 3, header: 'Ders Id' },
-  { name: 'studentId', defaultFlex: 2, header: 'Öğrenci Id' },
+  { name: 'studentId', defaultFlex: 2, header: 'Öğrenci İsmi' },
   {
     name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
       <div>

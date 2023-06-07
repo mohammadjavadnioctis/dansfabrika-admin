@@ -13,10 +13,11 @@ import {
   CButton,
 } from '@coreui/react'
 import { AddLesson } from 'src/api/catalog/LessonAPI'
+import { GetDayOptions } from 'src/definitions/Enums/DayEnum'
 
 
 const LessonAdd = () => {
-  
+
   const [courseId, setCourseId] = useState(null)
   const [day, setDay] = useState(null)
   const [startTime, setStartTime] = useState(null)
@@ -30,14 +31,14 @@ const LessonAdd = () => {
     startTime: startTime,
     endTime: endTime,
   }
- 
+
   const handleSubmit = (event) => {
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.stopPropagation()
       setValidated(true)
     }
-    else{
+    else {
       setValidated(false)
       AddLesson(body)  // Ekleme fonksiyonu
     }
@@ -47,8 +48,8 @@ const LessonAdd = () => {
   return (
     <CContainer>
       <CCard>
-      <CCardHeader className="bg-dark">
-          <span className='text-white'>Ders Ekle</span>
+        <CCardHeader className="bg-dark">
+          <span className='text-white'>Kurs Günü Ekle</span>
         </CCardHeader>
         <CCardBody>
           <CForm
@@ -60,7 +61,7 @@ const LessonAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect onChange={e => setCourseId(e.target.value)} name='courseId' label="Kurs:" required>
+                <CFormSelect onChange={e => setCourseId(e.target.value)} name='courseId' label="Kurs Seçiniz" required>
                   <option value={""}>Seçiniz</option>
                   <option value={1}>Admin</option>
                   <option value={2}>Kullanıcı</option>
@@ -69,7 +70,10 @@ const LessonAdd = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="number" onChange={e => setDay(e.target.value)} name='day' label="Gün" required />
+                <CFormSelect onChange={e => setDay(e.target.value)} value={(day != null) ? day : ""} name='day' label="Gün" required>
+                  <option value={""} disabled>Seçiniz</option>
+                  {GetDayOptions()}
+                </CFormSelect>
                 <CFormFeedback invalid>Lütfen gün giriniz.</CFormFeedback>
               </CCol>
             </CRow>
@@ -89,7 +93,7 @@ const LessonAdd = () => {
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:'100%'}}>
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>
                   Kaydet
                 </CButton>
               </CCol>

@@ -13,7 +13,7 @@ import React, { useCallback, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
-import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle} from 'src/definitions/GridLink'
+import { DateFormat, GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle} from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
 import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel } from "react-icons/fa";
@@ -29,6 +29,7 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 const defaultFilterValue = [
   { name: 'email', operator: 'startsWith', type: 'string' },
@@ -56,9 +57,9 @@ const Students = () => {
   }
 
   const title = [
-    { name: 'id', type: 'number', header: 'ID', defaultVisible: true },
-    { name: 'name', header: 'Ad' },
-    { name: 'identity', header: 'Otomatik Artan' },
+    { name: 'id', type: 'number', header: 'ID', defaultVisible: false },
+    { name: 'name', header: 'Adı Soyadı' },
+    { name: 'identity', header: 'T.C. No' },
     { name: 'email',  header: 'Email' },
     { name: 'phone', header: 'Telefon' },
     { name: 'image', header: 'Resim', render: ({ data }) => (
@@ -66,13 +67,19 @@ const Students = () => {
     )},
     { name: 'country',  header: 'Ülke' },
     { name: 'gender', header: 'Cinsiyet' },
-    { name: 'birthday', header: 'Doğum Tarihi' },
+    { name: 'birthday', header: 'Doğum Tarihi', render: ({ data }) => (
+      <DateFormat date={data.birthday}></DateFormat>
+    )},
     { name: 'credit',  header: 'Kredi' },
     { name: 'score', header: 'Skor' },
-    { name: 'referance', header: 'Referans' },
+    { name: 'reference', header: 'Referans' },
     { name: 'referanceId',header: 'Referans Id' },
     { name: 'code',  header: 'Kod' },
-    { name: 'status', header: 'Statü' },
+    {
+      name: 'status', header: 'Durum', render: ({ data }) => (
+        GetStatusName(data.status)
+      )
+    },
     { name: 'actions', minWidth: 375, header: 'Aksiyon', render: ({ data }) => (
       <div>
         <CButton onClick={() => toggleShow(data.id)} style={{marginRight: 5}}>Şifre Güncelle</CButton>

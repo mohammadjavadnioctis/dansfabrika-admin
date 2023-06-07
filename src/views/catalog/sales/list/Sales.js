@@ -12,12 +12,13 @@ import React, { useEffect, useState } from 'react'
 import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
-import { GridLinkDelete, GridLinkUpdate, gridStyle } from 'src/definitions/GridLink'
+import { DateFormat, GridLinkDelete, GridLinkUpdate, gridStyle } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
 import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel  } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { DeleteSale, GetAllSales } from 'src/api/catalog/SaleAPI'
+import { GetCourseTypeName } from 'src/definitions/Enums/CourseTypeEnums'
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
@@ -25,14 +26,21 @@ const defaultFilterValue = [
 ]
 
 const title = [
-  { name: 'id', type: 'number', maxWidth: 70, header: 'ID', defaultVisible: true },
-  { name: 'studentId', header: 'Öğrenci Id' },
-  { name: 'credit', header: 'Kredi' },
-  { name: 'price', header: 'Fiyat' },
-  { name: 'type', header: 'Tip' },
-  { name: 'sellBy', header: 'Satış Tarihi' },
-  { name: 'name', header: 'Öğrenci Adı Soyadı' },
-  { name: 'email', header: 'Öğrenci Email' },
+  { name: 'id', type: 'number', maxWidth: 70, header: 'ID', defaultVisible: false },
+  { name: 'name', header: 'Öğrenci İsmi', render: ({ data }) => (
+    data.student.name
+  )},
+  { name: 'credit', header: 'Paket Kredi' },
+  { name: 'price', header: 'Satış Fiyat' },
+  { name: 'sellBy', header: 'Satış Tarihi', render: ({ data }) => (
+    <DateFormat date={data.sellBy}></DateFormat>
+  )},
+  { name: 'email', header: 'Öğrenci Email', render: ({ data }) => (
+    data.student.email
+  )},
+  { name: 'type', header: 'Satış Tipi', render: ({ data }) => (
+    GetCourseTypeName(data.type)
+  )},
   { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
     <div>
       <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/sales/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
@@ -62,17 +70,7 @@ const Sales = () => {
   useEffect(() => {
     GetAllSales()
     .then((response) => {
-      const sale = response.data.map((item) => ({
-        id:item.id,
-        studentId: item.studentId,
-        credit: item.credit,
-        price: item.price,
-        type: item.type,
-        sellBy: item.sellBy,
-        name: item.student.name,
-        email: item.student.email
-      }))
-      setSales(sale)
+      setSales(response.data)
     })
     .catch((error) => {
       console.log(error)

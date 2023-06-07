@@ -43,7 +43,7 @@ const DanceLevelAdd = () => {
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
-          <span className='text-white'>Dans Leveli Ekle</span>
+          <span className='text-white'>Dans Seviyesi Ekle</span>
         </CCardHeader>
         <CCardBody>
           <CForm

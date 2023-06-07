@@ -68,7 +68,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Dans Tipleri',
+    name: 'Dans Türleri',
     to: '/catalog/danceTypes/list',
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },

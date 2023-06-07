@@ -13,12 +13,13 @@ import ReactDataGrid from '@inovua/reactdatagrid-community'
 import '@inovua/reactdatagrid-community/index.css'
 import { cilPlus } from '@coreui/icons'
 import { DeleteAdmin, GetAllAdmins } from 'src/api/catalog/AdminAPI'
-import { GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
+import { DateFormat, GridLinkDelete, GridLinkUpdate, ImageFormatter, gridStyle } from 'src/definitions/GridLink'
 import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableHeader'
 import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { DeleteTrainer, GetAllTrainers } from 'src/api/catalog/TrainerAPI'
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 const defaultFilterValue = [
   { name: 'name', operator: 'startsWith', type: 'string' },
@@ -27,15 +28,19 @@ const defaultFilterValue = [
 
 const title = [
   { name: 'id', type: 'number', header: 'ID', defaultVisible: true },
-  { name: 'name', header: 'Ad' },
-  { name: 'birthday', header: 'Doğum Tarihi' },
+  { name: 'name', header: 'Ad Soyad' },
+  { name: 'birthday', header: 'Doğum Tarihi', render: ({ data }) => (
+    <DateFormat date={data.birthday} />
+  )},
   { name: 'email', header: 'Email' },
-  { name: 'phone', header: 'Şifre' },
   { name: 'image', header: 'Resim', render: ({ data }) => (
     <ImageFormatter src={data.image}></ImageFormatter>
   )},
-  { name: 'description', header: 'Açıklama' },
-  { name: 'status', header: 'Statü' },
+  {
+    name: 'status', defaultFlex: 3, header: 'Durum', render: ({ data }) => (
+      GetStatusName(data.status) 
+    )
+  },
   {
     name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
       <div>

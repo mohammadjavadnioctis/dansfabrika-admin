@@ -62,7 +62,7 @@ const DanceLevelUpdate = () => {
         <CContainer>
             <CCard>
                 <CCardHeader className="bg-dark">
-                    <span className='text-white'>Dans Leveli Güncelle</span>
+                    <span className='text-white'>Dans Seviyesi Güncelle</span>
                 </CCardHeader>
                 <CCardBody>
                     <CForm

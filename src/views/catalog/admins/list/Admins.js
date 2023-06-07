@@ -69,7 +69,7 @@ const Admins = () => {
       )
     },
     {
-      name: 'status', defaultFlex: 3, header: 'Statü', render: ({ data }) => (
+      name: 'status', defaultFlex: 3, header: 'Durum', render: ({ data }) => (
         GetStatusName(data.status)
       )
     },

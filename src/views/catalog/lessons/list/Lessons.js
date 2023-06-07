@@ -18,6 +18,8 @@ import { IconDatatableHead, SpanDatatableHead } from 'src/definitions/DatatableH
 import { downloadExcel } from "react-export-table-to-excel"
 import { FaFileExcel  } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
+import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
+import { GetDayName } from 'src/definitions/Enums/DayEnum'
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
@@ -25,14 +27,17 @@ const defaultFilterValue = [
 ]
 
 const title = [
-  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: true },
-  { name: 'courseId', header: 'Kurs Id' },
-  { name: 'day', header: 'Gün' },
+  { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
+  { name: 'courseId', minWidth: 275, header: 'Kurs Adı' },
+  { name: 'day', header: 'Kurs Günü', render: ({ data }) => (
+    GetDayName(data.day)
+  )},
   { name: 'startTime', header: 'Başlangıç Saati' },
   { name: 'endTime', header: 'Bitiş Saati' },
-  { name: 'status', header: 'Statü' },
-  { name: 'createdDate', header: 'Oluşturulma Tarihi' },
-  { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+  { name: 'status', header: 'Durum', render: ({ data }) => (
+    GetStatusName(data.status)
+  )},
+  { name: 'actions', minWidth: 300, header: 'Aksiyon', render: ({ data }) => (
     <div>
       <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/lessons/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
       <GridLinkDelete onClick={()=>DeleteLesson(data.id)} title={"Sil"}></GridLinkDelete>
