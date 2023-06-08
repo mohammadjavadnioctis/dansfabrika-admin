@@ -16,6 +16,8 @@ import { GetByIdCourseStudent, UpdateCourseStudent } from 'src/api/catalog/Cours
 import { useParams } from 'react-router-dom'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
+import useCourseData from 'src/definitions/SelectData/Course'
+import useStudentData from 'src/definitions/SelectData/Student'
 
 const CourseStudentUpdate = () => {
 
@@ -27,9 +29,12 @@ const CourseStudentUpdate = () => {
   const [status, setStatus] = useState(null)
   const [createdDate, setCreatedDate] = useState(null)
 
-  const {id} = useParams()
+  const { id } = useParams()
 
   const [validated, setValidated] = useState(false)
+
+  const courses = useCourseData();
+  const students = useStudentData();
 
   const body = {
     id: parseInt(id),
@@ -50,25 +55,25 @@ const CourseStudentUpdate = () => {
     }
     else {
       setValidated(false)
-      UpdateCourseStudent(body)  
+      UpdateCourseStudent(body)
     }
     event.preventDefault()
   }
 
   useEffect(() => {
     GetByIdCourseStudent(id)
-    .then(response => {
-      setCourseId(response.data.courseId)
-      setStudentId(response.data.studentId)
-      setStartDate(SetDateFormat(response.data.startDate))
-      setEndDate(SetDateFormat(response.data.endDate))
-      setPaidPrice(response.data.paidPrice)
-      setStatus(response.data.status)
-      setCreatedDate(response.data.createdDate)
-    })
-    .catch(error => {
-      console.log(error);
-    })
+      .then(response => {
+        setCourseId(response.data.courseId)
+        setStudentId(response.data.studentId)
+        setStartDate(SetDateFormat(response.data.startDate))
+        setEndDate(SetDateFormat(response.data.endDate))
+        setPaidPrice(response.data.paidPrice)
+        setStatus(response.data.status)
+        setCreatedDate(response.data.createdDate)
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }, []);
 
   return (
@@ -87,19 +92,21 @@ const CourseStudentUpdate = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect label="Kurs Seçiniz:" onChange={e => setCourseId(e.target.value)} value={(courseId!=null) ? courseId : ""} name='course_id' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                <CFormSelect label="Kurs Seçiniz:" onChange={e => setCourseId(e.target.value)} value={(courseId != null) ? courseId : ""} name='course_id' required>
+                  <option value={""}>Seçiniz</option>
+                  {courses.map(course => (
+                    <option key={course.id} value={course.id}>{course.description}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect label="Öğrenci Seçiniz:" onChange={e => setStudentId(e.target.value)} value={(studentId!=null) ? studentId : ""} name='student_id' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                <CFormSelect label="Öğrenci Seçiniz:" onChange={e => setStudentId(e.target.value)} value={(studentId != null) ? studentId : ""} name='student_id' required>
+                  <option value={""}>Seçiniz</option>
+                  {students.map(student => (
+                    <option key={student.id} value={student.id}>{student.name}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen öğrenci seçiniz.</CFormFeedback>
               </CCol>
@@ -107,24 +114,24 @@ const CourseStudentUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="date" label="Başlangıç Tarihi" onChange={e => setStartDate(e.target.value)} value={(startDate!=null) ? startDate : ""} name='start_date' required />
+                <CFormInput type="date" label="Başlangıç Tarihi" onChange={e => setStartDate(e.target.value)} value={(startDate != null) ? startDate : ""} name='start_date' required />
                 <CFormFeedback invalid>Lütfen başlangıç tarihi giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="date" label="Bitiş Tarihi" onChange={e => setEndDate(e.target.value)} value={(endDate!=null) ? endDate : ""} name='end_date' required />
+                <CFormInput type="date" label="Bitiş Tarihi" onChange={e => setEndDate(e.target.value)} value={(endDate != null) ? endDate : ""} name='end_date' required />
                 <CFormFeedback invalid>Lütfen bitiş tarihi giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="text" label="Ödenen Tutar" onChange={e => setPaidPrice(e.target.value)} value={(paidPrice!=null) ? paidPrice : ""} name='paid_price' required />
+                <CFormInput type="text" label="Ödenen Tutar" onChange={e => setPaidPrice(e.target.value)} value={(paidPrice != null) ? paidPrice : ""} name='paid_price' required />
                 <CFormFeedback invalid>Lütfen ödenen tutarı giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect label="Statü Seçiniz:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""} name='status' required>
+                <CFormSelect label="Statü Seçiniz:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='status' required>
                   <option value={""}>Seçiniz</option>
                   {GetStatusOptions()}
                 </CFormSelect>

@@ -16,18 +16,21 @@ import { GetByIdLesson, UpdateLesson } from 'src/api/catalog/LessonAPI'
 import { useParams } from 'react-router-dom'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 import { GetDayOptions } from 'src/definitions/Enums/DayEnum'
+import useCourseData from 'src/definitions/SelectData/Course'
 
 const LessonUpdate = () => {
-  
+
   const [courseId, setCourseId] = useState(null)
   const [day, setDay] = useState(null)
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
   const [status, setStatus] = useState(null)
 
-  const {id} = useParams()
+  const { id } = useParams()
 
   const [validated, setValidated] = useState(false)
+
+  const courses = useCourseData();
 
   const body = {
     id: parseInt(id),
@@ -37,14 +40,14 @@ const LessonUpdate = () => {
     endTime: endTime,
     status: parseInt(status)
   }
- 
+
   const handleSubmit = (event) => {
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.stopPropagation()
       setValidated(true)
     }
-    else{
+    else {
       setValidated(false)
       UpdateLesson(body)  // Ekleme fonksiyonu
     }
@@ -53,22 +56,22 @@ const LessonUpdate = () => {
 
   useEffect(() => {
     GetByIdLesson(id)
-    .then(response => {
-      setCourseId(response.data.courseId)
-      setDay(response.data.day)
-      setStartTime(response.data.startTime)
-      setEndTime(response.data.endTime)
-      setStatus(response.data.status)
-    })
-    .catch(error => {
-      console.log(error);
-    })
+      .then(response => {
+        setCourseId(response.data.courseId)
+        setDay(response.data.day)
+        setStartTime(response.data.startTime)
+        setEndTime(response.data.endTime)
+        setStatus(response.data.status)
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }, []);
 
   return (
     <CContainer>
       <CCard>
-      <CCardHeader className="bg-dark">
+        <CCardHeader className="bg-dark">
           <span className='text-white'>Ders Güncelle</span>
         </CCardHeader>
         <CCardBody>
@@ -81,16 +84,17 @@ const LessonUpdate = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect onChange={e => setCourseId(e.target.value)} value={(courseId!=null) ? courseId : ""} name='courseId' label="Kurs:" required>
+                <CFormSelect onChange={e => setCourseId(e.target.value)} value={(courseId != null) ? courseId : ""} name='courseId' label="Kurs:" required>
                   <option value={""}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  {courses.map(course => (
+                    <option key={course.id} value={course.id}>{course.description}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect onChange={e => setDay(e.target.value)} value={(day!=null) ? day : ""} name='day' label="Gün" required>
+                <CFormSelect onChange={e => setDay(e.target.value)} value={(day != null) ? day : ""} name='day' label="Gün" required>
                   <option value={""} disabled>Seçiniz</option>
                   {GetDayOptions()}
                 </CFormSelect>
@@ -100,17 +104,17 @@ const LessonUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="4">
-                <CFormInput type="time" onChange={e => setStartTime(e.target.value)} value={(startTime!=null) ? startTime : ""} name='start_time' label="Başlangıç Saati" required />
+                <CFormInput type="time" onChange={e => setStartTime(e.target.value)} value={(startTime != null) ? startTime : ""} name='start_time' label="Başlangıç Saati" required />
                 <CFormFeedback invalid>Lütfen başlangıç tarihi giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="4">
-                <CFormInput type="time" onChange={e => setEndTime(e.target.value)} value={(endTime!=null) ? endTime : ""} name='end_time' label="Bitiş Saati" required />
+                <CFormInput type="time" onChange={e => setEndTime(e.target.value)} value={(endTime != null) ? endTime : ""} name='end_time' label="Bitiş Saati" required />
                 <CFormFeedback invalid>Lütfen bitiş tarihi giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="4">
-                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""} name='status'>
+                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='status'>
                   <option value={""} disabled>Seçiniz</option>
                   {GetStatusOptions()}
                 </CFormSelect>
@@ -120,7 +124,7 @@ const LessonUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:'100%'}}>
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>
                   Kaydet
                 </CButton>
               </CCol>

@@ -17,6 +17,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { AddCourse } from 'src/api/catalog/CourseAPI'
 import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
+import useDanceTypeData from 'src/definitions/SelectData/DanceType'
+import useDanceLevelData from 'src/definitions/SelectData/DanceLevel'
+import useTrainerData from 'src/definitions/SelectData/Trainer'
+
 
 const CourseAdd = () => {
 
@@ -34,6 +38,10 @@ const CourseAdd = () => {
   const [image, setImage] = useState(null)
 
   const [validated, setValidated] = useState(false)
+
+  const danceTypes = useDanceTypeData();
+  const danceLevels = useDanceLevelData();
+  const trainers = useTrainerData();
 
   const body = {
     danceTypeId: parseInt(danceTypeId),
@@ -81,18 +89,20 @@ const CourseAdd = () => {
             <CRow>
               <CCol sm="6">
                 <CFormSelect label="Dans Tipi Seçiniz:" onChange={e => setDanceTypeId(e.target.value)} name='dans_type_id' required>
-                  <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={""}>Seçiniz</option>
+                  {danceTypes.map(danceType => (
+                    <option key={danceType.id} value={danceType.id}>{danceType.name}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen dans tipi seçiniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
                 <CFormSelect onChange={e => setDanceLevelId(e.target.value)} label="Dans Leveli" name="dance_level_id" required>
-                  <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={""}>Seçiniz</option>
+                  {danceLevels.map(danceLevel => (
+                    <option key={danceLevel.id} value={danceLevel.id}>{danceLevel.name}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen dans leveli seçiniz.</CFormFeedback>
               </CCol>
@@ -106,9 +116,10 @@ const CourseAdd = () => {
 
               <CCol sm="6">
                 <CFormSelect onChange={e => setTrainerId(e.target.value)} label="Eğitmen Seçiniz:" required>
-                  <option value="">Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
+                  <option value={""}>Seçiniz</option>
+                  {trainers.map(trainer => (
+                    <option key={trainer.id} value={trainer.id}>{trainer.name}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen eğitmen seçiniz.</CFormFeedback>
               </CCol>

@@ -15,6 +15,10 @@ import {
   CFormLabel,
 } from '@coreui/react'
 import { AddAttendance } from 'src/api/catalog/AttandanceAPI'
+import useCourseData from 'src/definitions/SelectData/Course'
+import useStudentData from 'src/definitions/SelectData/Student'
+import useLessonData from 'src/definitions/SelectData/Lesson'
+
 
 const AttendanceAdd = () => {
 
@@ -24,6 +28,10 @@ const AttendanceAdd = () => {
   const [studentId, setStudentId] = useState(null)
 
   const [validated, setValidated] = useState(false)
+
+  const courses = useCourseData();
+  const students = useStudentData();
+  const lessons = useLessonData();
 
   const body = {
     attendanceDate: attendanceDate,
@@ -68,9 +76,10 @@ const AttendanceAdd = () => {
 
               <CCol sm="6">
                 <CFormSelect onChange={e => setCourseId(e.target.value)} name='course_id' label="Kurs:">
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={2}>Pasif</option>
+                <option value={""}>Seçiniz</option>
+                {courses.map(course => (
+                  <option key={course.id} value={course.id}>{course.description}</option>
+                ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
               </CCol>
@@ -79,17 +88,19 @@ const AttendanceAdd = () => {
             <CRow className="mt-4">
               <CCol sm="6">
                 <CFormSelect onChange={e => setLessonId(e.target.value)} name='lesson_id' label="Ders:">
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={2}>Pasif</option>
+                  <option value={""}>Seçiniz</option>
+                  {lessons.map(lesson => (
+                  <option key={lesson.id} value={lesson.id}>{lesson.id}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen ders seçiniz.</CFormFeedback>
               </CCol>
               <CCol sm="6">
                 <CFormSelect onChange={e => setStudentId(e.target.value)} name='student_id' label="Öğrenci:">
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={10}>Pasif</option>
+                  <option value={""}>Seçiniz</option>
+                  {students.map(student => (
+                  <option key={student.id} value={student.id}>{student.name}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen öğrenci seçiniz.</CFormFeedback>
               </CCol>

@@ -14,6 +14,7 @@ import {
 } from '@coreui/react'
 import { AddLesson } from 'src/api/catalog/LessonAPI'
 import { GetDayOptions } from 'src/definitions/Enums/DayEnum'
+import useCourseData from 'src/definitions/SelectData/Course'
 
 
 const LessonAdd = () => {
@@ -24,6 +25,8 @@ const LessonAdd = () => {
   const [endTime, setEndTime] = useState(null)
 
   const [validated, setValidated] = useState(false)
+
+  const courses = useCourseData();
 
   const body = {
     courseId: parseInt(courseId),
@@ -63,8 +66,9 @@ const LessonAdd = () => {
               <CCol sm="6">
                 <CFormSelect onChange={e => setCourseId(e.target.value)} name='courseId' label="Kurs Seçiniz" required>
                   <option value={""}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  {courses.map(course => (
+                    <option key={course.id} value={course.id}>{course.description}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
               </CCol>

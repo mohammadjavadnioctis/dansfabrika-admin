@@ -54,7 +54,7 @@ export async function AddCourse(body) {
                 } 
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
         GetSwal('Hata', error.response.data['message'], 'error')

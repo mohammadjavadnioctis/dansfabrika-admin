@@ -2,6 +2,7 @@ import ApiManager from "../ApiManager";
 import Swal from 'sweetalert2'
 import { GetBasicSwal, GetBasicSwalUrl, GetSwal } from "src/definitions/Alert";
 import axios from "axios";
+import { ControlErrorMessage } from "src/definitions/Enums/ErrorEnums";
 
 export async function GetAllStudents(params) {
     try {
@@ -34,7 +35,7 @@ export async function DeleteStudent(id) {
                         }
                     })
                     .catch((error) => {
-                        Swal.fire('Başarısız!', error.response.data.message[0], 'error')
+                        Swal.fire('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
                     })
             }
         })
@@ -56,7 +57,7 @@ export async function AddStudent(body,formData) {
                 }   
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
         GetSwal('Hata', error.response.data['message'], 'error')
@@ -77,7 +78,7 @@ export async function AddStudentImages(formData) {
                 }
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message, 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message), 'error')
             })
 
     } catch (error) {
@@ -110,7 +111,7 @@ export async function UpdateStudent(body) {
                 }
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
         GetSwal('Hata', error.response.data['message'], 'error')
@@ -129,7 +130,7 @@ export async function UpdateStudentPassword(body) {
                 }
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
         GetSwal('Hata', error.response.data['message'], 'error')

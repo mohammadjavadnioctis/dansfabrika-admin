@@ -1,6 +1,7 @@
 import ApiManager from "../ApiManager";
 import Swal from 'sweetalert2'
 import { GetBasicSwal, GetBasicSwalUrl, GetSwal } from "src/definitions/Alert";
+import { ControlErrorMessage } from "src/definitions/Enums/ErrorEnums";
 
 
 
@@ -27,7 +28,7 @@ export async function AddNotifications(body) {
                 }
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
         GetSwal('Hata', error.response.data['message'], 'error')

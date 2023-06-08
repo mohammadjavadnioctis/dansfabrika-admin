@@ -1,6 +1,7 @@
 import ApiManager from "../ApiManager";
 import Swal from 'sweetalert2'
 import { GetBasicSwal, GetBasicSwalUrl, GetSwal } from "src/definitions/Alert";
+import { ControlErrorMessage } from "src/definitions/Enums/ErrorEnums";
 
 
 export async function GetAllCalendars() {
@@ -32,7 +33,7 @@ export async function DeleteCalendar(id) {
                         }
                     })
                     .catch((error) => {
-                        Swal.fire('Başarısız!', error.response.data.message[0], 'error')
+                        Swal.fire('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
                     })
             }
         })
@@ -54,7 +55,7 @@ export async function AddCalendar(body,formData) {
                 }
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
         GetSwal('Hata', error.response.data['message'], 'error')
@@ -74,7 +75,7 @@ export async function AddCalendarImages(formData) {
                 }
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message, 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
 
     } catch (error) {
@@ -106,7 +107,7 @@ export async function UpdateCalendar(body) {
                 }
             })
             .catch((error) => {
-                GetSwal('Başarısız!', error.response.data.message[0], 'error')
+                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
         GetSwal('Hata', error.response.data['message'], 'error')

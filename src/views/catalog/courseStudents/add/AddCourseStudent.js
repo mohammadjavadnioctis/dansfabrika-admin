@@ -13,6 +13,8 @@ import {
   CButton,
 } from '@coreui/react'
 import { AddCourseStudent } from 'src/api/catalog/Course-StudentAPI'
+import useCourseData from 'src/definitions/SelectData/Course'
+import useStudentData from 'src/definitions/SelectData/Student'
 
 const CourseStudentAdd = () => {
 
@@ -24,6 +26,9 @@ const CourseStudentAdd = () => {
   const [createdDate, setCreatedDate] = useState(null)
 
   const [validated, setValidated] = useState(false)
+
+  const courses = useCourseData();
+  const students = useStudentData();
 
   const body = {
     courseId: parseInt(courseId),
@@ -64,18 +69,20 @@ const CourseStudentAdd = () => {
             <CRow>
               <CCol sm="6">
                 <CFormSelect label="Kurs Seçiniz:" onChange={e => setCourseId(e.target.value)} name='course_id' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                <option value={""}>Seçiniz</option>
+                {courses.map(course => (
+                  <option key={course.id} value={course.id}>{course.description}</option>
+                ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
                 <CFormSelect label="Öğrenci Seçiniz:" onChange={e => setStudentId(e.target.value)} name='student_id' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Admin</option>
-                  <option value={2}>Kullanıcı</option>
+                  <option value={""}>Seçiniz</option>
+                  {students.map(student => (
+                  <option key={student.id} value={student.id}>{student.name}</option>
+                  ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen öğrenci seçiniz.</CFormFeedback>
               </CCol>
