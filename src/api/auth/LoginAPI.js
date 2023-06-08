@@ -1,7 +1,7 @@
 import { BASE_URL } from "src/config/Config";
 import ApiManager from "../ApiManager";
 import { GetBasicSwalUrl, GetSwal } from "src/definitions/Alert";
-import { cookies, expireTime } from "src/definitions/Cookies/NewCookies";
+import { cookies } from "src/definitions/Cookies/NewCookies";
 import { ControlErrorMessage } from "src/definitions/Enums/ErrorEnums";
 
 export async function AdminLogin(body) {
@@ -12,7 +12,8 @@ export async function AdminLogin(body) {
         })
             .then((response) => {
                 if(response.status==201){
-                    cookies.set("jwt",response.data.accessToken, { expires: expireTime, sameSite: 'none', secure: true })
+                    cookies.set("jwt",response.data.accessToken, { sameSite: 'none', secure: true })
+                    
                     GetBasicSwalUrl('Başarılı!', "Giriş başarılı.", 'success', 'dashboard')
                 }
                 else{

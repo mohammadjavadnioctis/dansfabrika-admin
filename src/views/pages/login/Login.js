@@ -48,6 +48,7 @@ const Login = () => {
     event.preventDefault()
   }
 
+  /*
   useEffect(() => {
     const interval = setInterval(() => {
       window.location.reload();
@@ -55,6 +56,7 @@ const Login = () => {
   
     return () => clearInterval(interval);
   }, [])
+  */
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">

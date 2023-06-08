@@ -1,8 +1,10 @@
 import React, { Component, Suspense, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 import './scss/style.scss'
 import PrivateRoute from './route/PrivateRoute'
 import routes from './routes'
+import CheckToken from './route/CheckToken'
+import AutoRefreshPage from './route/AutoRefresh'
 
 const loading = (
   <div className="pt-3 text-center">
@@ -17,13 +19,13 @@ const DefaultLayout = React.lazy(() => import('./layout/DefaultLayout'))
 const Login = React.lazy(() => import('./views/pages/login/Login'))
 
 
-
-
 class App extends Component {
   render() {
     return (
       <Router>
         <Suspense fallback={loading}>
+          <CheckToken />
+          <AutoRefreshPage />
           <Routes>
             <Route path="/login" name="Login Page" element={<Login />} />
             <Route exact path="/" element={<DefaultLayout />} >
