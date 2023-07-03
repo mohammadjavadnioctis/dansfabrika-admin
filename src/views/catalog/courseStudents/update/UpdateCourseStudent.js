@@ -18,6 +18,7 @@ import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 import useCourseData from 'src/definitions/SelectData/Course'
 import useStudentData from 'src/definitions/SelectData/Student'
+import Select from 'react-select';
 
 const CourseStudentUpdate = () => {
 
@@ -38,8 +39,8 @@ const CourseStudentUpdate = () => {
 
   const body = {
     id: parseInt(id),
-    courseId: parseInt(courseId),
-    studentId: parseInt(studentId),
+    courseId: courseId ? parseInt(courseId.value) : null,
+    studentId: studentId ? parseInt(studentId.value) : null,
     startDate: startDate,
     endDate: endDate,
     paidPrice: parseFloat(paidPrice),
@@ -59,12 +60,12 @@ const CourseStudentUpdate = () => {
     }
     event.preventDefault()
   }
-
+console.log(studentId)
   useEffect(() => {
     GetByIdCourseStudent(id)
       .then(response => {
-        setCourseId(response.data.courseId)
-        setStudentId(response.data.studentId)
+        setCourseId({ value: response.data.courseId, label: response.data.course.danceType.name + ' ' + response.data.course.danceLevel.name + ' ' + response.data.course.trainer.name })
+        setStudentId({ value: response.data.studentId, label: response.data.student.name})
         setStartDate(SetDateFormat(response.data.startDate))
         setEndDate(SetDateFormat(response.data.endDate))
         setPaidPrice(response.data.paidPrice)
@@ -75,6 +76,16 @@ const CourseStudentUpdate = () => {
         console.log(error);
       })
   }, []);
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredStudents = students.filter((student) =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const filteredCourses = courses.filter((course) =>
+    course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   return (
     <CContainer>
@@ -92,23 +103,38 @@ const CourseStudentUpdate = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect label="Kurs Seçiniz:" onChange={e => setCourseId(e.target.value)} value={(courseId != null) ? courseId : ""} name='course_id' required>
-                  <option value={""}>Seçiniz</option>
-                  {courses.map(course => (
-                    <option key={course.id} value={course.id}>{course.description}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
+                <label htmlFor="courseSelect">Kurs Seçiniz</label>
+                <Select
+                  className='mt-2'
+                  name="course"
+                  required
+                  value={(courseId != null) ? courseId : ""}
+                  onChange={(selectedOption) => setCourseId(selectedOption)}
+                  options={filteredCourses.map((course) => ({
+                    value: course.id,
+                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                  }))}
+                />
+                {validated && courseId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen kurs seçiniz.</CFormFeedback>
+                )}
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect label="Öğrenci Seçiniz:" onChange={e => setStudentId(e.target.value)} value={(studentId != null) ? studentId : ""} name='student_id' required>
-                  <option value={""}>Seçiniz</option>
-                  {students.map(student => (
-                    <option key={student.id} value={student.id}>{student.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen öğrenci seçiniz.</CFormFeedback>
+                <label htmlFor="studentSelect">Öğrenci Seçiniz</label>
+                <Select
+                  className='mt-2'
+                  value={(studentId != null) ? studentId : ""}
+                  required
+                  onChange={(selectedOption) => setStudentId(selectedOption)}
+                  options={filteredStudents.map((student) => ({
+                    value: student.id,
+                    label: student.name + ' ' + student.email
+                  }))}
+                />
+                {validated && studentId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen öğrenci seçiniz.</CFormFeedback>
+                )}
               </CCol>
             </CRow>
 
@@ -126,7 +152,7 @@ const CourseStudentUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="text" label="Ödenen Tutar" onChange={e => setPaidPrice(e.target.value)} value={(paidPrice != null) ? paidPrice : ""} name='paid_price' required />
+                <CFormInput type="number" label="Ödenen Tutar" onChange={e => setPaidPrice(e.target.value)} value={(paidPrice != null) ? paidPrice : ""} name='paid_price' required />
                 <CFormFeedback invalid>Lütfen ödenen tutarı giriniz.</CFormFeedback>
               </CCol>
 
@@ -141,7 +167,7 @@ const CourseStudentUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3">
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>
                   Kaydet
                 </CButton>
               </CCol>

@@ -12,6 +12,7 @@ import {
   CFormFeedback,
   CButton,
   CFormLabel,
+  CFormText,
 } from '@coreui/react'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
@@ -20,7 +21,8 @@ import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
 import useDanceTypeData from 'src/definitions/SelectData/DanceType'
 import useDanceLevelData from 'src/definitions/SelectData/DanceLevel'
 import useTrainerData from 'src/definitions/SelectData/Trainer'
-
+import Select from 'react-select';
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 
 const CourseAdd = () => {
 
@@ -34,6 +36,7 @@ const CourseAdd = () => {
   const [courseType, setCourseType] = useState(null)
   const [onSale, setOnSale] = useState(null)
   const [price, setPrice] = useState(null)
+  const [status, setStatus] = useState(null)
 
   const [image, setImage] = useState(null)
 
@@ -44,10 +47,10 @@ const CourseAdd = () => {
   const trainers = useTrainerData();
 
   const body = {
-    danceTypeId: parseInt(danceTypeId),
-    danceLevelId: parseInt(danceLevelId),
+    danceTypeId: danceTypeId ? parseInt(danceTypeId.value) : null,
+    danceLevelId: danceLevelId ? parseInt(danceLevelId.value) : null,
     capacity: parseInt(capacity),
-    trainerId: parseInt(trainerId),
+    trainerId: trainerId ? parseInt(trainerId.value) : null,
     description: description,
     startDate: startDate,
     endDate: endDate,
@@ -55,6 +58,7 @@ const CourseAdd = () => {
     onSale: parseInt(onSale),
     price: parseFloat(price),
     image: image,
+    status: parseInt(status)
   }
 
   const handleSubmit = (event) => {
@@ -63,6 +67,7 @@ const CourseAdd = () => {
 
     if (form.checkValidity() === false) {
       event.stopPropagation()
+
       setValidated(true)
     }
     else {
@@ -73,12 +78,27 @@ const CourseAdd = () => {
 
   }
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredDanceTypes = danceTypes.filter((danceType) =>
+    danceType.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredDanceLevels = danceLevels.filter((danceLevel) =>
+    danceLevel.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredTrainers = trainers.filter((trainer) =>
+    trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
           <span className='text-white'>Kurs Ekle</span>
         </CCardHeader>
+
         <CCardBody>
           <CForm
             className="row needs-validation"
@@ -88,40 +108,64 @@ const CourseAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect label="Dans Tipi Seçiniz:" onChange={e => setDanceTypeId(e.target.value)} name='dans_type_id' required>
-                  <option value={""}>Seçiniz</option>
-                  {danceTypes.map(danceType => (
-                    <option key={danceType.id} value={danceType.id}>{danceType.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen dans tipi seçiniz.</CFormFeedback>
+                <label htmlFor="danceTypeSelect">Dans Tipi Seçiniz:</label>
+                <Select
+                  className='mt-2'
+                  name="dans_type_id"
+                  required
+                  value={danceTypeId}
+                  onChange={(selectedOption) => setDanceTypeId(selectedOption)}
+                  options={filteredDanceTypes.map((danceType) => ({
+                    value: danceType.id,
+                    label: danceType.name,
+                  }))}
+                />
+                {validated && danceTypeId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen dans tipi seçiniz.</CFormFeedback>
+                )}
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect onChange={e => setDanceLevelId(e.target.value)} label="Dans Leveli" name="dance_level_id" required>
-                  <option value={""}>Seçiniz</option>
-                  {danceLevels.map(danceLevel => (
-                    <option key={danceLevel.id} value={danceLevel.id}>{danceLevel.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen dans leveli seçiniz.</CFormFeedback>
+                <label htmlFor="danceLevelSelect">Dans Seviyesi Seçiniz:</label>
+                <Select
+                  className='mt-2'
+                  name="dance_level_id"
+                  required
+                  value={danceLevelId}
+                  onChange={(selectedOption) => setDanceLevelId(selectedOption)}
+                  options={filteredDanceLevels.map((danceLevel) => ({
+                    value: danceLevel.id,
+                    label: danceLevel.name,
+                  }))}
+                />
+                {validated && danceLevelId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen dans leveli seçiniz.</CFormFeedback>
+                )}
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="text" onChange={e => setCapacity(e.target.value)} label="Kapasite" required />
+                <CFormInput type="number" onChange={e => setCapacity(e.target.value)} label="Kapasite" required />
                 <CFormFeedback invalid>Lütfen kapasite giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect onChange={e => setTrainerId(e.target.value)} label="Eğitmen Seçiniz:" required>
-                  <option value={""}>Seçiniz</option>
-                  {trainers.map(trainer => (
-                    <option key={trainer.id} value={trainer.id}>{trainer.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen eğitmen seçiniz.</CFormFeedback>
+                <label htmlFor="danceLevelSelect">Eğitmen Seçiniz:</label>
+                <Select
+                  className='mt-2'
+                  name="trainer_id"
+                  required
+                  value={trainerId}
+                  onChange={(selectedOption) => setTrainerId(selectedOption)}
+                  options={filteredTrainers.map((trainer) => ({
+                    value: trainer.id,
+                    label: trainer.name,
+                  }))}
+                />
+                {validated && trainerId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen eğitmen seçiniz.</CFormFeedback>
+                )}
               </CCol>
             </CRow>
 
@@ -140,7 +184,7 @@ const CourseAdd = () => {
             <CRow className="mt-4">
               <CCol sm="6">
                 <CFormSelect onChange={e => setCourseType(e.target.value)} label="Kurs Tipi" required>
-                  <option value="" disabled>Seçiniz</option>
+                  <option value="">Seçiniz</option>
                   {GetCourseTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs tipi seçiniz.</CFormFeedback>
@@ -157,14 +201,22 @@ const CourseAdd = () => {
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="6">
-                <CFormInput id='fileInput' onChange={e => setImage(e.target.value)} name='image' type="file" label="Resim" /> 
+              <CCol sm="4">
+                <CFormInput id='fileInput' onChange={e => setImage(e.target.value)} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="6">
+              <CCol sm="4">
                 <CFormInput type="number" onChange={e => setPrice(e.target.value)} label="Fiyat" required />
                 <CFormFeedback invalid>Lütfen fiyat giriniz.</CFormFeedback>
+              </CCol>
+
+              <CCol sm="4">
+                <CFormSelect onChange={e => setStatus(e.target.value)} label="Statü" required>
+                  <option value="">Seçiniz</option>
+                  {GetStatusOptions()} 
+                </CFormSelect>
+                <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>
 
             </CRow>

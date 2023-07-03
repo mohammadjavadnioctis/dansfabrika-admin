@@ -5,9 +5,20 @@ import { ControlErrorMessage } from "src/definitions/Enums/ErrorEnums";
 
 
 
-export async function GetAllNotifications() {
+export async function GetCourseNotifications(id) {
     try {
-        const data = await ApiManager('notification/', {
+        const data = await ApiManager('notification/course/' + id, {
+            method: 'GET',
+        })
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export async function GetStudentNotifications(id) {
+    try {
+        const data = await ApiManager('notification/student/' + id, {
             method: 'GET',
         })
         return data

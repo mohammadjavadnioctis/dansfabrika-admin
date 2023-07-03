@@ -15,6 +15,7 @@ import {
 import { AddCourseStudent } from 'src/api/catalog/Course-StudentAPI'
 import useCourseData from 'src/definitions/SelectData/Course'
 import useStudentData from 'src/definitions/SelectData/Student'
+import Select from 'react-select';
 
 const CourseStudentAdd = () => {
 
@@ -31,8 +32,8 @@ const CourseStudentAdd = () => {
   const students = useStudentData();
 
   const body = {
-    courseId: parseInt(courseId),
-    studentId: parseInt(studentId),
+    courseId: courseId ? parseInt(courseId.value) : null,
+    studentId: studentId ? parseInt(studentId.value) : null,
     startDate: startDate,
     endDate: endDate,
     paidPrice: parseFloat(paidPrice),
@@ -52,6 +53,16 @@ const CourseStudentAdd = () => {
     event.preventDefault()
   }
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredStudents = students.filter((student) =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const filteredCourses = courses.filter((course) =>
+    course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
   return (
     <CContainer>
       <CCard>
@@ -68,23 +79,38 @@ const CourseStudentAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect label="Kurs Seçiniz:" onChange={e => setCourseId(e.target.value)} name='course_id' required>
-                <option value={""}>Seçiniz</option>
-                {courses.map(course => (
-                  <option key={course.id} value={course.id}>{course.description}</option>
-                ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
+                <label htmlFor="courseSelect">Kurs Seçiniz</label>
+                <Select
+                  className='mt-2'
+                  name="course"
+                  required
+                  value={courseId}
+                  onChange={(selectedOption) => setCourseId(selectedOption)}
+                  options={filteredCourses.map((course) => ({
+                    value: course.id,
+                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                  }))}
+                />
+                {validated && courseId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen kurs seçiniz.</CFormFeedback>
+                )}
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect label="Öğrenci Seçiniz:" onChange={e => setStudentId(e.target.value)} name='student_id' required>
-                  <option value={""}>Seçiniz</option>
-                  {students.map(student => (
-                  <option key={student.id} value={student.id}>{student.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen öğrenci seçiniz.</CFormFeedback>
+                <label htmlFor="studentSelect">Öğrenci Seçiniz</label>
+                <Select
+                  className='mt-2'
+                  value={studentId}
+                  required
+                  onChange={(selectedOption) => setStudentId(selectedOption)}
+                  options={filteredStudents.map((student) => ({
+                    value: student.id,
+                    label: student.name + ' ' + student.email
+                  }))}
+                />
+                {validated && studentId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen öğrenci seçiniz.</CFormFeedback>
+                )}
               </CCol>
             </CRow>
 
@@ -102,14 +128,14 @@ const CourseStudentAdd = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="text" label="Ödenen Tutar" onChange={e => setPaidPrice(e.target.value)} name='paid_price' required />
+                <CFormInput type="number" label="Ödenen Tutar" onChange={e => setPaidPrice(e.target.value)} name='paid_price' required />
                 <CFormFeedback invalid>Lütfen ödenen tutarı giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:"100%"}}>
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: "100%" }}>
                   Kaydet
                 </CButton>
               </CCol>

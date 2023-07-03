@@ -25,6 +25,15 @@ const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
   { name: 'danceTypeId', operator: 'startsWith', type: 'string' },
   { name: 'danceLevelId', operator: 'startsWith', type: 'string' },
+  { name: 'capacity', operator: 'startsWith', type: 'string' },
+  { name: 'trainerId', operator: 'startsWith', type: 'string' },
+  { name: 'description', operator: 'startsWith', type: 'string' },
+  { name: 'startDate', operator: 'startsWith', type: 'string' },
+  { name: 'endDate', operator: 'startsWith', type: 'string' },
+  { name: 'courseType', operator: 'startsWith', type: 'string' },
+  { name: 'onSale', operator: 'startsWith', type: 'string' },
+  { name: 'price', operator: 'startsWith', type: 'string' },
+  { name: 'status', operator: 'startsWith', type: 'string' },
 ]
 
 const title = [
@@ -49,7 +58,9 @@ const title = [
   { name: 'courseType', header: 'Kurs Tipi', render: ({ data }) => (
     GetCourseTypeName(data.courseType)
   )},
-  { name: 'onSale', header: 'Satış Durumu' },
+  { name: 'onSale', header: 'Satış Durumu', render: ({ data }) => (
+    data.onSale === 1 ? "Satışa Açık" : (data.id === -1 ? "Satışa Kapalı" : "Tanımsız")
+  )},
   { name: 'image', header: 'Resim', render: ({ data }) => (
     <ImageFormatter src={data.image}></ImageFormatter>
   )},

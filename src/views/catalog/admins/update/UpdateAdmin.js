@@ -91,7 +91,7 @@ const AdminUpdate = () => {
 
               <CCol sm="6">
                 <CFormSelect onChange={e => setRole(e.target.value)} value={(role!=null) ? role : ""} name='role' label="Rol:">
-                  <option value={0} disabled>Seçiniz</option>
+                  <option value={0}>Seçiniz</option>
 
                   <GetUserRoleOptions></GetUserRoleOptions>
                   
@@ -101,7 +101,7 @@ const AdminUpdate = () => {
 
               <CCol sm="6">
                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status!=null) ? status : ""}>
-                  <option value={""} disabled>Seçiniz</option>
+                  <option value={""}>Seçiniz</option>
                   <GetStatusOptions></GetStatusOptions>
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>

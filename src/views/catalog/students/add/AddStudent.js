@@ -13,6 +13,7 @@ import {
   CButton,
 } from '@coreui/react'
 import { AddStudent } from 'src/api/catalog/StudentAPI'
+import { GetGenderOptions } from 'src/definitions/Enums/GenderEnums'
 
 const StudentAdd = () => {
   const [name, setName] = useState(null)
@@ -24,8 +25,7 @@ const StudentAdd = () => {
   const [birthday, setBirthday] = useState(null)
   const [credit, setCredit] = useState(null)
   const [score, setScore] = useState(null)
-  const [reference, setReference] = useState(null)
-  const [reference_id, setReferenceId] = useState(null)
+  const [country, setCountry] = useState(null)
 
   const [image, setImage] = useState(null)
   const [chooseImage, setChooseImage] = useState(null)
@@ -42,8 +42,7 @@ const StudentAdd = () => {
     birthday: birthday,
     credit: parseInt(credit),
     score: parseInt(score),
-    reference: reference,
-    reference_id: reference_id,
+    country: country,
   }
 
   const handleImageChange = (event) => {
@@ -126,8 +125,11 @@ const StudentAdd = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="text" onChange={e => setGender(e.target.value)} name='gender' label="Gender" required />
-                <CFormFeedback invalid>Lütfen gender giriniz.</CFormFeedback>
+                <CFormSelect onChange={e => setGender(e.target.value)} name='gender' label="Cinsiyet:" required>
+                  <option value={""}>Seçiniz</option>
+                  {GetGenderOptions()}
+                </CFormSelect>
+                <CFormFeedback invalid>Lütfen cinsiyet giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
@@ -138,34 +140,17 @@ const StudentAdd = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="text" onChange={e => setCredit(e.target.value)} name='credit' label="Kredi" required />
+                <CFormInput type="number" onChange={e => setCredit(e.target.value)} name='credit' label="Kredi" required />
                 <CFormFeedback invalid>Lütfen kredi giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="text" onChange={e => setScore(e.target.value)} name='score' label="Skor" required />
+                <CFormInput type="number" onChange={e => setScore(e.target.value)} name='score' label="Skor" required />
                 <CFormFeedback invalid>Lütfen skor giriniz.</CFormFeedback>
               </CCol>
-
-              <CCol sm="6">
-                <CFormInput type="text" onChange={e => setReference(e.target.value)} name='reference' label="Referans" required />
-                <CFormFeedback invalid>Lütfen referans giriniz.</CFormFeedback>
-              </CCol>
               
-            </CRow>
-
-            <CRow className="mt-4">
-              <CCol sm="6">
-                <CFormSelect label="Referans Id Seçiniz:" onChange={e => setReferenceId(e.target.value)} name='reference_id'>
-                  <option value={0}>Seçiniz</option>
-                  <option value={1}>Aktif</option>
-                  <option value={-1}>Pasif</option>
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen referans seçiniz.</CFormFeedback>
-              </CCol>
-
               <CCol sm="6">
                 <CFormInput id='fileInput' onChange={handleImageChange} name='image' type="file" label="Resim" required />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
@@ -174,7 +159,8 @@ const StudentAdd = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                
+                <CFormInput type="text" onChange={e => setCountry(e.target.value)} name='country' label="Ülke" required />
+                <CFormFeedback invalid>Lütfen ülke giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">

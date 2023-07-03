@@ -30,6 +30,7 @@ import {
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
 import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
+import { GetGenderName } from 'src/definitions/Enums/GenderEnums'
 
 const defaultFilterValue = [
   { name: 'email', operator: 'startsWith', type: 'string' },
@@ -66,7 +67,9 @@ const Students = () => {
         <ImageFormatter src={data.image}></ImageFormatter>
     )},
     { name: 'country',  header: 'Ülke' },
-    { name: 'gender', header: 'Cinsiyet' },
+    { name: 'gender', header: 'Cinsiyet', render: ({ data }) => (
+      GetGenderName(data.gender)
+    )},
     { name: 'birthday', header: 'Doğum Tarihi', render: ({ data }) => (
       <DateFormat date={data.birthday}></DateFormat>
     )},

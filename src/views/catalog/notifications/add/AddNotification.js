@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import Select from 'react-select';
 
 import {
   CCard,
@@ -19,6 +20,8 @@ import {
 } from '@coreui/react'
 import { AddNotifications } from 'src/api/catalog/NotificationAPI'
 import { GetNotificationStatusOptions, GetNotificationTypeOptions } from 'src/definitions/Enums/NotificationEnums'
+import useCourseData from 'src/definitions/SelectData/Course'
+import useStudentData from 'src/definitions/SelectData/Student'
 
 const NotificationAdd = () => {
 
@@ -33,6 +36,18 @@ const NotificationAdd = () => {
 
   const [validated, setValidated] = useState(false)
 
+  const courses = useCourseData();
+  const students = useStudentData();
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredCourses = courses.filter((course) =>
+    course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const filteredStudents = students.filter((student) =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   const body = {
     type: parseInt(type),
@@ -40,10 +55,10 @@ const NotificationAdd = () => {
     message: message,
   }
 
-  if(studentId){
+  if (studentId) {
     body.studentId = parseInt(studentId)
   }
-  if(courseId){
+  if (courseId) {
     body.courseId = parseInt(courseId)
   }
 
@@ -78,7 +93,7 @@ const NotificationAdd = () => {
             <CRow>
               <CCol sm="6">
                 <CFormSelect onChange={e => setType(e.target.value)} name='type' label="Tip:" required>
-                  <option value={""} disabled>Seçiniz</option>
+                  <option value={""}>Seçiniz</option>
                   {GetNotificationTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen bildirim tipi giriniz.</CFormFeedback>
@@ -103,25 +118,40 @@ const NotificationAdd = () => {
 
               {selectedValueType == 2 && (
                 <CCol sm="6">
-                  <CFormSelect label="Sınıf Seçiniz" onChange={e => setCourseId(e.target.value)} required>
-                    <option value={""}>Seçiniz</option>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                  </CFormSelect>
-                  <CFormFeedback invalid>Lütfen sınıf seçiniz.</CFormFeedback>
+                  <label htmlFor="courseSelect">Kurs Seçiniz</label>
+                  <Select
+                    className='mt-2'
+                    name="course"
+                    required
+                    value={courseId}
+                    onChange={(selectedOption) => setCourseId(selectedOption)}
+                    options={filteredCourses.map((course) => ({
+                      value: course.id,
+                      label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                    }))}
+                  />
+                  {validated && courseId === null && (
+                    <CFormFeedback style={{ color: "red" }}>Lütfen kurs seçiniz.</CFormFeedback>
+                  )}
                 </CCol>
               )}
 
               {selectedValueType == 3 && (
                 <CCol sm="6">
-                  <CFormSelect label="Öğrenci Seçiniz" onChange={e => setStudentId(e.target.value)} required>
-                    <option value={""}>Seçiniz</option>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={10}>10</option>
-                  </CFormSelect>
-                  <CFormFeedback invalid>Lütfen öğrenci seçiniz.</CFormFeedback>
+                  <label htmlFor="studentSelect">Öğrenci Seçiniz</label>
+                  <Select
+                    className='mt-2'
+                    value={studentId}
+                    required
+                    onChange={(selectedOption) => setStudentId(selectedOption)}
+                    options={filteredStudents.map((student) => ({
+                      value: student.id,
+                      label: student.name + ' ' + student.email
+                    }))}
+                  />
+                  {validated && studentId === null && (
+                    <CFormFeedback style={{ color: "red" }}>Lütfen öğrenci seçiniz.</CFormFeedback>
+                  )}
                 </CCol>
               )}
 

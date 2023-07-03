@@ -69,7 +69,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Dans Levelleri',
+    name: 'Dans Seviyeleri',
     to: '/catalog/danceLevels/list',
     icon: <CIcon icon={cilLevelUp} customClassName="nav-icon" />,
   },
@@ -99,7 +99,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Dersler',
+    name: 'Kurs Haftalık Günleri',
     to: '/catalog/lessons/list',
     icon: <CIcon icon={cilFactorySlash} customClassName="nav-icon" />,
   },

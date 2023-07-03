@@ -24,11 +24,17 @@ import { GetDayName } from 'src/definitions/Enums/DayEnum'
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
   { name: 'courseId', operator: 'startsWith', type: 'string' },
+  { name: 'day', operator: 'startsWith', type: 'string' },
+  { name: 'startTime', operator: 'startsWith', type: 'string' },
+  { name: 'endTime', operator: 'startsWith', type: 'string' },
+  { name: 'status', operator: 'startsWith', type: 'string' },
 ]
 
 const title = [
   { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
-  { name: 'courseId', minWidth: 275, header: 'Kurs Adı' },
+  { name: 'courseId', minWidth: 275, header: 'Kurs Adı', render: ({ data }) => (
+    data.course.danceType.name + ' ' + data.course.danceLevel.name + ' ' + data.course.trainer.name
+  )},
   { name: 'day', header: 'Kurs Günü', render: ({ data }) => (
     GetDayName(data.day)
   )},
@@ -79,14 +85,14 @@ const Lessons = () => {
         <CCol>
           <CCard>
             <CCardHeader className="bg-dark">
-              <CFormLabel className="mt-1 text-light">Dersler</CFormLabel>
+              <CFormLabel className="mt-1 text-light">Kurs Haftalık Günleri</CFormLabel>
 
               <CButton
                 className="float-end bg-light text-dark"
                 href={BASE_URL + 'catalog/lessons/add'}
               >
                 <IconDatatableHead icon={cilPlus}></IconDatatableHead>
-                <SpanDatatableHead text={'Ders Ekle'}></SpanDatatableHead>
+                <SpanDatatableHead text={'Kurs Günü Ekle'}></SpanDatatableHead>
               </CButton>
             </CCardHeader>
 

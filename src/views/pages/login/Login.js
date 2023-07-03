@@ -119,7 +119,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-white py-5" style={{ width: '44%' }}>
+              <CCard className="text-white bg-white py-5">
                 <CCardBody className="text-center container d-flex align-items-center justify-content-center">
                   <CImage
                     className="bg-white"

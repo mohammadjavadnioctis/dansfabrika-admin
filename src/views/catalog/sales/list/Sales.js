@@ -22,7 +22,12 @@ import { GetCourseTypeName } from 'src/definitions/Enums/CourseTypeEnums'
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
-  { name: 'studentId', operator: 'startsWith', type: 'string' },
+  { name: 'name', operator: 'startsWith', type: 'string' },
+  { name: 'credit', operator: 'startsWith', type: 'string' },
+  { name: 'price', operator: 'startsWith', type: 'string' },
+  { name: 'sellBy', operator: 'startsWith', type: 'string' },
+  { name: 'email', operator: 'startsWith', type: 'string' },
+  { name: 'type', operator: 'startsWith', type: 'string' },
 ]
 
 const title = [
@@ -41,7 +46,7 @@ const title = [
   { name: 'type', header: 'Satış Tipi', render: ({ data }) => (
     GetCourseTypeName(data.type)
   )},
-  { name: 'actions', minWidth: 200, header: 'Aksiyon', render: ({ data }) => (
+  { name: 'actions', minWidth: 300, header: 'Aksiyon', render: ({ data }) => (
     <div>
       <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/sales/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
       <GridLinkDelete onClick={()=>DeleteSale(data.id)} title={"Sil"}></GridLinkDelete>

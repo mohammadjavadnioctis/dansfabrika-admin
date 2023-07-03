@@ -78,7 +78,7 @@ const AdminAdd = () => {
 
               <CCol sm="6">
                 <CFormSelect onChange={e => setRole(e.target.value)} name='role' label="Rol:">
-                  <option value={""} disabled>Seçiniz</option>
+                  <option value={""}>Seçiniz</option>
                   {GetUserRoleOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen rol seçiniz.</CFormFeedback>

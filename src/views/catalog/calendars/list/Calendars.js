@@ -22,7 +22,9 @@ import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
-  { name: 'name', operator: 'startsWith', type: 'string' },
+  { name: 'queue', operator: 'startsWith', type: 'string' },
+  { name: 'image', operator: 'startsWith', type: 'string' },
+  { name: 'status', operator: 'startsWith', type: 'string' },
 ]
 
 const title = [

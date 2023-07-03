@@ -25,7 +25,6 @@ class App extends Component {
       <Router>
         <Suspense fallback={loading}>
           <CheckToken />
-          <AutoRefreshPage />
           <Routes>
             <Route path="/login" name="Login Page" element={<Login />} />
             <Route exact path="/" element={<DefaultLayout />} >

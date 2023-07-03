@@ -23,6 +23,7 @@ import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
 import useDanceTypeData from 'src/definitions/SelectData/DanceType'
 import useDanceLevelData from 'src/definitions/SelectData/DanceLevel'
 import useTrainerData from 'src/definitions/SelectData/Trainer'
+import Select from 'react-select';
 
 const CourseUpdate = () => {
 
@@ -41,7 +42,7 @@ const CourseUpdate = () => {
   const [image, setImage] = useState(null)
 
   const { id } = useParams()
-  
+
   const [validated, setValidated] = useState(false)
 
   const danceTypes = useDanceTypeData();
@@ -50,10 +51,10 @@ const CourseUpdate = () => {
 
   const body = {
     id: parseInt(id),
-    danceTypeId: parseInt(danceTypeId),
-    danceLevelId: parseInt(danceLevelId),
+    danceTypeId: danceTypeId ? parseInt(danceTypeId.value) : null,
+    danceLevelId: danceLevelId ? parseInt(danceLevelId.value) : null,
     capacity: parseInt(capacity),
-    trainerId: parseInt(trainerId),
+    trainerId: trainerId ? parseInt(trainerId.value) : null,
     description: description,
     startDate: startDate,
     endDate: endDate,
@@ -81,23 +82,37 @@ const CourseUpdate = () => {
 
   useEffect(() => {
     GetByIdCourse(id)
-        .then(response => {
-            setDanceTypeId(response.data.danceTypeId)
-            setDanceLevelId(response.data.danceLevelId)
-            setCapacity(response.data.capacity)
-            setTrainerId(response.data.trainerId)
-            setDescription(response.data.description)
-            setStartDate(SetDateFormat(response.data.startDate))
-            setEndDate(SetDateFormat(response.data.endDate))
-            setCourseType(response.data.courseType)
-            setOnSale(response.data.onSale)
-            setPrice(response.data.price)
-            setStatus(response.data.status)
-        })
-        .catch(error => {
-            console.log(error);
-        })
-}, []);
+      .then(response => {
+        setDanceTypeId({ value: response.data.danceTypeId, label: response.data.danceType.name })
+        setDanceLevelId({ value: response.data.danceLevelId, label: response.data.danceLevel.name })
+        setCapacity(response.data.capacity)
+        setTrainerId({ value: response.data.trainerId, label: response.data.trainer.name })
+        setDescription(response.data.description)
+        setStartDate(SetDateFormat(response.data.startDate))
+        setEndDate(SetDateFormat(response.data.endDate))
+        setCourseType(response.data.courseType)
+        setOnSale(response.data.onSale)
+        setPrice(response.data.price)
+        setStatus(response.data.status)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }, []);
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredDanceTypes = danceTypes.filter((danceType) =>
+    danceType.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredDanceLevels = danceLevels.filter((danceLevel) =>
+    danceLevel.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredTrainers = trainers.filter((trainer) =>
+    trainer.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <CContainer>
@@ -114,23 +129,39 @@ const CourseUpdate = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect label="Dans Tipi Seçiniz:" onChange={e => setDanceTypeId(e.target.value)} value={(danceTypeId != null) ? danceTypeId : ""} name='dans_type_id' required>
-                  <option value={""}>Seçiniz</option>
-                  {danceTypes.map(danceType => (
-                    <option key={danceType.id} value={danceType.id}>{danceType.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen dans tipi seçiniz.</CFormFeedback>
+                <label htmlFor="danceTypeSelect">Dans Tipi Seçiniz:</label>
+                <Select
+                  className='mt-2'
+                  name="dans_type_id"
+                  required
+                  value={(danceTypeId != null) ? danceTypeId : ""}
+                  onChange={(selectedOption) => setDanceTypeId(selectedOption)}
+                  options={filteredDanceTypes.map((danceType) => ({
+                    value: danceType.id,
+                    label: danceType.name,
+                  }))}
+                />
+                {validated && danceTypeId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen dans tipi seçiniz.</CFormFeedback>
+                )}
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect onChange={e => setDanceLevelId(e.target.value)} value={(danceLevelId != null) ? danceLevelId : ""} label="Dans Leveli" name="dance_level_id" required>
-                  <option value={""}>Seçiniz</option>
-                  {danceLevels.map(danceLevel => (
-                    <option key={danceLevel.id} value={danceLevel.id}>{danceLevel.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen dans leveli seçiniz.</CFormFeedback>
+                <label htmlFor="danceLevelSelect">Dans Seviyesi Seçiniz:</label>
+                <Select
+                  className='mt-2'
+                  name="dance_level_id"
+                  required
+                  value={(danceLevelId != null) ? danceLevelId : ""}
+                  onChange={(selectedOption) => setDanceLevelId(selectedOption)}
+                  options={filteredDanceLevels.map((danceLevel) => ({
+                    value: danceLevel.id,
+                    label: danceLevel.name,
+                  }))}
+                />
+                {validated && danceLevelId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen dans leveli seçiniz.</CFormFeedback>
+                )}
               </CCol>
             </CRow>
 
@@ -141,13 +172,21 @@ const CourseUpdate = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect onChange={e => setTrainerId(e.target.value)} value={(trainerId != null) ? trainerId : ""} label="Eğitmen Seçiniz:" required>
-                  <option value={""}>Seçiniz</option>
-                  {trainers.map(trainer => (
-                    <option key={trainer.id} value={trainer.id}>{trainer.name}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen eğitmen seçiniz.</CFormFeedback>
+                <label htmlFor="danceLevelSelect">Eğitmen Seçiniz:</label>
+                <Select
+                  className='mt-2'
+                  name="trainer_id"
+                  required
+                  value={(trainerId != null) ? trainerId : ""}
+                  onChange={(selectedOption) => setTrainerId(selectedOption)}
+                  options={filteredTrainers.map((trainer) => ({
+                    value: trainer.id,
+                    label: trainer.name,
+                  }))}
+                />
+                {validated && trainerId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen eğitmen seçiniz.</CFormFeedback>
+                )}
               </CCol>
             </CRow>
 
@@ -166,7 +205,7 @@ const CourseUpdate = () => {
             <CRow className="mt-4">
               <CCol sm="6">
                 <CFormSelect onChange={e => setCourseType(e.target.value)} value={(courseType != null) ? courseType : ""} label="Kurs Tipi" required>
-                  <option value="" disabled>Seçiniz</option>
+                  <option value="">Seçiniz</option>
                   {GetCourseTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen kurs tipi seçiniz.</CFormFeedback>
@@ -184,18 +223,18 @@ const CourseUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="4">
-                <CFormInput id='fileInput' onChange={e => setImage(e.target.value)} value={(image != null) ? image : ""} name='image' type="file" label="Resim" /> 
+                <CFormInput id='fileInput' onChange={e => setImage(e.target.value)} value={(image != null) ? image : ""} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="4">
-                <CFormInput type="number" onChange={e => setPrice(e.target.value)} value={(price != null) ? price : ""}label="Fiyat" required />
+                <CFormInput type="number" onChange={e => setPrice(e.target.value)} value={(price != null) ? price : ""} label="Fiyat" required />
                 <CFormFeedback invalid>Lütfen fiyat giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="4">
                 <CFormSelect onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} label="Statü" required>
-                  <option value="" disabled>Seçiniz</option>
+                  <option value="">Seçiniz</option>
                   {GetStatusOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>

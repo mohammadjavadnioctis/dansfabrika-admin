@@ -17,6 +17,7 @@ import { useParams } from 'react-router-dom'
 import { ImageFormatterGeneral } from 'src/definitions/GridLink'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
+import { GetGenderOptions } from 'src/definitions/Enums/GenderEnums'
 
 
 const StudentUpdate = () => {
@@ -29,9 +30,8 @@ const StudentUpdate = () => {
     const [birthday, setBirthday] = useState(null)
     const [credit, setCredit] = useState(null)
     const [score, setScore] = useState(null)
-    const [reference, setReference] = useState(null)
-    const [reference_id, setReferenceId] = useState(null)
     const [status, setStatus] = useState(null)
+    const [country, setCountry] = useState(null)
 
     const { id } = useParams()
     const [image, setImage] = useState(null)
@@ -49,9 +49,8 @@ const StudentUpdate = () => {
         birthday: birthday,
         credit: parseInt(credit),
         score: parseInt(score),
-        reference: parseInt(reference),
-        referenceId: parseInt(reference_id),
         status: parseInt(status),
+        country: country,
     }
 
     const formData = new FormData()
@@ -105,10 +104,9 @@ const StudentUpdate = () => {
                 setBirthday(SetDateFormat(response.data.birthday))
                 setCredit(response.data.credit)
                 setScore(response.data.score)
-                setReference(response.data.reference)
-                setReferenceId(response.data.referenceId)
                 setChooseImage(response.data.image)
                 setStatus(response.data.status)
+                setCountry(response.data.country)
             })
             .catch(error => {
                 console.log(error);
@@ -156,17 +154,18 @@ const StudentUpdate = () => {
                         <CRow className="mt-4">
 
                             <CCol sm="6">
-                                <CFormInput type="text" onChange={e => setGender(e.target.value)} value={(gender != null) ? gender : ""} name='gender' label="Gender" required />
-                                <CFormFeedback invalid>Lütfen gender giriniz.</CFormFeedback>
+                                <CFormSelect onChange={e => setGender(e.target.value)} name='gender' label="Cinsiyet:"  value={(gender != null) ? gender : ""} required>
+                                    <option value={""} disabled>Seçiniz</option>
+                                    {GetGenderOptions()}
+                                </CFormSelect>
                             </CCol>
-                            <CCol sm="6">
+                            <CCol sm="6">   
                                 <CFormInput type="date" onChange={e => setBirthday(e.target.value)} value={(birthday != null) ? birthday : ""} name='birthday' label="Doğum Tarihi" required />
                                 <CFormFeedback invalid>Lütfen doğum tarihinizi giriniz.</CFormFeedback>
                             </CCol>
                         </CRow>
 
                         <CRow className="mt-4">
-
 
                             <CCol sm="6">
                                 <CFormInput type="text" onChange={e => setCredit(e.target.value)} value={(credit != null) ? credit : ""} name='credit' label="Kredi" required />
@@ -180,28 +179,12 @@ const StudentUpdate = () => {
 
                         <CRow className="mt-4">
                             <CCol sm="6">
-                                <CFormInput type="text" onChange={e => setReference(e.target.value)} value={(reference != null) ? reference : ""} name='reference' label="Referans" required />
-                                <CFormFeedback invalid>Lütfen referans giriniz.</CFormFeedback>
-                            </CCol>
-                            <CCol sm="6">
-                                <CFormSelect label="Referans Id Seçiniz:" onChange={e => setReferenceId(e.target.value)} value={(reference_id != null) ? reference_id : ""} name='reference_id'>
-                                    <option value={0}>Seçiniz</option>
-                                    <option value={1}>Aktif</option>
-                                    <option value={2}>Pasif</option>
-                                </CFormSelect>
-                                <CFormFeedback invalid>Lütfen referans seçiniz.</CFormFeedback>
-                            </CCol>
-
-                        </CRow>
-
-                        <CRow className="mt-4">
-                            <CCol sm="6">
                                 <CFormInput onChange={handleImageChange} name='image' type="file" label="Resim" />
                                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
                             </CCol>
                             <CCol sm="6">
-                                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='reference_id'>
-                                    <option value={""} disabled>Seçiniz</option>
+                                <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='status'>
+                                    <option value={""}>Seçiniz</option>
                                     {GetStatusOptions()}
                                 </CFormSelect>
                                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>

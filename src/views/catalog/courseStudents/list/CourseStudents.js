@@ -23,12 +23,21 @@ import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
   { name: 'courseId', operator: 'startsWith', type: 'string' },
+  { name: 'studentId', operator: 'startsWith', type: 'string' },
+  { name: 'startDate', operator: 'startsWith', type: 'string' },
+  { name: 'endDate', operator: 'startsWith', type: 'string' },
+  { name: 'paidPrice', operator: 'startsWith', type: 'string' },
+  { name: 'status', operator: 'startsWith', type: 'string' },
 ]
 
 const title = [
   { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
-  { name: 'courseId', header: 'Kurs Adı' },
-  { name: 'studentId', header: 'Öğrenci İsmi' },
+  { name: 'courseId', minWidth: 200, header: 'Kurs Adı', render: ({ data }) => (
+    data.course.danceType.name + ' ' + data.course.danceLevel.name + ' ' + data.course.trainer.name
+  )},
+  { name: 'studentId', header: 'Öğrenci İsmi', render: ({ data }) => (
+    data.student.name
+  )},
   { name: 'startDate', header: 'Başlangıç Tarihi', render: ({ data }) => (
     <DateFormat date={data.startDate}></DateFormat>
   )},
@@ -39,7 +48,7 @@ const title = [
   { name: 'status', header: 'Durum', render: ({ data }) => (
     GetStatusName(data.status)
   )},
-  { name: 'actions', minWidth: 300, header: 'Aksiyon', render: ({ data }) => (
+  { name: 'actions', minWidth: 250, header: 'Aksiyon', render: ({ data }) => (
     <div>
       <GridLinkUpdate onClick={()=>data.id} href={BASE_URL+'catalog/courseStudents/update/'+data.id} title={"Güncelle"}></GridLinkUpdate>
       <GridLinkDelete onClick={()=>DeleteCourseStudent(data.id)} title={"Sil"}></GridLinkDelete>

@@ -24,6 +24,7 @@ import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
   { name: 'name', operator: 'startsWith', type: 'string' },
+  { name: 'status', operator: 'startsWith', type: 'string' },
 ]
 
 const title = [
@@ -86,7 +87,7 @@ const DanceTypes = () => {
                 href={BASE_URL + 'catalog/danceLevels/add'}
               >
                 <IconDatatableHead icon={cilPlus}></IconDatatableHead>
-                <SpanDatatableHead text={'Dans Leveli Ekle'}></SpanDatatableHead>
+                <SpanDatatableHead text={'Dans Seviyesi Ekle'}></SpanDatatableHead>
               </CButton>
             </CCardHeader>
 

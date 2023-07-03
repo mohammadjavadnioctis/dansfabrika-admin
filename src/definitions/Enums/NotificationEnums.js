@@ -29,3 +29,23 @@ export function GetNotificationTypeOptions() {
         </option>
     ));
 }
+
+export function GetNotificationTypeName(id) {
+    const enumKeys = Object.keys(NotificationTypeEnum);
+    for (const key of enumKeys) {
+      if (NotificationTypeEnum[key] === id) {
+        return key;
+      }
+    }
+    return 'TANIMSIZ';
+}
+
+export function GetNotificationStatusName(id) {
+    const enumKeys = Object.keys(NotificationStatusEnum);
+    for (const key of enumKeys) {
+      if (NotificationStatusEnum[key] === id) {
+        return key;
+      }
+    }
+    return 'TANIMSIZ';
+}

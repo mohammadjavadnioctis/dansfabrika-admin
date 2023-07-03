@@ -14,9 +14,11 @@ import {
 } from '@coreui/react'
 import { AddSale } from 'src/api/catalog/SaleAPI'
 import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
+import Select from 'react-select';
+import useStudentData from 'src/definitions/SelectData/Student';
 
 const SaleAdd = () => {
-  
+
   const [studentId, setStudentId] = useState(null)
   const [credit, setCredit] = useState(null)
   const [price, setPrice] = useState(null)
@@ -25,35 +27,43 @@ const SaleAdd = () => {
 
   const [validated, setValidated] = useState(false)
 
+  const students = useStudentData();
+
   const body = {
-    studentId: parseInt(studentId),
+    studentId: studentId ? parseInt(studentId.value) : null,
     credit: parseInt(credit),
     price: parseFloat(price),
     type: parseInt(type),
     sellBy: sellBy
   }
- 
+
   const handleSubmit = (event) => {
     const form = event.currentTarget
     if (form.checkValidity() === false) {
       event.stopPropagation()
       setValidated(true)
     }
-    else{
+    else {
       setValidated(false)
       AddSale(body)  // Ekleme fonksiyonu
     }
     event.preventDefault()
   }
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredStudents = students.filter((student) =>
+    student.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
   return (
     <CContainer>
       <CCard>
-      <CCardHeader className="bg-dark">
+        <CCardHeader className="bg-dark">
           <span className='text-white'>Satış Ekle</span>
         </CCardHeader>
         <CCardBody>
-        <CForm
+          <CForm
             className="row needs-validation my-form"
             id='my-form'
             noValidate
@@ -62,12 +72,20 @@ const SaleAdd = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect label="Öğrenci Seçiniz" onChange={e => setStudentId(e.target.value)} name='student_id' required>
-                  <option value={0}>Seçiniz</option>
-                  <option value={2}>Admin</option>
-                  <option value={4}>Kullanıcı</option>
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen öğrenci seçiniz.</CFormFeedback>
+                <label>Öğrenci Seçiniz:</label>
+                <Select
+                  className='mt-2'
+                  required
+                  value={studentId}
+                  onChange={(selectedOption) => setStudentId(selectedOption)}
+                  options={filteredStudents.map((student) => ({
+                    value: student.id,
+                    label: student.name,
+                  }))}
+                />
+                {validated && studentId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen öğrenci seçiniz.</CFormFeedback>
+                )}
               </CCol>
 
               <CCol sm="6">
@@ -84,7 +102,7 @@ const SaleAdd = () => {
 
               <CCol sm="6">
                 <CFormSelect label="Tip:" onChange={e => setType(e.target.value)} name='type' required>
-                  <option value={0} disabled>Seçiniz</option>
+                  <option value={""}>Seçiniz</option>
                   {GetCourseTypeOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen tip seçiniz.</CFormFeedback>
@@ -100,7 +118,7 @@ const SaleAdd = () => {
 
             <CRow className="mt-4">
               <CCol sm="12">
-                <CButton color="primary" type="submit" className="float-end mt-3" style={{width:'100%'}}>
+                <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>
                   Kaydet
                 </CButton>
               </CCol>

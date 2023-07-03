@@ -17,6 +17,7 @@ import { useParams } from 'react-router-dom'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 import { GetDayOptions } from 'src/definitions/Enums/DayEnum'
 import useCourseData from 'src/definitions/SelectData/Course'
+import Select from 'react-select';
 
 const LessonUpdate = () => {
 
@@ -34,7 +35,7 @@ const LessonUpdate = () => {
 
   const body = {
     id: parseInt(id),
-    courseId: parseInt(courseId),
+    courseId: courseId ? parseInt(courseId.value) : null,
     day: parseInt(day),
     startTime: startTime,
     endTime: endTime,
@@ -57,7 +58,7 @@ const LessonUpdate = () => {
   useEffect(() => {
     GetByIdLesson(id)
       .then(response => {
-        setCourseId(response.data.courseId)
+        setCourseId({ value: response.data.courseId, label: response.data.course.danceType.name + ' ' + response.data.course.danceLevel.name + ' ' + response.data.course.trainer.name })
         setDay(response.data.day)
         setStartTime(response.data.startTime)
         setEndTime(response.data.endTime)
@@ -67,6 +68,12 @@ const LessonUpdate = () => {
         console.log(error);
       })
   }, []);
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredCourses = courses.filter((course) =>
+    course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   return (
     <CContainer>
@@ -84,13 +91,21 @@ const LessonUpdate = () => {
           >
             <CRow>
               <CCol sm="6">
-                <CFormSelect onChange={e => setCourseId(e.target.value)} value={(courseId != null) ? courseId : ""} name='courseId' label="Kurs:" required>
-                  <option value={""}>Seçiniz</option>
-                  {courses.map(course => (
-                    <option key={course.id} value={course.id}>{course.description}</option>
-                  ))}
-                </CFormSelect>
-                <CFormFeedback invalid>Lütfen kurs seçiniz.</CFormFeedback>
+                <label htmlFor="courseSelect">Kurs Seçiniz</label>
+                <Select
+                  className='mt-2'
+                  name="course"
+                  required
+                  value={(courseId != null) ? courseId : ""}
+                  onChange={(selectedOption) => setCourseId(selectedOption)}
+                  options={filteredCourses.map((course) => ({
+                    value: course.id,
+                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                  }))}
+                />
+                {validated && courseId === null && (
+                  <CFormFeedback style={{ color: "red" }}>Lütfen kurs seçiniz.</CFormFeedback>
+                )}
               </CCol>
 
               <CCol sm="6">
