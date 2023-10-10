@@ -42,7 +42,7 @@ export async function DeleteCourse(id) {
     }
 }
 
-export async function AddCourse(body,formData) {
+export async function AddCourse(body) {
     try {
         const data = ApiManager('course', {
             method: 'POST',
@@ -51,8 +51,8 @@ export async function AddCourse(body,formData) {
             .then((response) => {
                 if (response.status = 200) {
                     console.log(response);
-                    formData.append("id", response.data.id);
-                    AddCourseImages(formData);
+                    formData.append("id", response.data.id)
+                    AddCoursemages(formData)
                  
                 } 
             })
@@ -64,7 +64,7 @@ export async function AddCourse(body,formData) {
     }
 }
 
-export async function AddCourseImages(formData) {
+export async function AddCoursemages(formData) {
     try {
         const data = ApiManager('course', {
             method: 'PATCH',

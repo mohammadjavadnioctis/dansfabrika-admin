@@ -42,7 +42,7 @@ export async function DeleteCourse(id) {
     }
 }
 
-export async function AddCourse(body,formData) {
+export async function AddCourse(body) {
     try {
         const data = ApiManager('course', {
             method: 'POST',
@@ -50,38 +50,13 @@ export async function AddCourse(body,formData) {
         })
             .then((response) => {
                 if (response.status = 200) {
-                    console.log(response);
-                    formData.append("id", response.data.id);
-                    AddCourseImages(formData);
-                 
+                    GetBasicSwalUrl('Başarılı!', 'Kurs başarıyla eklendi', 'success', 'catalog/courses/list')
                 } 
             })
             .catch((error) => {
                 GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message[0]), 'error')
             })
     } catch (error) {
-        GetSwal('Hata', error.response.data['message'], 'error')
-    }
-}
-
-export async function AddCourseImages(formData) {
-    try {
-        const data = ApiManager('course', {
-            method: 'PATCH',
-            data: formData,
-            headers: { "Content-Type": "multipart/form-data" },
-        })
-            .then((response) => {
-                if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Kurs başarıyla eklendi', 'success', 'catalog/courses/list')
-                }
-            })
-            .catch((error) => {
-                GetSwal('Başarısız!', ControlErrorMessage(error.response.data.message), 'error')
-            })
-
-    } catch (error) {
-        console.log(error)
         GetSwal('Hata', error.response.data['message'], 'error')
     }
 }

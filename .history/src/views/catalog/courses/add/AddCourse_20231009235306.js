@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -12,20 +12,19 @@ import {
   CFormFeedback,
   CButton,
   CFormLabel,
+  CFormText,
 } from '@coreui/react'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { AddCourse, GetByIdCourse, UpdateCourse,AddCourseImages} from 'src/api/catalog/CourseAPI'
-import { useParams } from 'react-router-dom'
-import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
-import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
+import { AddCourse } from 'src/api/catalog/CourseAPI'
 import { GetCourseTypeOptions } from 'src/definitions/Enums/CourseTypeEnums'
 import useDanceTypeData from 'src/definitions/SelectData/DanceType'
 import useDanceLevelData from 'src/definitions/SelectData/DanceLevel'
 import useTrainerData from 'src/definitions/SelectData/Trainer'
 import Select from 'react-select';
-import { ImageFormatterGeneral } from 'src/definitions/GridLink'
-const CourseUpdate = () => {
+import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
+
+const CourseAdd = () => {
 
   const [danceTypeId, setDanceTypeId] = useState(null)
   const [danceLevelId, setDanceLevelId] = useState(null)
@@ -40,8 +39,6 @@ const CourseUpdate = () => {
   const [status, setStatus] = useState(null)
 
   const [image, setImage] = useState(null)
-  const [chooseImage, setChooseImage] = useState(null) // only show person
-  const { id } = useParams()
 
   const [validated, setValidated] = useState(false)
 
@@ -50,7 +47,6 @@ const CourseUpdate = () => {
   const trainers = useTrainerData();
 
   const body = {
-    id: parseInt(id),
     danceTypeId: danceTypeId ? parseInt(danceTypeId.value) : null,
     danceLevelId: danceLevelId ? parseInt(danceLevelId.value) : null,
     capacity: parseInt(capacity),
@@ -61,32 +57,9 @@ const CourseUpdate = () => {
     courseType: parseInt(courseType),
     onSale: parseInt(onSale),
     price: parseFloat(price),
-    status: parseInt(status),
+    image: image,
+    status: parseInt(status)
   }
-  const formData = new FormData()
-  formData.append("id", id)
-  formData.append("image", image)
-
-  const handleSubmit = (event) => {
-
-    const form = event.currentTarget
-
-    if (form.checkValidity() === false) {
-      event.stopPropagation()
-      setValidated(true)
-    }
-    else {
-      setValidated(false)
-      UpdateCourse(body)
-      if (image) {
-        AddCourseImages(formData)
-      }
-    }
-    event.preventDefault()
-
-  }
-
-
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -103,26 +76,22 @@ const CourseUpdate = () => {
     }
   };
 
-  useEffect(() => {
-    GetByIdCourse(id)
-      .then(response => {
-        setDanceTypeId({ value: response.data.danceTypeId, label: response.data.danceType.name })
-        setDanceLevelId({ value: response.data.danceLevelId, label: response.data.danceLevel.name })
-        setCapacity(response.data.capacity)
-        setTrainerId({ value: response.data.trainerId, label: response.data.trainer.name })
-        setDescription(response.data.description)
-        setStartDate(SetDateFormat(response.data.startDate))
-        setEndDate(SetDateFormat(response.data.endDate))
-        setCourseType(response.data.courseType)
-        setOnSale(response.data.onSale)
-        setPrice(response.data.price)
-        setStatus(response.data.status)
-        setChooseImage(response.data.image)
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  }, []);
+  const handleSubmit = (event) => {
+
+    const form = event.currentTarget
+
+    if (form.checkValidity() === false) {
+      event.stopPropagation()
+
+      setValidated(true)
+    }
+    else {
+      setValidated(false)
+      AddCourse(body)
+    }
+    event.preventDefault()
+
+  }
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -142,8 +111,9 @@ const CourseUpdate = () => {
     <CContainer>
       <CCard>
         <CCardHeader className="bg-dark">
-          <span className='text-white'>Kurs Güncelle</span>
+          <span className='text-white'>Kurs Ekle</span>
         </CCardHeader>
+
         <CCardBody>
           <CForm
             className="row needs-validation"
@@ -158,7 +128,7 @@ const CourseUpdate = () => {
                   className='mt-2'
                   name="dans_type_id"
                   required
-                  value={(danceTypeId != null) ? danceTypeId : ""}
+                  value={danceTypeId}
                   onChange={(selectedOption) => setDanceTypeId(selectedOption)}
                   options={filteredDanceTypes.map((danceType) => ({
                     value: danceType.id,
@@ -176,7 +146,7 @@ const CourseUpdate = () => {
                   className='mt-2'
                   name="dance_level_id"
                   required
-                  value={(danceLevelId != null) ? danceLevelId : ""}
+                  value={danceLevelId}
                   onChange={(selectedOption) => setDanceLevelId(selectedOption)}
                   options={filteredDanceLevels.map((danceLevel) => ({
                     value: danceLevel.id,
@@ -191,7 +161,7 @@ const CourseUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="text" onChange={e => setCapacity(e.target.value)} value={(capacity != null) ? capacity : ""} label="Kapasite" required />
+                <CFormInput type="number" onChange={e => setCapacity(e.target.value)} label="Kapasite" required />
                 <CFormFeedback invalid>Lütfen kapasite giriniz.</CFormFeedback>
               </CCol>
 
@@ -201,7 +171,7 @@ const CourseUpdate = () => {
                   className='mt-2'
                   name="trainer_id"
                   required
-                  value={(trainerId != null) ? trainerId : ""}
+                  value={trainerId}
                   onChange={(selectedOption) => setTrainerId(selectedOption)}
                   options={filteredTrainers.map((trainer) => ({
                     value: trainer.id,
@@ -216,19 +186,19 @@ const CourseUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormInput type="date" onChange={e => setStartDate(e.target.value)} value={(startDate != null) ? startDate : ""} label="Başlangıç Tarihi" required />
+                <CFormInput type="date" onChange={e => setStartDate(e.target.value)} label="Başlangıç Tarihi" required />
                 <CFormFeedback invalid>Lütfen başlangıç tarihi giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="6">
-                <CFormInput type="date" onChange={e => setEndDate(e.target.value)} value={(endDate != null) ? endDate : ""} label="Bitiş Tarihi" required />
+                <CFormInput type="date" onChange={e => setEndDate(e.target.value)} label="Bitiş Tarihi" required />
                 <CFormFeedback invalid>Lütfen bitiş tarihi giriniz.</CFormFeedback>
               </CCol>
             </CRow>
 
             <CRow className="mt-4">
               <CCol sm="6">
-                <CFormSelect onChange={e => setCourseType(e.target.value)} value={(courseType != null) ? courseType : ""} label="Kurs Tipi" required>
+                <CFormSelect onChange={e => setCourseType(e.target.value)} label="Kurs Tipi" required>
                   <option value="">Seçiniz</option>
                   {GetCourseTypeOptions()}
                 </CFormSelect>
@@ -236,7 +206,7 @@ const CourseUpdate = () => {
               </CCol>
 
               <CCol sm="6">
-                <CFormSelect onChange={e => setOnSale(e.target.value)} value={(onSale != null) ? onSale : ""} label="Satış Durumu" required>
+                <CFormSelect onChange={e => setOnSale(e.target.value)} label="Satış Durumu" required>
                   <option value="">Seçiniz</option>
                   <option value={1}>Satışa Açık</option>
                   <option value={-1}>Satışa Kapalı</option>
@@ -247,43 +217,32 @@ const CourseUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="4">
-                
                 <CFormInput id='fileInput' onChange={handleImageChange} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
+               
               </CCol>
 
               <CCol sm="4">
-                <CFormInput type="number" onChange={e => setPrice(e.target.value)} value={(price != null) ? price : ""} label="Fiyat" required />
+                <CFormInput type="number" onChange={e => setPrice(e.target.value)} label="Fiyat" required />
                 <CFormFeedback invalid>Lütfen fiyat giriniz.</CFormFeedback>
               </CCol>
 
               <CCol sm="4">
-                <CFormSelect onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} label="Statü" required>
+                <CFormSelect onChange={e => setStatus(e.target.value)} label="Statü" required>
                   <option value="">Seçiniz</option>
-                  {GetStatusOptions()}
+                  {GetStatusOptions()} 
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>
+
             </CRow>
-            <CRow className="mt-4">
-              <CCol sm="6">
-              {chooseImage && !image && (
-                  <ImageFormatterGeneral src={chooseImage}></ImageFormatterGeneral>
-                )}
-                {chooseImage && image && (
-                  <img src={chooseImage} alt="Seçilen Resim" width="150" height="150" />
-                )}
-              </CCol>
-              <CCol sm="6">
-              
-              </CCol>
-            </CRow>
+
             <CRow className="mt-4">
               <CCol sm="12">
                 <CFormLabel>Açıklama</CFormLabel>
                 <CKEditor
                   editor={ClassicEditor}
-                  data={(description != null) ? description : ""}
+                  data="Lütfen mesajınızı giriniz."
                   onReady={(editor) => {
                     console.log('Editor is ready to use!', editor)
                   }}
@@ -310,4 +269,4 @@ const CourseUpdate = () => {
   )
 }
 
-export default CourseUpdate
+export default CourseAdd

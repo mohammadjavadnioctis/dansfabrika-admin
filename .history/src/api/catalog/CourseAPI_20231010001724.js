@@ -42,7 +42,7 @@ export async function DeleteCourse(id) {
     }
 }
 
-export async function AddCourse(body,formData) {
+export async function AddCourse(body) {
     try {
         const data = ApiManager('course', {
             method: 'POST',
@@ -50,10 +50,9 @@ export async function AddCourse(body,formData) {
         })
             .then((response) => {
                 if (response.status = 200) {
-                    console.log(response);
-                    formData.append("id", response.data.id);
-                    AddCourseImages(formData);
-                 
+                    formData.append("id", response.data.id)
+                    AddCoursemages(formData)
+                    GetBasicSwalUrl('Başarılı!', 'Kurs başarıyla eklendi', 'success', 'catalog/courses/list')
                 } 
             })
             .catch((error) => {
@@ -64,7 +63,7 @@ export async function AddCourse(body,formData) {
     }
 }
 
-export async function AddCourseImages(formData) {
+export async function AddCoursemages(formData) {
     try {
         const data = ApiManager('course', {
             method: 'PATCH',
@@ -73,7 +72,7 @@ export async function AddCourseImages(formData) {
         })
             .then((response) => {
                 if (response.status = 200) {
-                    GetBasicSwalUrl('Başarılı!', 'Kurs başarıyla eklendi', 'success', 'catalog/courses/list')
+                    GetBasicSwalUrl('Başarılı!', 'Resim başarıyla eklendi.', 'success', 'catalog/trainers/list')
                 }
             })
             .catch((error) => {

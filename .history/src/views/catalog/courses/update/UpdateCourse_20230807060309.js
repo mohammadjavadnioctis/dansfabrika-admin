@@ -15,7 +15,7 @@ import {
 } from '@coreui/react'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import { AddCourse, GetByIdCourse, UpdateCourse,AddCourseImages} from 'src/api/catalog/CourseAPI'
+import { AddCourse, GetByIdCourse, UpdateCourse } from 'src/api/catalog/CourseAPI'
 import { useParams } from 'react-router-dom'
 import { SetDateFormat } from 'src/definitions/DateFormat/GetDateFormat'
 import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
@@ -24,7 +24,7 @@ import useDanceTypeData from 'src/definitions/SelectData/DanceType'
 import useDanceLevelData from 'src/definitions/SelectData/DanceLevel'
 import useTrainerData from 'src/definitions/SelectData/Trainer'
 import Select from 'react-select';
-import { ImageFormatterGeneral } from 'src/definitions/GridLink'
+
 const CourseUpdate = () => {
 
   const [danceTypeId, setDanceTypeId] = useState(null)
@@ -40,7 +40,7 @@ const CourseUpdate = () => {
   const [status, setStatus] = useState(null)
 
   const [image, setImage] = useState(null)
-  const [chooseImage, setChooseImage] = useState(null) // only show person
+
   const { id } = useParams()
 
   const [validated, setValidated] = useState(false)
@@ -63,9 +63,6 @@ const CourseUpdate = () => {
     price: parseFloat(price),
     status: parseInt(status),
   }
-  const formData = new FormData()
-  formData.append("id", id)
-  formData.append("image", image)
 
   const handleSubmit = (event) => {
 
@@ -78,30 +75,10 @@ const CourseUpdate = () => {
     else {
       setValidated(false)
       UpdateCourse(body)
-      if (image) {
-        AddCourseImages(formData)
-      }
     }
     event.preventDefault()
 
   }
-
-
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    setImage(file)
-
-    reader.onload = (e) => {
-      setChooseImage(e.target.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
 
   useEffect(() => {
     GetByIdCourse(id)
@@ -117,7 +94,6 @@ const CourseUpdate = () => {
         setOnSale(response.data.onSale)
         setPrice(response.data.price)
         setStatus(response.data.status)
-        setChooseImage(response.data.image)
       })
       .catch(error => {
         console.log(error);
@@ -247,8 +223,7 @@ const CourseUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="4">
-                
-                <CFormInput id='fileInput' onChange={handleImageChange} name='image' type="file" label="Resim" />
+                <CFormInput id='fileInput' onChange={e => setImage(e.target.value)} value={(image != null) ? image : ""} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
 
@@ -265,19 +240,7 @@ const CourseUpdate = () => {
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>
             </CRow>
-            <CRow className="mt-4">
-              <CCol sm="6">
-              {chooseImage && !image && (
-                  <ImageFormatterGeneral src={chooseImage}></ImageFormatterGeneral>
-                )}
-                {chooseImage && image && (
-                  <img src={chooseImage} alt="Seçilen Resim" width="150" height="150" />
-                )}
-              </CCol>
-              <CCol sm="6">
-              
-              </CCol>
-            </CRow>
+
             <CRow className="mt-4">
               <CCol sm="12">
                 <CFormLabel>Açıklama</CFormLabel>

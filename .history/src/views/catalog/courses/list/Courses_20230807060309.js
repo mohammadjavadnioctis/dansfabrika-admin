@@ -99,7 +99,6 @@ const Courses = () => {
   useEffect(() => {
     GetAllCourses()
       .then((response) => {
-        console.log(response);
         setCourses(response.data)
       })
       .catch((error) => {

@@ -247,8 +247,7 @@ const CourseUpdate = () => {
 
             <CRow className="mt-4">
               <CCol sm="4">
-                
-                <CFormInput id='fileInput' onChange={handleImageChange} name='image' type="file" label="Resim" />
+                <CFormInput id='fileInput' onChange={handleImageChange} value={(image != null) ? image : ""} name='image' type="file" label="Resim" />
                 <CFormFeedback invalid>Lütfen resim giriniz.</CFormFeedback>
               </CCol>
 
