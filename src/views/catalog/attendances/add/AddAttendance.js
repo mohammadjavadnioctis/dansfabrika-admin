@@ -19,7 +19,7 @@ import useCourseData from 'src/definitions/SelectData/Course'
 import useStudentData from 'src/definitions/SelectData/Student'
 import useLessonData from 'src/definitions/SelectData/Lesson'
 import Select from 'react-select';
-
+import { GetCourseTypeName } from 'src/definitions/Enums/CourseTypeEnums'
 
 
 const AttendanceAdd = () => {
@@ -116,7 +116,7 @@ const AttendanceAdd = () => {
                 <CFormSelect onChange={e => setLessonId(e.target.value)} name='lesson_id' label="Ders:">
                   <option value={""}>Seçiniz</option>
                   {lessons.map(lesson => (
-                    <option key={lesson.id} value={lesson.id}>{lesson.id}</option>
+                    <option key={lesson.id} value={lesson.id}>{GetCourseTypeName(lesson?.course.courseType)} {lesson?.course?.danceType?.name} {lesson.id}</option>
                   ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen ders seçiniz.</CFormFeedback>

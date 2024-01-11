@@ -6,7 +6,7 @@ import { ControlErrorMessage } from "src/definitions/Enums/ErrorEnums";
 
 export async function GetAllStudents(params) {
     try {
-        const data = await ApiManager('http://api.dansfabrika.com/v1/student', {
+        const data = await ApiManager(`${process.env.REACT_APP_API_URL}v1/student?take=1000`, {
             method: 'GET',
             params: params
         })
