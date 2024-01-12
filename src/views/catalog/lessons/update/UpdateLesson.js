@@ -18,6 +18,8 @@ import { GetStatusOptions } from 'src/definitions/Enums/StatusEnums'
 import { GetDayOptions } from 'src/definitions/Enums/DayEnum'
 import useCourseData from 'src/definitions/SelectData/Course'
 import Select from 'react-select';
+import { DatePickerInput } from '@mantine/dates';
+
 
 const LessonUpdate = () => {
 
@@ -26,7 +28,7 @@ const LessonUpdate = () => {
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
   const [status, setStatus] = useState(null)
-
+  const [date, setDate] = useState(null)
   const { id } = useParams()
 
   const [validated, setValidated] = useState(false)
@@ -39,7 +41,8 @@ const LessonUpdate = () => {
     day: parseInt(day),
     startTime: startTime,
     endTime: endTime,
-    status: parseInt(status)
+    status: parseInt(status),
+    performDate: date ?? null
   }
 
   const handleSubmit = (event) => {
@@ -63,6 +66,7 @@ const LessonUpdate = () => {
         setStartTime(response.data.startTime)
         setEndTime(response.data.endTime)
         setStatus(response.data.status)
+        setDate(response.data?.performDate)
       })
       .catch(error => {
         console.log(error);
@@ -74,6 +78,17 @@ const LessonUpdate = () => {
   const filteredCourses = courses.filter((course) =>
     course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  const handleDateChange = (e) => {
+    const dateInputValue = e?.target.value;
+    // console.log(dateInputValue)
+    body.performDate = dateInputValue
+    setDate(dateInputValue)
+  } 
+
+  useEffect(() => {
+    console.log('date has changed', date)
+  } ,[date])
 
   return (
     <CContainer>
@@ -118,25 +133,38 @@ const LessonUpdate = () => {
             </CRow>
 
             <CRow className="mt-4">
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormInput type="time" onChange={e => setStartTime(e.target.value)} value={(startTime != null) ? startTime : ""} name='start_time' label="Başlangıç Saati" required />
                 <CFormFeedback invalid>Lütfen başlangıç tarihi giriniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="4">
+              <CCol sm="6">
                 <CFormInput type="time" onChange={e => setEndTime(e.target.value)} value={(endTime != null) ? endTime : ""} name='end_time' label="Bitiş Saati" required />
                 <CFormFeedback invalid>Lütfen bitiş tarihi giriniz.</CFormFeedback>
               </CCol>
 
-              <CCol sm="4">
+            </CRow>
+            <CRow className="mt-4">
+
+              <CCol sm="6">
                 <CFormSelect label="Statü:" onChange={e => setStatus(e.target.value)} value={(status != null) ? status : ""} name='status'>
                   <option value={""} disabled>Seçiniz</option>
                   {GetStatusOptions()}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen statü seçiniz.</CFormFeedback>
               </CCol>
+              <CCol sm="6">
+              <CFormInput
+                type="date"
+                label="Pick date"
+                placeholder="Pick date"
+                value={date}
+                onChange={handleDateChange}
+                // required
+                name='performDate'
+              />
+              </CCol>
             </CRow>
-
             <CRow className="mt-4">
               <CCol sm="12">
                 <CButton color="primary" type="submit" className="float-end mt-3" style={{ width: '100%' }}>

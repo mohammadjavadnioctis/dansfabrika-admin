@@ -20,6 +20,8 @@ import { FaFileExcel  } from "react-icons/fa";
 import { BASE_URL } from 'src/config/Config'
 import { GetStatusName } from 'src/definitions/Enums/StatusEnums'
 import { GetDayName } from 'src/definitions/Enums/DayEnum'
+import { GetCourseTypeName } from 'src/definitions/Enums/CourseTypeEnums' 
+
 
 const defaultFilterValue = [
   { name: 'id', operator: 'startsWith', type: 'string' },
@@ -33,7 +35,7 @@ const defaultFilterValue = [
 const title = [
   { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
   { name: 'courseId', minWidth: 275, header: 'Kurs Adı', render: ({ data }) => (
-    data.course.danceType.name + ' ' + data.course.danceLevel.name + ' ' + data.course.trainer.name
+    GetCourseTypeName(data.course.courseType)+ ' - ' + data.course.danceType.name + ' ' + data.course.danceLevel.name + ' ' + data.course.trainer.name 
   )},
   { name: 'day', header: 'Kurs Günü', render: ({ data }) => (
     GetDayName(data.day)
@@ -73,6 +75,7 @@ const Lessons = () => {
     GetAllLessons()
     .then((response) => {
       setLessons(response.data)
+      console.log('this is the fetched lessons: ', response.data)
     })
     .catch((error) => {
       console.log(error)

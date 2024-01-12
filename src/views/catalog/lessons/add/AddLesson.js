@@ -24,7 +24,7 @@ const LessonAdd = () => {
   const [day, setDay] = useState(null)
   const [startTime, setStartTime] = useState(null)
   const [endTime, setEndTime] = useState(null)
-
+  const [date, setDate] = useState(null)
   const [validated, setValidated] = useState(false)
 
   const courses = useCourseData();
@@ -34,6 +34,8 @@ const LessonAdd = () => {
     day: parseInt(day),
     startTime: startTime,
     endTime: endTime,
+    performDate: date,
+    status: 0
   }
 
   const handleSubmit = (event) => {
@@ -53,6 +55,13 @@ const LessonAdd = () => {
   const filteredCourses = courses.filter((course) =>
     course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  const handleDateChange = (e) => {
+    const dateInputValue = e?.target.value;
+    // console.log(dateInputValue)
+    body.performDate = dateInputValue
+    setDate(dateInputValue)
+  } 
 
   return (
     <CContainer>
@@ -108,6 +117,17 @@ const LessonAdd = () => {
               </CCol>
 
             </CRow>
+            <CCol sm="6">
+            <CFormInput
+                type="date"
+                label="Pick date"
+                placeholder="Pick date"
+                value={date}
+                onChange={handleDateChange}
+                // required
+                name='performDate'
+              />
+            </CCol>
 
             <CRow className="mt-4">
               <CCol sm="12">
