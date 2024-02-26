@@ -57,7 +57,8 @@ const CourseAdd = () => {
     courseType: parseInt(courseType),
     onSale: parseInt(onSale),
     price: parseFloat(price),
-    status: parseInt(status)
+    status: parseInt(status),
+    createdDate: new Date()
   }
 
   const handleImageChange = (event) => {

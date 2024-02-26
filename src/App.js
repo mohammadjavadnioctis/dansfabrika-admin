@@ -5,6 +5,9 @@ import PrivateRoute from './route/PrivateRoute'
 import routes from './routes'
 import CheckToken from './route/CheckToken'
 import AutoRefreshPage from './route/AutoRefresh'
+import '@mantine/core/styles.css';
+import { createTheme, MantineProvider } from '@mantine/core';
+
 
 const loading = (
   <div className="pt-3 text-center">
@@ -25,7 +28,9 @@ class App extends Component {
       <Router>
         <Suspense fallback={loading}>
           <CheckToken />
+          <MantineProvider >
           <Routes>
+
             <Route path="/login" name="Login Page" element={<Login />} />
             <Route exact path="/" element={<DefaultLayout />} >
               <Route path="/" element={<PrivateRoute />} >
@@ -46,6 +51,7 @@ class App extends Component {
               </Route>
             </Route>
           </Routes>
+          </MantineProvider>
         </Suspense>
       </Router>
     )

@@ -16,6 +16,7 @@ import { AddLesson } from 'src/api/catalog/LessonAPI'
 import { GetDayOptions } from 'src/definitions/Enums/DayEnum'
 import useCourseData from 'src/definitions/SelectData/Course'
 import Select from 'react-select';
+import { GetCourseTypeName } from 'src/definitions/Enums/CourseTypeEnums'
 
 
 const LessonAdd = () => {
@@ -88,7 +89,7 @@ const LessonAdd = () => {
                   onChange={(selectedOption) => setCourseId(selectedOption)}
                   options={filteredCourses.map((course) => ({
                     value: course.id,
-                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                    label: GetCourseTypeName(course.courseType) + ' - ' + course?.danceLevel?.name + ' - ' + course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
                   }))}
                 />
                 {validated && courseId === null && (
