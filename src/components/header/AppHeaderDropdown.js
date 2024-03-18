@@ -34,7 +34,7 @@ const AppHeaderDropdown = () => {
   const decodeToken = token ? jwtDecode(token) : null 
 
   const handleDeleteCookie = () => {
-      cookies.remove('jwt')
+      cookies?.remove('jwt')
       window.location.reload();
   };
 

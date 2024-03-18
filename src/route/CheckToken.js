@@ -19,10 +19,10 @@ const CheckToken = () => {
 
       if (token && expirationTime) {
         const currentTime = Date.now() / 1000;
+        console.log('here are the cookies : ', cookies)
+        if (currentTime > expirationTime ) {
 
-        if (currentTime > expirationTime) {
-
-            cookies.removeCookie('jwt')
+            cookies?.remove('jwt')
             window.location.reload();
             navigate('/login')
             
