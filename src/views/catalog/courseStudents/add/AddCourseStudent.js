@@ -60,7 +60,7 @@ const CourseStudentAdd = () => {
   );
 
   const filteredCourses = courses.filter((course) =>
-    course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    course.danceType.name + course.danceLevel.name + course.trainer?.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -88,7 +88,7 @@ const CourseStudentAdd = () => {
                   onChange={(selectedOption) => setCourseId(selectedOption)}
                   options={filteredCourses.map((course) => ({
                     value: course.id,
-                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer?.name,
                   }))}
                 />
                 {validated && courseId === null && (

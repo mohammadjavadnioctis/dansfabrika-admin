@@ -35,7 +35,7 @@ const defaultFilterValue = [
 const title = [
   { name: 'id', type: 'number', maxWidth: 100, header: 'ID', defaultVisible: false },
   { name: 'courseId', minWidth: 275, header: 'Kurs Adı', render: ({ data }) => (
-    GetCourseTypeName(data.course.courseType)+ ' - ' + data.course.danceType.name + ' ' + data.course.danceLevel.name + ' ' + data.course.trainer.name 
+    GetCourseTypeName(data.course.courseType)+ ' - ' + data.course.danceType.name + ' ' + data.course.danceLevel.name + ' ' + data.course.trainer?.name 
   )},
   { name: 'day', header: 'Kurs Günü', render: ({ data }) => (
     GetDayName(data.day)

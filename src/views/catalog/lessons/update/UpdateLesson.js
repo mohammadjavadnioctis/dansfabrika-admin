@@ -61,7 +61,7 @@ const LessonUpdate = () => {
   useEffect(() => {
     GetByIdLesson(id)
       .then(response => {
-        setCourseId({ value: response.data.courseId, label: response.data.course.danceType.name + ' ' + response.data.course.danceLevel.name + ' ' + response.data.course.trainer.name })
+        setCourseId({ value: response.data.courseId, label: response.data.course.danceType.name + ' ' + response.data.course.danceLevel.name + ' ' + response.data.course.trainer?.name })
         setDay(response.data.day)
         setStartTime(response.data.startTime)
         setEndTime(response.data.endTime)
@@ -76,7 +76,7 @@ const LessonUpdate = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredCourses = courses.filter((course) =>
-    course.danceType.name + course.danceLevel.name + course.trainer.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    course.danceType.name + course.danceLevel.name + course.trainer?.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleDateChange = (e) => {
@@ -115,7 +115,7 @@ const LessonUpdate = () => {
                   onChange={(selectedOption) => setCourseId(selectedOption)}
                   options={filteredCourses.map((course) => ({
                     value: course.id,
-                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer?.name,
                   }))}
                 />
                 {validated && courseId === null && (

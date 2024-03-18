@@ -46,7 +46,7 @@ const title = [
   )},
   { name: 'capacity', header: 'Kapasite' },
   { name: 'trainerId', header: 'Eğitmen Adı', render: ({ data }) => (
-      data.trainer.name
+      data?.trainer?.name
   )},
   { name: 'description', header: 'Açıklama' },
   { name: 'startDate', header: 'Başlangıç Tarihi', render: ({ data }) => (
