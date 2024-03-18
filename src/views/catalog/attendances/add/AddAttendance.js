@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard,
   CCardBody,
@@ -31,10 +31,12 @@ const AttendanceAdd = () => {
 
   const [validated, setValidated] = useState(false)
 
+  const [selectedCourse, setSelectedCourse] = useState({})
+
   const courses = useCourseData();
   const students = useStudentData();
   const lessons = useLessonData();
-
+  
   const body = {
     attendanceDate: attendanceDate,
     courseId: courseId ? parseInt(courseId.value) : null,
@@ -55,6 +57,12 @@ const AttendanceAdd = () => {
     event.preventDefault()
   }
 
+  const handleCourseSelection = (selectedOption) =>  {
+   
+    setCourseId(selectedOption)
+
+  }
+
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredStudents = students.filter((student) =>
@@ -70,6 +78,14 @@ const AttendanceAdd = () => {
     lesson.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
   */
+
+  useEffect(() => {
+      console.log('courseId Changed', courseId)
+      const selectedCourseData = courses.find(course => course.id === courseId.value)
+      console.log('here is hte selected course: ', selectedCourse)
+      setSelectedCourse(selectedCourseData)
+    } ,[courseId])
+
 
   return (
     <CContainer>
@@ -98,10 +114,10 @@ const AttendanceAdd = () => {
                   name="course"
                   required
                   value={courseId}
-                  onChange={(selectedOption) => setCourseId(selectedOption)}
+                  onChange={(selectedOption) => handleCourseSelection(selectedOption)}
                   options={filteredCourses.map((course) => ({
                     value: course.id,
-                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name,
+                    label: course.danceType.name + ' ' + course.danceLevel.name + ' ' + course.trainer.name + ' ' + new Date(course.createdDate),
                   }))}
                 />
                 {validated && courseId === null && (
@@ -115,8 +131,14 @@ const AttendanceAdd = () => {
               <CCol sm="6">
                 <CFormSelect onChange={e => setLessonId(e.target.value)} name='lesson_id' label="Ders:">
                   <option value={""}>Seçiniz</option>
-                  {lessons.map(lesson => (
-                    <option key={lesson.id} value={lesson.id}>{GetCourseTypeName(lesson?.course.courseType)} {lesson?.course?.danceType?.name} {lesson.id}</option>
+                  {/* {lessons.map(lesson => (
+                    <option key={lesson.id} value={lesson.id}>{GetCourseTypeName(lesson?.course.courseType)} {lesson?.course?.danceType?.name} {lesson.performDate} {lesson.startTime} - {lesson.endTime} {lesson.id}</option>
+                  ))} */}
+                   {selectedCourse && selectedCourse?.lesson && selectedCourse?.lesson?.map(lesson => (
+                    <option key={lesson.id} value={lesson.id}>
+                      {/* {GetCourseTypeName(lesson?.course.courseType)}  */}
+                      {lesson?.course?.danceType?.name} {lesson.performDate} {lesson.startTime} - {lesson.endTime} {lesson.id}
+                      </option>
                   ))}
                 </CFormSelect>
                 <CFormFeedback invalid>Lütfen ders seçiniz.</CFormFeedback>
